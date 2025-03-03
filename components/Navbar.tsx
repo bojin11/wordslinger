@@ -2,27 +2,29 @@ import { TouchableOpacity, View, StyleSheet, Image } from "react-native";
 import Learn from "./Learn";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/NavigationTypes";
+import { useNavigation } from "@react-navigation/native";
 
 const sheriff = require("../assets/icons/Sheriff.png");
 const cactus = require("../assets/icons/Cactus2.png");
 const hayStack = require("../assets/icons/hay-large.png");
 const barrel = require("../assets/icons/barrel.png");
 const whiskey = require("../assets/icons/Whiskey.png");
-const box = require("../assets/icons/Box1.png");
-type ImageExampleProps = {
-  navigation: StackNavigationProp<RootStackParamList, "Learn">;
-};
-const Navbar: React.FC<ImageExampleProps> = ({ navigation }) => {
+
+const Navbar: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+
   return (
     <View style={styles.navbar}>
       <View style={styles.iconContainer}>
-        <Image
-          style={[styles.image, { resizeMode: "center" }]}
-          source={sheriff}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("Learn")}>
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={sheriff}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Learn")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Practice")}>
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={hayStack}
@@ -30,25 +32,29 @@ const Navbar: React.FC<ImageExampleProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <Image
-          style={[styles.image, { resizeMode: "center" }]}
-          source={cactus}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("Game")}>
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={cactus}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <Image
-          style={[styles.image, { resizeMode: "center" }]}
-          source={whiskey}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("FriendsList")}>
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={whiskey}
+          />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.iconContainer}>
-        <Image
-          style={[styles.image, { resizeMode: "center" }]}
-          source={barrel}
-        />
-      </View>
-      <View style={styles.iconContainer}>
-        <Image style={[styles.image, { resizeMode: "center" }]} source={box} />
+        <TouchableOpacity onPress={() => navigation.navigate("Leaderboard")}>
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={barrel}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
