@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    borderTopWidth: 2,
     padding: 15,
   },
 });

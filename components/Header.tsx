@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 export default function Header() {
   return (
     <View style={styles.header}>
-      <Text>Hello World</Text>
+      <Text>Word Slinger</Text>
     </View>
   );
 }
