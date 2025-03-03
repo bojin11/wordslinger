@@ -1,7 +1,7 @@
 import { TouchableOpacity, View, StyleSheet, Image } from "react-native";
 import Learn from "./Learn";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types/NavigationTypes";
+import { RootStackParamList } from "../Types/NavigationTypes";
 import { useNavigation } from "@react-navigation/native";
 
 const sheriff = require("../assets/icons/Sheriff.png");
