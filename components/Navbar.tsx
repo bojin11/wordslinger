@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
     <View style={styles.navbar}>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("Learn")}>
-          <Image
+        <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={sheriff}
           />
