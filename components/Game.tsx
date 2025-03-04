@@ -1,87 +1,86 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import io, { Socket } from "socket.io-client";
 
-// List of words for the typing game
-const words = [
-  "apple",
-  "banana",
-  "grape",
-  "orange",
-  "mango",
-  "peach",
-  "pear",
-  "plum",
-];
+// Socket.IO connection (replace with your backend URL)
+const socket: Socket = io("http://localhost:3000");
 
 const Game = () => {
-  const [currentWord, setCurrentWord] = useState<string>(""); // word to type
-  const [inputValue, setInputValue] = useState<string>(""); // user input
-  const [score, setScore] = useState<number>(0); // score tracking
-  const [timer, setTimer] = useState<number>(30); // countdown timer
-  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [currentWord, setCurrentWord] = useState<string>(""); // Word to type
+  const [inputValue, setInputValue] = useState<string>(""); // User input
+  const [score, setScore] = useState<number>(0); // Local player score
+  const [opponentScore, setOpponentScore] = useState<number>(0); // Opponent score
+  const [currentTurn, setCurrentTurn] = useState<string>(""); // ID of the player whose turn it is
+  const [myId, setMyId] = useState<string>(""); // ID of the current client
+  const [myName, setMyName] = useState<string>(""); // Name of the current player
 
   useEffect(() => {
-    // Initialize the game with a random word
-    setRandomWord();
-  }, []);
+    // Set the player's ID once connected
+    socket.on("connect", () => {
+      setMyId(socket.id);
+    });
 
-  useEffect(() => {
-    // Countdown timer logic
-    if (timer > 0 && !isGameOver) {
-      const interval = setInterval(() => setTimer(timer - 1), 1000);
-      return () => clearInterval(interval);
-    } else if (timer === 0) {
-      // End game if timer runs out
-      setIsGameOver(true);
-    }
-  }, [timer, isGameOver]);
+    // Listen for game start
+    socket.on(
+      "startGame",
+      (data: { currentWord: string; currentTurn: string; players: any }) => {
+        setCurrentWord(data.currentWord);
+        setCurrentTurn(data.currentTurn);
+        setMyName(data.players[socket.id].name); // Set player name
+      }
+    );
 
-  const setRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    setCurrentWord(words[randomIndex]);
-  };
+    // Listen for game state updates
+    socket.on(
+      "updateGameState",
+      (data: { currentWord: string; currentTurn: string; players: any }) => {
+        setCurrentWord(data.currentWord);
+        setCurrentTurn(data.currentTurn);
+        setScore(data.players[myId]?.score || 0);
+        const opponentId = Object.keys(data.players).find((id) => id !== myId);
+        setOpponentScore(data.players[opponentId]?.score || 0);
+      }
+    );
+
+    // Listen for game over
+    socket.on("gameOver", (data: { players: any }) => {
+      alert("Game over!");
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("startGame");
+      socket.off("updateGameState");
+      socket.off("gameOver");
+    };
+  }, [myId]);
 
   const handleInputChange = (text: string) => {
     setInputValue(text);
-    if (text.toLowerCase() === currentWord.toLowerCase()) {
-      // Correct word typed
-      setScore(score + 1);
-      setInputValue("");
-      setRandomWord(); // Set new word
+    if (
+      text.toLowerCase() === currentWord.toLowerCase() &&
+      currentTurn === myId
+    ) {
+      // Correct word typed, emit event to server
+      socket.emit("wordTyped", { word: text });
+      setInputValue(""); // Clear input field
     }
-  };
-
-  const handleRestartGame = () => {
-    setScore(0);
-    setTimer(30);
-    setIsGameOver(false);
-    setRandomWord();
-    setInputValue("");
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Typing Game</Text>
-      {isGameOver ? (
-        <View>
-          <Text style={styles.gameOverText}>
-            Game Over! Your Score: {score}
-          </Text>
-          <Button title="Restart Game" onPress={handleRestartGame} />
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.word}>{currentWord}</Text>
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            onChangeText={handleInputChange}
-            placeholder="Type the word here"
-          />
-          <Text style={styles.timer}>Time: {timer}s</Text>
-          <Text style={styles.score}>Score: {score}</Text>
-        </View>
-      )}
+      <Text style={styles.word}>{currentWord}</Text>
+      <Text>{currentTurn === myId ? "Your Turn" : "Opponent's Turn"}</Text>
+      <TextInput
+        style={styles.input}
+        value={inputValue}
+        onChangeText={handleInputChange}
+        placeholder="Type the word here"
+        editable={currentTurn === myId} // Disable input if it's not your turn
+      />
+      <Text style={styles.score}>Your Score: {score}</Text>
+      <Text style={styles.score}>Opponent's Score: {opponentScore}</Text>
     </View>
   );
 };
@@ -115,17 +114,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 20,
   },
-  timer: {
-    fontSize: 24,
-    color: "#ff0000",
-  },
   score: {
     fontSize: 24,
     marginTop: 10,
-  },
-  gameOverText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
 });
