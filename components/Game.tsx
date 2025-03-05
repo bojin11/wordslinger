@@ -20,15 +20,18 @@ const Game = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [finishGame, setFinishGame] = useState<boolean>(false);
   const [winner, setWinner] = useState<string>("");
+  let [timer, setTimer] = useState<number>(30);
 
   // Listen for game events from server
   useEffect(() => {
     // Listen for game start
+
     socket.on("gameStart", (data: { wordList: string[] }) => {
       console.log("Game started, wordList received:", data.wordList);
       setCurrentWord(data.wordList[0]);
       setGameStarted(true);
       setMessage("");
+      runTimer();
     });
 
     // Listen for next word
@@ -47,18 +50,31 @@ const Game = () => {
     });
 
     // Listen for game completion
-    socket.on("gameComplete", (data: { correctAnswers: number }) => {
-      console.log("you got 5 correct");
-      setFinishGame(true);
-    });
-
-    // Handle game over
     socket.on(
       "gameOver",
-      (data: { winner: string; correctAnswers: number }) => {
-        setWinner(data.winner);
+      (data: {
+        gameInstance: {
+          playerOneId: string;
+          playerTwoId: string;
+          playerOneCorrectAnswers: Array<string>;
+          playerTwoCorrectAnswers: Array<string>;
+          timer: number;
+        };
+      }) => {
+        console.log("you got 5 correct");
+        console.log(data.gameInstance.playerOneCorrectAnswers);
+        console.log(data.gameInstance.playerTwoCorrectAnswers);
+        setFinishGame(true);
       }
     );
+
+    // // Handle game over
+    // socket.on(
+    //   "gameOver",
+    //   (data: { winner: string; correctAnswers: number }) => {
+    //     setWinner(data.winner);
+    //   }
+    // );
 
     return () => {
       socket.off("gameStart");
@@ -69,6 +85,15 @@ const Game = () => {
       socket.off("gameOver");
     };
   }, []);
+
+  const runTimer = () => {
+    for (let i = 0; i <= timer; i++) {
+      setTimeout(() => {
+        console.log(timer);
+        setTimer(timer--);
+      }, i * 1000);
+    }
+  };
 
   // Submit the player's answer to the server
   const submitAnswer = () => {
@@ -92,6 +117,7 @@ const Game = () => {
         <View style={styles.gameContainer}>
           {gameStarted ? (
             <>
+              <Text>{timer}</Text>
               <Text style={styles.wordDisplay}>
                 Current Word: {currentWord}
               </Text>
