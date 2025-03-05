@@ -10,11 +10,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/sancreek": "^0.2.3",
+    "@expo-google-fonts/smokum": "^0.2.3",
     "@expo/cli": "^0.22.18",
     "@expo/metro-runtime": "~4.0.1",
     "@react-navigation/native": "^7.0.15",
     "@react-navigation/stack": "^7.1.2",
     "expo": "~52.0.37",
+    "expo-font": "~13.0.4",
     "expo-status-bar": "~2.0.1",
     "install": "^0.13.0",
     "npm": "^11.1.0",
@@ -28,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@faker-js/faker": "^9.5.1",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.72.8",
     "typescript": "^5.3.3"

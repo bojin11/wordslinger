@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   navbar: {
     flex: 1,
     flexDirection: "row",
-    position: "absolute",
+    position: "static",
     left: 0,
     bottom: 0,
     width: "100%",
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     display: "flex",
     borderTopWidth: 2,
+    maxHeight: 90,
   },
   iconContainer: {},
   image: {
