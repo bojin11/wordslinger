@@ -55,9 +55,9 @@ const styles = StyleSheet.create({
 
   title: {
     fontFamily: Platform.select({
-      web: "Sancreek_400Regular",
+      web: "Smokum",
     }),
-    fontSize: 50,
+    fontSize: 70,
     fontWeight: "bold",
     marginBottom: 16,
     justifyContent: "center",
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     alignItems: "center",
     fontFamily: Platform.select({
-      web: "Sancreek-400Regular",
+      web: "Smokum",
       ios: "Smokum-Regular",
       android: "Smokum_400Regular",
     }),
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     fontFamily: Platform.select({
-      web: "Sancreek-400Regular",
+      web: "Sancreek",
       ios: "Smokum-Regular",
       android: "Smokum_400Regular",
     }),
