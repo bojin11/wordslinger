@@ -10,6 +10,6 @@ export default function Learn() {
 
 const styles = StyleSheet.create({
   learn: {
-    backgroundColor: "grey",
+    backgroundColor: "green",
   },
 });
