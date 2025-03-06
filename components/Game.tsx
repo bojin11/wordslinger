@@ -8,6 +8,7 @@ import {
   View,
   Alert,
 } from "react-native";
+import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
 
 const socket = io("http://localhost:3000"); // Replace with your server URL
@@ -22,6 +23,8 @@ const Game = () => {
   const [winner, setWinner] = useState<string>("");
   let [timer, setTimer] = useState<number>(30);
   const [roomId, setRoomId] = useState<string>("");
+
+  const { user } = useAuth();
 
   interface Player {
     correctAnswers: Array<string>;
@@ -42,10 +45,7 @@ const Game = () => {
   // Listen for game events from server
   useEffect(() => {
     // Listen for game start
-
-    socket.on("inroom", () => {
-      console.log(socket.id + "is in the room");
-    });
+  
     socket.on("gameStart", (data: { wordList: string[]; roomId: string }) => {
       console.log(
         "Game started, wordList received:",
@@ -86,7 +86,7 @@ const Game = () => {
         };
       }) => {
         console.log("winner is " + data.winner);
-        console.log(data.gameInstance.wordList);
+        console.log(data.gameInstance.players);
 
         setFinishGame(true);
       }
@@ -129,7 +129,7 @@ const Game = () => {
   // Handle when the player is ready to start the game
   const handleStartGame = () => {
     setIsReady(true); // Set the player as ready
-    socket.emit("playerReady"); // Notify the server that the player is ready
+    socket.emit("playerReady", { user }); // Notify the server that the player is ready
   };
 
   return (
