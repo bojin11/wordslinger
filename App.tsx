@@ -13,6 +13,7 @@ import Practice from "./components/Practice";
 import Game from "./components/Game";
 import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
+import Profile from "./components/Profile";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,11 @@ export default function App() {
           <Stack.Screen name="Game" component={Game} />
           <Stack.Screen name="FriendsList" component={FriendsList} />
           <Stack.Screen name="Leaderboard" component={Leaderboard} />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
         <Navbar />
         <Footer />
