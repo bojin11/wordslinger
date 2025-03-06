@@ -21,13 +21,38 @@ const Game = () => {
   const [finishGame, setFinishGame] = useState<boolean>(false);
   const [winner, setWinner] = useState<string>("");
   let [timer, setTimer] = useState<number>(30);
+  const [roomId, setRoomId] = useState<string>("");
+
+  interface Player {
+    correctAnswers: Array<string>;
+    currentWordIndex: number;
+    ready: boolean; // Add ready state to track whether player is ready
+  }
+
+  interface Players {
+    [socketId: string]: Player;
+  }
+
+  interface GameInstance {
+    players: Players;
+    timer: number;
+    wordList: string[];
+  }
 
   // Listen for game events from server
   useEffect(() => {
     // Listen for game start
 
-    socket.on("gameStart", (data: { wordList: string[] }) => {
-      console.log("Game started, wordList received:", data.wordList);
+    socket.on("inroom", () => {
+      console.log(socket.id + "is in the room");
+    });
+    socket.on("gameStart", (data: { wordList: string[]; roomId: string }) => {
+      console.log(
+        "Game started, wordList received:",
+        data.wordList,
+        "room id" + data.roomId
+      );
+      setRoomId(data.roomId);
       setCurrentWord(data.wordList[0]);
       setGameStarted(true);
       setMessage("");
@@ -53,17 +78,16 @@ const Game = () => {
     socket.on(
       "gameOver",
       (data: {
+        winner: string;
         gameInstance: {
-          playerOneId: string;
-          playerTwoId: string;
-          playerOneCorrectAnswers: Array<string>;
-          playerTwoCorrectAnswers: Array<string>;
+          players: Players;
           timer: number;
+          wordList: string[];
         };
       }) => {
-        console.log("you got 5 correct");
-        console.log(data.gameInstance.playerOneCorrectAnswers);
-        console.log(data.gameInstance.playerTwoCorrectAnswers);
+        console.log("winner is " + data.winner);
+        console.log(data.gameInstance.wordList);
+
         setFinishGame(true);
       }
     );
@@ -90,6 +114,7 @@ const Game = () => {
     for (let i = 0; i <= timer; i++) {
       setTimeout(() => {
         console.log(timer);
+        console.log(roomId);
         setTimer(timer--);
       }, i * 1000);
     }
@@ -97,7 +122,7 @@ const Game = () => {
 
   // Submit the player's answer to the server
   const submitAnswer = () => {
-    socket.emit("submitAnswer", answer);
+    socket.emit("submitAnswer", { answer, roomId });
     setAnswer(""); // Clear input field after submission
   };
 
