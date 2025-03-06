@@ -1,0 +1,1171 @@
+[
+  {
+    "english": "answer",
+    "french": "répondre",
+    "german": "antwort",
+    "spainish": "contester",
+    "word_level": 18
+  },
+  {
+    "english": "ask",
+    "french": "demander",
+    "german": "fragen",
+    "spainish": "preguntar",
+    "word_level": 18
+  },
+  {
+    "english": "buy",
+    "french": "acheter",
+    "german": "kaufen",
+    "spainish": "comprar",
+    "word_level": 17
+  },
+  {
+    "english": "close",
+    "french": "fermer",
+    "german": "schließen",
+    "spainish": "cerrar",
+    "word_level": 21
+  },
+  {
+    "english": "put on",
+    "french": "mettez",
+    "german": "anziehen",
+    "spainish": "ponerse",
+    "word_level": 20
+  },
+  {
+    "english": "wear",
+    "french": "porter",
+    "german": "tragen",
+    "spainish": "vestir",
+    "word_level": 20
+  },
+  {
+    "english": "dance",
+    "french": "danser",
+    "german": "tanzen",
+    "spainish": "bailar",
+    "word_level": 7
+  },
+  {
+    "english": "draw",
+    "french": "dessiner",
+    "german": "zeichnen",
+    "spainish": "dibujar",
+    "word_level": 7
+  },
+  {
+    "english": "drink",
+    "french": "boire",
+    "german": "trinken",
+    "spainish": "beber",
+    "word_level": 3
+  },
+  {
+    "english": "drive",
+    "french": "conduire",
+    "german": "fahren",
+    "spainish": "conducir",
+    "word_level": 12
+  },
+  {
+    "english": "eat",
+    "french": "manger",
+    "german": "essen",
+    "spainish": "comer",
+    "word_level": 3
+  },
+  {
+    "english": "fly",
+    "french": "voler",
+    "german": "fliegen",
+    "spainish": "volar",
+    "word_level": 11
+  },
+  {
+    "english": "hear",
+    "french": "écouter",
+    "german": "hören",
+    "spainish": "oír",
+    "word_level": 15
+  },
+  {
+    "english": "like",
+    "french": "aimer",
+    "german": "mögen",
+    "spainish": "gustar",
+    "word_level": 11
+  },
+  {
+    "english": "listen",
+    "french": "écouter",
+    "german": "zuhören",
+    "spainish": "escuchar",
+    "word_level": 15
+  },
+  {
+    "english": "look",
+    "french": "regarder",
+    "german": "schauen",
+    "spainish": "mirar",
+    "word_level": 12
+  },
+  {
+    "english": "open",
+    "french": "ouvrir",
+    "german": "öffnen",
+    "spainish": "abrir",
+    "word_level": 21
+  },
+  {
+    "english": "play",
+    "french": "jouer",
+    "german": "spielen",
+    "spainish": "jugar",
+    "word_level": 7
+  },
+  {
+    "english": "rain",
+    "french": "pleuvoir",
+    "german": "regnen",
+    "spainish": "llover",
+    "word_level": 19
+  },
+  {
+    "english": "read",
+    "french": "lire",
+    "german": "lesen",
+    "spainish": "leer",
+    "word_level": 3
+  },
+  {
+    "english": "run",
+    "french": "courrir",
+    "german": "laufen",
+    "spainish": "correr",
+    "word_level": 7
+  },
+  {
+    "english": "see",
+    "french": "voir",
+    "german": "sehen",
+    "spainish": "ver",
+    "word_level": 4
+  },
+  {
+    "english": "sing",
+    "french": "chanter",
+    "german": "singen",
+    "spainish": "cantar",
+    "word_level": 7
+  },
+  {
+    "english": "sit",
+    "french": "s’asseoir",
+    "german": "sitzen",
+    "spainish": "sentar",
+    "word_level": 3
+  },
+  {
+    "english": "sleep",
+    "french": "dormir",
+    "german": "schlafen",
+    "spainish": "dormir",
+    "word_level": 5
+  },
+  {
+    "english": "stop",
+    "french": "arrêter",
+    "german": "stoppen",
+    "spainish": "detener",
+    "word_level": 21
+  },
+  {
+    "english": "study",
+    "french": "étudier",
+    "german": "lernen",
+    "spainish": "estudiar",
+    "word_level": 10
+  },
+  {
+    "english": "swim",
+    "french": "nager",
+    "german": "schwimmen",
+    "spainish": "nadar",
+    "word_level": 21
+  },
+  {
+    "english": "talk",
+    "french": "parler",
+    "german": "sprechen",
+    "spainish": "hablar",
+    "word_level": 15
+  },
+  {
+    "english": "teach",
+    "french": "enseigner",
+    "german": "lehren",
+    "spainish": "enseñar",
+    "word_level": 11
+  },
+  {
+    "english": "tell",
+    "french": "dire",
+    "german": "erzählen",
+    "spainish": "decir",
+    "word_level": 21
+  },
+  {
+    "english": "think",
+    "french": "penser",
+    "german": "denken",
+    "spainish": "pensar",
+    "word_level": 21
+  },
+  {
+    "english": "travel",
+    "french": "voyager",
+    "german": "reisen",
+    "spainish": "viajar",
+    "word_level": 10
+  },
+  {
+    "english": "turn off",
+    "french": "éteindre",
+    "german": "ausschalten",
+    "spainish": "apagar",
+    "word_level": 17
+  },
+  {
+    "english": "turn on",
+    "french": "allumer",
+    "german": "einschalten",
+    "spainish": "encender",
+    "word_level": 17
+  },
+  {
+    "english": "wake up",
+    "french": "se réveiller",
+    "german": "aufwachen",
+    "spainish": "despertarse",
+    "word_level": 12
+  },
+  {
+    "english": "walk",
+    "french": "marcher",
+    "german": "gehen",
+    "spainish": "caminar",
+    "word_level": 11
+  },
+  {
+    "english": "watch",
+    "french": "regarder",
+    "german": "schauen",
+    "spainish": "mirar",
+    "word_level": 17
+  },
+  {
+    "english": "work",
+    "french": "travailler",
+    "german": "arbeiten",
+    "spainish": "trabajar",
+    "word_level": 18
+  },
+  {
+    "english": "write",
+    "french": "écrire",
+    "german": "schreiben",
+    "spainish": "escribir",
+    "word_level": 18
+  },
+  {
+    "english": "dog",
+    "french": "chien",
+    "german": "Hund",
+    "spainish": "perro",
+    "word_level": 1
+  },
+  {
+    "english": "cat",
+    "french": "chat",
+    "german": "Katze",
+    "spainish": "gato",
+    "word_level": 1
+  },
+  {
+    "english": "rabbit",
+    "french": "lapin",
+    "german": "Kaninchen",
+    "spainish": "conejo",
+    "word_level": 21
+  },
+  {
+    "english": "pig",
+    "french": "cochon",
+    "german": "Schwein",
+    "spainish": "cerdo",
+    "word_level": 21
+  },
+  {
+    "english": "horse",
+    "french": "cheval",
+    "german": "Pferd",
+    "spainish": "caballo",
+    "word_level": 12
+  },
+  {
+    "english": "cow",
+    "french": "vache",
+    "german": "Kuh",
+    "spainish": "vaca",
+    "word_level": 12
+  },
+  {
+    "english": "chicken",
+    "french": "poulet",
+    "german": "Huhn",
+    "spainish": "pollo",
+    "word_level": 12
+  },
+  {
+    "english": "sheep",
+    "french": "mouton",
+    "german": "Schaf",
+    "spainish": "oveja",
+    "word_level": 21
+  },
+  {
+    "english": "goat",
+    "french": "chèvre",
+    "german": "Ziege",
+    "spainish": "cabra",
+    "word_level": 13
+  },
+  {
+    "english": "fox",
+    "french": "renard",
+    "german": "Fuchs",
+    "spainish": "zorro",
+    "word_level": 13
+  },
+  {
+    "english": "bear",
+    "french": "ours",
+    "german": "Bär",
+    "spainish": "oso",
+    "word_level": 21
+  },
+  {
+    "english": "elephant",
+    "french": "éléphant",
+    "german": "Elefant",
+    "spainish": "elefante",
+    "word_level": 13
+  },
+  {
+    "english": "lion",
+    "french": "lion",
+    "german": "Löwe",
+    "spainish": "león",
+    "word_level": 12
+  },
+  {
+    "english": "whale",
+    "french": "baleine",
+    "german": "Wal",
+    "spainish": "ballena",
+    "word_level": 21
+  },
+  {
+    "english": "penguin",
+    "french": "manchot",
+    "german": "Pinguin",
+    "spainish": "pingüino",
+    "word_level": 19
+  },
+  {
+    "english": "bird",
+    "french": "oiseau",
+    "german": "Vogel",
+    "spainish": "pájaro",
+    "word_level": 12
+  },
+  {
+    "english": "fish",
+    "french": "poisson",
+    "german": "Fisch",
+    "spainish": "pez",
+    "word_level": 12
+  },
+  {
+    "english": "red",
+    "french": "rouge",
+    "german": "rot",
+    "spainish": "rojo",
+    "word_level": 6
+  },
+  {
+    "english": "yellow",
+    "french": "jaune",
+    "german": "gelb",
+    "spainish": "amarillo",
+    "word_level": 6
+  },
+  {
+    "english": "blue",
+    "french": "blue/bleue",
+    "german": "blau",
+    "spainish": "azul",
+    "word_level": 6
+  },
+  {
+    "english": "green",
+    "french": "bert/verte",
+    "german": "grün",
+    "spainish": "verde",
+    "word_level": 6
+  },
+  {
+    "english": "orange",
+    "french": "orange",
+    "german": "orange",
+    "spainish": "naranja",
+    "word_level": 16
+  },
+  {
+    "english": "white",
+    "french": "blanc/blanche",
+    "german": "weiß",
+    "spainish": "blanco",
+    "word_level": 16
+  },
+  {
+    "english": "black",
+    "french": "noir/noire",
+    "german": "schwarz",
+    "spainish": "negro",
+    "word_level": 16
+  },
+  {
+    "english": "gray",
+    "french": "gris/grise",
+    "german": "grau",
+    "spainish": "gris",
+    "word_level": 16
+  },
+  {
+    "english": "brown",
+    "french": "marron",
+    "german": "braun",
+    "spainish": "marrón",
+    "word_level": 16
+  },
+  {
+    "english": "pink",
+    "french": "rose",
+    "german": "pink",
+    "spainish": "rosa",
+    "word_level": 16
+  },
+  {
+    "english": "purple",
+    "french": "violet/violette",
+    "german": "lila",
+    "spainish": "morado",
+    "word_level": 16
+  },
+  {
+    "english": "one",
+    "french": "un",
+    "german": "eins",
+    "spainish": "uno",
+    "word_level": 6
+  },
+  {
+    "english": "two",
+    "french": "deux",
+    "german": "zwei",
+    "spainish": "dos",
+    "word_level": 6
+  },
+  {
+    "english": "three",
+    "french": "trois",
+    "german": "drei",
+    "spainish": "tres",
+    "word_level": 6
+  },
+  {
+    "english": "four",
+    "french": "quatre",
+    "german": "vier",
+    "spainish": "cuatro",
+    "word_level": 8
+  },
+  {
+    "english": "five",
+    "french": "cinq",
+    "german": "fünf",
+    "spainish": "cinco",
+    "word_level": 8
+  },
+  {
+    "english": "six",
+    "french": "six",
+    "german": "sechs",
+    "spainish": "seis",
+    "word_level": 8
+  },
+  {
+    "english": "seven",
+    "french": "sept",
+    "german": "sieben",
+    "spainish": "siete",
+    "word_level": 8
+  },
+  {
+    "english": "eight",
+    "french": "huit",
+    "german": "acht",
+    "spainish": "ocho",
+    "word_level": 8
+  },
+  {
+    "english": "nine",
+    "french": "neuf",
+    "german": "neun",
+    "spainish": "nueve",
+    "word_level": 8
+  },
+  {
+    "english": "ten",
+    "french": "dix",
+    "german": "zehn",
+    "spainish": "diez",
+    "word_level": 8
+  },
+  {
+    "english": "twenty",
+    "french": "vingt",
+    "german": "zwanzig",
+    "spainish": "veinte",
+    "word_level": 8
+  },
+  {
+    "english": "thirty",
+    "french": "trente",
+    "german": "dreißig",
+    "spainish": "treinta",
+    "word_level": 8
+  },
+  {
+    "english": "one hundred",
+    "french": "cent",
+    "german": "ein hundert",
+    "spainish": "cien",
+    "word_level": 12
+  },
+  {
+    "english": "one thousand",
+    "french": "mille",
+    "german": "eintausend",
+    "spainish": "mil",
+    "word_level": 12
+  },
+  {
+    "english": "one million",
+    "french": "un million",
+    "german": "eine Million",
+    "spainish": "un millón",
+    "word_level": 12
+  },
+  {
+    "english": "car",
+    "french": "voiture",
+    "german": "Auto",
+    "spainish": "coche",
+    "word_level": 9
+  },
+  {
+    "english": "train",
+    "french": "train",
+    "german": "Zug",
+    "spainish": "tren",
+    "word_level": 9
+  },
+  {
+    "english": "train station",
+    "french": "gare",
+    "german": "Bahnhof",
+    "spainish": "estación de tren",
+    "word_level": 9
+  },
+  {
+    "english": "world",
+    "french": "monde",
+    "german": "Welt",
+    "spainish": "mundo",
+    "word_level": 19
+  },
+  {
+    "english": "country",
+    "french": "pays",
+    "german": "Land",
+    "spainish": "país",
+    "word_level": 11
+  },
+  {
+    "english": "forest",
+    "french": "fortê",
+    "german": "Wald",
+    "spainish": "bosque",
+    "word_level": 19
+  },
+  {
+    "english": "mountain",
+    "french": "montagne",
+    "german": "Berg",
+    "spainish": "montaña",
+    "word_level": 19
+  },
+  {
+    "english": "shop",
+    "french": "magasin",
+    "german": "Geschäft",
+    "spainish": "tienda",
+    "word_level": 11
+  },
+  {
+    "english": "bank",
+    "french": "banque",
+    "german": "Bank",
+    "spainish": "banco",
+    "word_level": 11
+  },
+  {
+    "english": "park",
+    "french": "parc",
+    "german": "Park",
+    "spainish": "parque",
+    "word_level": 11
+  },
+  {
+    "english": "mobile phone",
+    "french": "portable",
+    "german": "Mobiltelefon",
+    "spainish": "teléfono móvil",
+    "word_level": 11
+  },
+  {
+    "english": "computer",
+    "french": "ordinateur",
+    "german": "Computer",
+    "spainish": "computadora",
+    "word_level": 12
+  },
+  {
+    "english": "television",
+    "french": "télévision",
+    "german": "Fernsehen",
+    "spainish": "tele",
+    "word_level": 11
+  },
+  {
+    "english": "home/house",
+    "french": "maison",
+    "german": "Zuhause/Haus",
+    "spainish": "casa",
+    "word_level": 5
+  },
+  {
+    "english": "door",
+    "french": "porte",
+    "german": "Tür",
+    "spainish": "puerta",
+    "word_level": 5
+  },
+  {
+    "english": "window",
+    "french": "fenêtre",
+    "german": "Fenster",
+    "spainish": "ventana",
+    "word_level": 5
+  },
+  {
+    "english": "room",
+    "french": "chambre",
+    "german": "Zimmer",
+    "spainish": "habitación",
+    "word_level": 5
+  },
+  {
+    "english": "kitchen",
+    "french": "cuisine",
+    "german": "Küche",
+    "spainish": "cocina",
+    "word_level": 5
+  },
+  {
+    "english": "bedroom",
+    "french": "chambre a coucher",
+    "german": "Schlafzimmer",
+    "spainish": "dormitorio",
+    "word_level": 5
+  },
+  {
+    "english": "toilet",
+    "french": "toilettes",
+    "german": "Toilette",
+    "spainish": "inodoro",
+    "word_level": 9
+  },
+  {
+    "english": "bus",
+    "french": "bus",
+    "german": "Bus",
+    "spainish": "autobús",
+    "word_level": 9
+  },
+  {
+    "english": "plane",
+    "french": "avion",
+    "german": "Flugzeug",
+    "spainish": "avión",
+    "word_level": 9
+  },
+  {
+    "english": "taxi",
+    "french": "taxi",
+    "german": "Taxi",
+    "spainish": "taxi",
+    "word_level": 9
+  },
+  {
+    "english": "bicycle",
+    "french": "vélo",
+    "german": "Fahrrad",
+    "spainish": "bicicleta",
+    "word_level": 11
+  },
+  {
+    "english": "city/town",
+    "french": "ville",
+    "german": "Stadt",
+    "spainish": "ciudad",
+    "word_level": 9
+  },
+  {
+    "english": "street",
+    "french": "rue",
+    "german": "Straße",
+    "spainish": "calle",
+    "word_level": 11
+  },
+  {
+    "english": "mother",
+    "french": "mère",
+    "german": "Mutter",
+    "spainish": "madre",
+    "word_level": 1
+  },
+  {
+    "english": "father",
+    "french": "père",
+    "german": "Vater",
+    "spainish": "padre",
+    "word_level": 1
+  },
+  {
+    "english": "brother",
+    "french": "frère",
+    "german": "Bruder",
+    "spainish": "hermano",
+    "word_level": 2
+  },
+  {
+    "english": "sister",
+    "french": "sœur",
+    "german": "Schwester",
+    "spainish": "hermana",
+    "word_level": 2
+  },
+  {
+    "english": "baby",
+    "french": "bébé",
+    "german": "Baby",
+    "spainish": "bebé",
+    "word_level": 1
+  },
+  {
+    "english": "husband",
+    "french": "mari",
+    "german": "Ehemann",
+    "spainish": "esposo",
+    "word_level": 10
+  },
+  {
+    "english": "wife",
+    "french": "femme",
+    "german": "Ehefrau",
+    "spainish": "esposa",
+    "word_level": 10
+  },
+  {
+    "english": "family",
+    "french": "famille",
+    "german": "Familie",
+    "spainish": "familia",
+    "word_level": 7
+  },
+  {
+    "english": "son",
+    "french": "fils",
+    "german": "Sohn",
+    "spainish": "hijo",
+    "word_level": 7
+  },
+  {
+    "english": "daughter",
+    "french": "fille",
+    "german": "Tochter",
+    "spainish": "hija",
+    "word_level": 7
+  },
+  {
+    "english": "friend",
+    "french": "ami(e)",
+    "german": "Freund",
+    "spainish": "amigo",
+    "word_level": 7
+  },
+  {
+    "english": "head",
+    "french": "tête",
+    "german": "Kopf",
+    "spainish": "cabeza",
+    "word_level": 14
+  },
+  {
+    "english": "eye",
+    "french": "œil",
+    "german": "Auge",
+    "spainish": "ojo",
+    "word_level": 15
+  },
+  {
+    "english": "mouth",
+    "french": "bouche",
+    "german": "Mund",
+    "spainish": "boca",
+    "word_level": 15
+  },
+  {
+    "english": "nose",
+    "french": "nez",
+    "german": "Nase",
+    "spainish": "nariz",
+    "word_level": 15
+  },
+  {
+    "english": "hair",
+    "french": "cheveux",
+    "german": "Haar",
+    "spainish": "cabello",
+    "word_level": 14
+  },
+  {
+    "english": "arm",
+    "french": "bras",
+    "german": "Arm",
+    "spainish": "brazo",
+    "word_level": 14
+  },
+  {
+    "english": "hand",
+    "french": "main",
+    "german": "Hand",
+    "spainish": "mano",
+    "word_level": 14
+  },
+  {
+    "english": "leg",
+    "french": "jambe",
+    "german": "Bein",
+    "spainish": "pierna",
+    "word_level": 14
+  },
+  {
+    "english": "foot",
+    "french": "pied",
+    "german": "Fuß",
+    "spainish": "pie",
+    "word_level": 14
+  },
+  {
+    "english": "water",
+    "french": "eau",
+    "german": "Wasser",
+    "spainish": "agua",
+    "word_level": 2
+  },
+  {
+    "english": "wine",
+    "french": "vin",
+    "german": "Wein",
+    "spainish": "vino",
+    "word_level": 10
+  },
+  {
+    "english": "beer",
+    "french": "bière",
+    "german": "bier",
+    "spainish": "cerveza",
+    "word_level": 10
+  },
+  {
+    "english": "fruit",
+    "french": "fruit",
+    "german": "Obst",
+    "spainish": "fruta",
+    "word_level": 2
+  },
+  {
+    "english": "vegetable",
+    "french": "légume",
+    "german": "Gemüse",
+    "spainish": "vegetal",
+    "word_level": 2
+  },
+  {
+    "english": "glass",
+    "french": "verre",
+    "german": "Glas",
+    "spainish": "vaso",
+    "word_level": 4
+  },
+  {
+    "english": "meat",
+    "french": "viande",
+    "german": "Fleisch",
+    "spainish": "carne",
+    "word_level": 2
+  },
+  {
+    "english": "student",
+    "french": "étudiant(e)",
+    "german": "Student",
+    "spainish": "estudiante",
+    "word_level": 10
+  },
+  {
+    "english": "doctor",
+    "french": "médecin",
+    "german": "Arzt",
+    "spainish": "doctor",
+    "word_level": 10
+  },
+  {
+    "english": "teacher",
+    "french": "enseignant(e)",
+    "german": "Lehrer",
+    "spainish": "maestro",
+    "word_level": 10
+  },
+  {
+    "english": "waiter",
+    "french": "serveur",
+    "german": "Kellner",
+    "spainish": "camarero",
+    "word_level": 10
+  },
+  {
+    "english": "shoe",
+    "french": "chaussure",
+    "german": "Schuh",
+    "spainish": "zapato",
+    "word_level": 20
+  },
+  {
+    "english": "dress",
+    "french": "robe",
+    "german": "Kleid",
+    "spainish": "vestido",
+    "word_level": 20
+  },
+  {
+    "english": "sock",
+    "french": "chaussette",
+    "german": "Socke",
+    "spainish": "calcetín",
+    "word_level": 20
+  },
+  {
+    "english": "hot",
+    "french": "chaud",
+    "german": "heiß",
+    "spainish": "caliente",
+    "word_level": 5
+  },
+  {
+    "english": "cold",
+    "french": "froid",
+    "german": "kalt",
+    "spainish": "frío",
+    "word_level": 5
+  },
+  {
+    "english": "book",
+    "french": "livre",
+    "german": "Buch",
+    "spainish": "libro",
+    "word_level": 3
+  },
+  {
+    "english": "magazine",
+    "french": "magazine",
+    "german": "Zeitschrift",
+    "spainish": "revista",
+    "word_level": 17
+  },
+  {
+    "english": "get up",
+    "french": "se lever",
+    "german": "aufstehen",
+    "spainish": "levántate",
+    "word_level": 4
+  },
+  {
+    "english": "chair",
+    "french": "chaise",
+    "german": "stuhl",
+    "spainish": "silla",
+    "word_level": 4
+  },
+  {
+    "english": "table",
+    "french": "table",
+    "german": "tabelle",
+    "spainish": "mesa",
+    "word_level": 4
+  },
+  {
+    "english": "hat",
+    "french": "chapeau",
+    "german": "hut",
+    "spainish": "sombrero",
+    "word_level": 15
+  },
+  {
+    "english": "glasses",
+    "french": "lunettes",
+    "german": "brille",
+    "spainish": "gafas",
+    "word_level": 15
+  },
+  {
+    "english": "ear",
+    "french": "oreille",
+    "german": "ohr",
+    "spainish": "oreja",
+    "word_level": 15
+  },
+  {
+    "english": "sun",
+    "french": "soleil",
+    "german": "sonne",
+    "spainish": "sol",
+    "word_level": 19
+  },
+  {
+    "english": "snow",
+    "french": "neige",
+    "german": "schnee",
+    "spainish": "nieve",
+    "word_level": 19
+  },
+  {
+    "english": "wind",
+    "french": "vent",
+    "german": "wind",
+    "spainish": "viento",
+    "word_level": 19
+  },
+  {
+    "english": "shirt",
+    "french": "chemise",
+    "german": "hemd",
+    "spainish": "camisa",
+    "word_level": 20
+  },
+  {
+    "english": "trousers",
+    "french": "pantalon",
+    "german": "hose",
+    "spainish": "pantalones",
+    "word_level": 20
+  },
+  {
+    "english": "skirt",
+    "french": "jupe",
+    "german": "rock",
+    "spainish": "falda",
+    "word_level": 20
+  },
+  {
+    "english": "T-shirt",
+    "french": "T-shirt",
+    "german": "T-shirt",
+    "spainish": "camiseta",
+    "word_level": 20
+  },
+  {
+    "english": "light bulb",
+    "french": "ampoule",
+    "german": "Glühbirne",
+    "spainish": "bombilla",
+    "word_level": 17
+  },
+  {
+    "english": "office",
+    "french": "bureau",
+    "german": "büro",
+    "spainish": "oficina",
+    "word_level": 18
+  },
+  {
+    "english": "school",
+    "french": "école",
+    "german": "schule",
+    "spainish": "escuela",
+    "word_level": 18
+  },
+  {
+    "english": "factory",
+    "french": "usine",
+    "german": "fabrik",
+    "spainish": "fábrica",
+    "word_level": 18
+  },
+  {
+    "english": "farm",
+    "french": "ferme",
+    "german": "bauernhof",
+    "spainish": "granja",
+    "word_level": 18
+  },
+  {
+    "english": "desert",
+    "french": "désert",
+    "german": "wüste",
+    "spainish": "desierto",
+    "word_level": 19
+  },
+  {
+    "english": "umbrella",
+    "french": "parapluie",
+    "german": "regenschirm",
+    "spainish": "paraguas",
+    "word_level": 19
+  }
+]
