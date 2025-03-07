@@ -72,9 +72,10 @@ const styles = StyleSheet.create({
   navbar: {
     flex: 1,
     flexDirection: "row",
-    position: "absolute",
-    left: 0,
-    bottom: 0,
+    // position: "absolute",
+    // left: 0,
+    // bottom: 0,
+    maxHeight: "10%",
     width: "100%",
     alignItems: "flex-end",
     justifyContent: "space-between",
@@ -84,7 +85,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     overflow: "scroll",
   },
-  iconContainer: {},
+  iconContainer: {
+    marginInlineEnd: 5,
+  },
   image: {
     borderWidth: 1,
     borderRadius: 24,
