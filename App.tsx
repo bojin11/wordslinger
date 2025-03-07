@@ -17,7 +17,6 @@ import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
 
-
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -28,7 +27,7 @@ export default function App() {
         <NavigationContainer>
           <Header />
           <Stack.Navigator initialRouteName="Learn">
-            <Stack.Screen name="Learn" component={Learn} />
+            <Stack.Screen name="Learn" component={Login} />
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
             <Stack.Screen name="FriendsList" component={FriendsList} />
