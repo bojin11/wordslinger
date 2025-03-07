@@ -76,9 +76,6 @@ const styles = StyleSheet.create({
     position: "static",
     left: 0,
     bottom: 0,
-=======
-    
-    maxHeight: "10%",>>>>>>> main
     width: "100%",
     alignItems: "flex-end",
     justifyContent: "space-between",
@@ -86,14 +83,11 @@ const styles = StyleSheet.create({
     zIndex: 1,
     display: "flex",
     borderTopWidth: 2,
-
-    maxHeight: 90,
-=======
+    maxHeight: "10%",
     overflow: "scroll",
   },
   iconContainer: {
     marginInlineEnd: 5,
-
   },
   image: {
     borderWidth: 1,
