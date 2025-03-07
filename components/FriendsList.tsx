@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -10,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import friendsListData, { FriendList } from "../_testdata/friends";
+import React from "react";
 
 const FriendCard: React.FC<FriendList> = ({ username, status, avatar_url }) => (
   <View style={styles.friendCard}>
