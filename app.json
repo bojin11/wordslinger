@@ -23,6 +23,17 @@
     },
     "web": {
       "favicon": ""
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/smokum/Smokum_400Regular.ttf",
+            "node_modules/@expo-google-fonts/sancreek/Sancreek_400Regular.ttf"
+          ]
+        }
+      ]
+    ]
   }
 }
