@@ -15,6 +15,8 @@ import Game from "./components/Game";
 import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
+import Profile from "./components/Profile";
+
 
 const Stack = createStackNavigator();
 
