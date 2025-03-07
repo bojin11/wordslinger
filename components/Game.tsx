@@ -7,9 +7,11 @@ import {
   Button,
   View,
   Alert,
+  FlatList,
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
+import * as Progress from "react-native-progress";
 
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
@@ -23,6 +25,7 @@ const Game = () => {
   const [winner, setWinner] = useState<string>("");
   let [timer, setTimer] = useState<number>(30);
   const [roomId, setRoomId] = useState<string>("");
+  const [players, setPlayers] = useState<{ [key: string]: any }>({});
 
   const { user } = useAuth();
 
@@ -45,7 +48,7 @@ const Game = () => {
   // Listen for game events from server
   useEffect(() => {
     // Listen for game start
-  
+
     socket.on("gameStart", (data: { wordList: string[]; roomId: string }) => {
       console.log(
         "Game started, wordList received:",
@@ -89,6 +92,8 @@ const Game = () => {
         console.log(data.gameInstance.players);
 
         setFinishGame(true);
+        setWinner(data.winner);
+        setPlayers(data.gameInstance.players);
       }
     );
 
@@ -136,13 +141,43 @@ const Game = () => {
     <SafeAreaView style={styles.container}>
       {winner && finishGame ? (
         <>
-          <Text>Game is Over and winner is {winner}</Text>
+          <Text>
+            Game is Over and winner is{" "}
+            <Text style={styles.winnerName}>{winner}</Text>
+          </Text>
+          <View style={styles.scoresContainer}>
+            {Object.keys(players).map((playerId) => (
+              <View key={playerId} style={styles.playerSummaryContainer}>
+                <Text>
+                  {players[playerId].user} got{" "}
+                  {players[playerId].correctAnswers.length} question
+                  {players[playerId].correctAnswers.length > 1 ? "s" : ""}{" "}
+                  right.
+                </Text>
+                <Text>{players[playerId].user}'s Correct Answers:</Text>
+                <FlatList
+                  data={players[playerId].correctAnswers}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => <Text>{item}</Text>}
+                />
+              </View>
+            ))}
+          </View>
         </>
       ) : (
         <View style={styles.gameContainer}>
           {gameStarted ? (
             <>
-              <Text>{timer}</Text>
+              <Text>{timer} seconds remaining</Text>
+              <Progress.Bar
+                progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
+                width={200}
+                color="green"
+                height={10}
+                borderRadius={5}
+                animated={true}
+                style={styles.progressBar}
+              />
               <Text style={styles.wordDisplay}>
                 Current Word: {currentWord}
               </Text>
@@ -205,6 +240,22 @@ const styles = StyleSheet.create({
   waiting: {
     fontSize: 18,
     color: "gray",
+  },
+  scoresContainer: {
+    marginTop: 20,
+  },
+  progressBar: {
+    marginBottom: 50,
+  },
+  winnerName: {
+    backgroundColor: "yellow",
+    color: "red",
+    fontWeight: "bold",
+    padding: 5,
+    borderRadius: 5,
+  },
+  playerSummaryContainer: {
+    marginBottom: 10,
   },
 });
 
