@@ -1,0 +1,6 @@
+[build]
+  command = "expo export:web"
+  publish = "web-build"
+
+[context.production.environment]
+  NODE_VERSION = "16.x"
