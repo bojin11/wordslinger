@@ -1,131 +1,211 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Alert } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  View,
+  Alert,
+} from "react-native";
+import { useAuth } from "./contexts/username";
+import io from "socket.io-client";
 
-// List of words for the typing game
-const words = [
-  "apple",
-  "banana",
-  "grape",
-  "orange",
-  "mango",
-  "peach",
-  "pear",
-  "plum",
-];
+const socket = io("http://localhost:3000"); // Replace with your server URL
 
 const Game = () => {
-  const [currentWord, setCurrentWord] = useState<string>(""); // word to type
-  const [inputValue, setInputValue] = useState<string>(""); // user input
-  const [score, setScore] = useState<number>(0); // score tracking
-  const [timer, setTimer] = useState<number>(30); // countdown timer
-  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [currentWord, setCurrentWord] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [finishGame, setFinishGame] = useState<boolean>(false);
+  const [winner, setWinner] = useState<string>("");
+  let [timer, setTimer] = useState<number>(30);
+  const [roomId, setRoomId] = useState<string>("");
 
+  const { user } = useAuth();
+
+  interface Player {
+    correctAnswers: Array<string>;
+    currentWordIndex: number;
+    ready: boolean; // Add ready state to track whether player is ready
+  }
+
+  interface Players {
+    [socketId: string]: Player;
+  }
+
+  interface GameInstance {
+    players: Players;
+    timer: number;
+    wordList: string[];
+  }
+
+  // Listen for game events from server
   useEffect(() => {
-    // Initialize the game with a random word
-    setRandomWord();
+    // Listen for game start
+  
+    socket.on("gameStart", (data: { wordList: string[]; roomId: string }) => {
+      console.log(
+        "Game started, wordList received:",
+        data.wordList,
+        "room id" + data.roomId
+      );
+      setRoomId(data.roomId);
+      setCurrentWord(data.wordList[0]);
+      setGameStarted(true);
+      setMessage("");
+      runTimer();
+    });
+
+    // Listen for next word
+    socket.on("nextWord", (data: { word: string }) => {
+      setCurrentWord(data.word);
+      setMessage("");
+    });
+
+    // Listen for correct/incorrect answers
+    socket.on("correctAnswer", (data: { message: string }) => {
+      setMessage(data.message);
+    });
+
+    socket.on("incorrectAnswer", (data: { message: string }) => {
+      setMessage(data.message);
+    });
+
+    // Listen for game completion
+    socket.on(
+      "gameOver",
+      (data: {
+        winner: string;
+        gameInstance: {
+          players: Players;
+          timer: number;
+          wordList: string[];
+        };
+      }) => {
+        console.log("winner is " + data.winner);
+        console.log(data.gameInstance.players);
+
+        setFinishGame(true);
+      }
+    );
+
+    // // Handle game over
+    // socket.on(
+    //   "gameOver",
+    //   (data: { winner: string; correctAnswers: number }) => {
+    //     setWinner(data.winner);
+    //   }
+    // );
+
+    return () => {
+      socket.off("gameStart");
+      socket.off("nextWord");
+      socket.off("correctAnswer");
+      socket.off("incorrectAnswer");
+      socket.off("gameComplete");
+      socket.off("gameOver");
+    };
   }, []);
 
-  useEffect(() => {
-    // Countdown timer logic
-    if (timer > 0 && !isGameOver) {
-      const interval = setInterval(() => setTimer(timer - 1), 1000);
-      return () => clearInterval(interval);
-    } else if (timer === 0) {
-      // End game if timer runs out
-      setIsGameOver(true);
-    }
-  }, [timer, isGameOver]);
-
-  const setRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    setCurrentWord(words[randomIndex]);
-  };
-
-  const handleInputChange = (text: string) => {
-    setInputValue(text);
-    if (text.toLowerCase() === currentWord.toLowerCase()) {
-      // Correct word typed
-      setScore(score + 1);
-      setInputValue("");
-      setRandomWord(); // Set new word
+  const runTimer = () => {
+    for (let i = 0; i <= timer; i++) {
+      setTimeout(() => {
+        console.log(timer);
+        console.log(roomId);
+        setTimer(timer--);
+      }, i * 1000);
     }
   };
 
-  const handleRestartGame = () => {
-    setScore(0);
-    setTimer(30);
-    setIsGameOver(false);
-    setRandomWord();
-    setInputValue("");
+  // Submit the player's answer to the server
+  const submitAnswer = () => {
+    socket.emit("submitAnswer", { answer, roomId });
+    setAnswer(""); // Clear input field after submission
+  };
+
+  // Handle when the player is ready to start the game
+  const handleStartGame = () => {
+    setIsReady(true); // Set the player as ready
+    socket.emit("playerReady", { user }); // Notify the server that the player is ready
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Typing Game</Text>
-      {isGameOver ? (
-        <View>
-          <Text style={styles.gameOverText}>
-            Game Over! Your Score: {score}
-          </Text>
-          <Button title="Restart Game" onPress={handleRestartGame} />
-        </View>
+    <SafeAreaView style={styles.container}>
+      {winner && finishGame ? (
+        <>
+          <Text>Game is Over and winner is {winner}</Text>
+        </>
       ) : (
-        <View>
-          <Text style={styles.word}>{currentWord}</Text>
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            onChangeText={handleInputChange}
-            placeholder="Type the word here"
-          />
-          <Text style={styles.timer}>Time: {timer}s</Text>
-          <Text style={styles.score}>Score: {score}</Text>
+        <View style={styles.gameContainer}>
+          {gameStarted ? (
+            <>
+              <Text>{timer}</Text>
+              <Text style={styles.wordDisplay}>
+                Current Word: {currentWord}
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your answer here"
+                value={answer}
+                onChangeText={setAnswer}
+              />
+              <Button title="Submit Answer" onPress={submitAnswer} />
+              <Text style={styles.message}>{message}</Text>
+            </>
+          ) : (
+            <>
+              {isReady ? (
+                <Text style={styles.waiting}>
+                  Waiting for another player to start...
+                </Text>
+              ) : (
+                <Button title="Start Game" onPress={handleStartGame} />
+              )}
+            </>
+          )}
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
-
-export default Game;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f5f5f5",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f0f0f0",
   },
-  title: {
-    fontSize: 32,
+  gameContainer: {
+    width: "80%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  wordDisplay: {
+    fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 20,
-  },
-  word: {
-    fontSize: 28,
-    fontWeight: "600",
     marginBottom: 20,
   },
   input: {
-    height: 50,
-    width: "80%",
-    borderColor: "#000",
+    height: 40,
+    borderColor: "gray",
     borderWidth: 1,
-    borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 20,
-    fontSize: 20,
+    width: "100%",
   },
-  timer: {
-    fontSize: 24,
-    color: "#ff0000",
+  message: {
+    marginTop: 20,
+    fontSize: 16,
+    color: "green",
   },
-  score: {
-    fontSize: 24,
-    marginTop: 10,
-  },
-  gameOverText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 20,
+  waiting: {
+    fontSize: 18,
+    color: "gray",
   },
 });
+
+export default Game;
