@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import friendsListData, { FriendList } from "../_testdata/friends";
-import { Sancreek_400Regular } from "@expo-google-fonts/sancreek";
+import React from "react";
 
 const FriendCard: React.FC<FriendList> = ({ username, status, avatar_url }) => (
   <View style={styles.friendCard}>
@@ -33,7 +33,6 @@ const FriendsList: React.FC = () => {
     <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.title}>BOUNTY BOARD</Text>
-
         <FlatList
           data={friendsListData}
           renderItem={({ item }) => <FriendCard {...item} />}
