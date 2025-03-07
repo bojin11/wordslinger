@@ -32,6 +32,7 @@ export default function App() {
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
             <Stack.Screen name="FriendsList" component={FriendsList} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Leaderboard" component={Leaderboard} />
           </Stack.Navigator>
           <Navbar />
