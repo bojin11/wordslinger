@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { useAuth } from "./contexts/username";
+import axios from "axios";
 
 interface Users {
   [key: string]: string;
 }
-const validUsersFromApiCall: Users = {
-  slickjimmy1992: "TheSearchers1956",
-  XXcharliethebeastXX: "Unforgiven1992",
-  rawr: "Stagecoach1939",
-};
+
+interface VerifyResponse {
+  username: string;
+  verification: boolean;
+}
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -17,16 +18,24 @@ export default function Login() {
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
   const { user, setUser } = useAuth();
 
-  function validUsernameCheck() {
-    if (
-      validUsersFromApiCall[username] &&
-      validUsersFromApiCall[username] === password
-    ) {
-      setUser(username);
-      Alert.alert("Howdy Partner!");
-    } else {
-      setIsInvalidUsername(true);
-    }
+  function validUsernameCheck(username: string, password: string) {
+    axios
+      .post<VerifyResponse>(
+        "https://wordslingerserver.onrender.com/api/verify",
+        { username: username, password: password }
+      )
+      .then(({ data: { verification, username } }) => {
+        if (verification) {
+          setUser(username);
+          setIsInvalidUsername(false);
+          //please add nav to learner or home page here!
+        } else {
+          setIsInvalidUsername(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -46,8 +55,15 @@ export default function Login() {
           value={password}
           onChangeText={setPassword}
         />
-        <Button title="Login" onPress={validUsernameCheck} />
-        {isInvalidUsername ? <Text>Not a valid user! </Text> : null}
+        <Button
+          title="Login"
+          onPress={() => {
+            validUsernameCheck(username, password);
+          }}
+        />
+        {isInvalidUsername ? (
+          <Text>Username/password is not correct! </Text>
+        ) : null}
       </View>
     </>
   );
