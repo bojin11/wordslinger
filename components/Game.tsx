@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
-import * as Progress from "react-native-progress";
+// import * as Progress from "react-native-progress";
 
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
