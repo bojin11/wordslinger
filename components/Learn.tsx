@@ -14,19 +14,12 @@ export default function Learn() {
   const { user, setUser } = useAuth();
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    navigation.navigate("Login");
-  };
   return (
     <>
       <View style={styles.learn}>
         <Text>Time to Learn</Text>
       </View>
-      <View style={styles.buttContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={styles.buttContainer}></View>
     </>
   );
 }
