@@ -16,7 +16,8 @@ import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
-
+import Review from "./components/Review";
+import ReviewGame from "./components/ReviewGame";
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -27,17 +28,16 @@ export default function App() {
         <NavigationContainer>
           <Header />
           <Stack.Navigator initialRouteName="Learn">
-
             <Stack.Screen name="Learn" component={Learn} />
             <Stack.Screen name="Login" component={Login} />
-
-            
 
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
             <Stack.Screen name="FriendsList" component={FriendsList} />
             <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Leaderboard" component={Leaderboard} />
+            <Stack.Screen name="Review" component={Review} />
+            <Stack.Screen name="ReviewGame" component={ReviewGame} />
           </Stack.Navigator>
           <Navbar />
           <Footer />

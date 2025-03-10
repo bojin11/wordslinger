@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
       </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("Learn")}>
-        <Image
+          <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={sheriff}
           />
@@ -61,6 +61,14 @@ const Navbar: React.FC = () => {
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={barrel}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Review")}>
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={whiskey}
           />
         </TouchableOpacity>
       </View>
