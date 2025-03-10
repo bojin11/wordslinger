@@ -13,7 +13,7 @@ const words = [
   "plum",
 ];
 
-const Learn = () => {
+const Practice = () => {
   const [currentWord, setCurrentWord] = useState<string>(""); // word to type
   const [inputValue, setInputValue] = useState<string>(""); // user input
   const [score, setScore] = useState<number>(0); // score tracking
@@ -86,7 +86,7 @@ const Learn = () => {
   );
 };
 
-export default Learn;
+export default Practice;
 
 const styles = StyleSheet.create({
   container: {
