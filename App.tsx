@@ -64,13 +64,14 @@ export default function App() {
                 component={Login}
                 initialParams={{ setIsLoggedIn: setIsLoggedIn }}
               />
-              <Stack.Screen name="Signup" component={Signup} />
+              {/* <Stack.Screen name="Signup" component={Signup} /> */}
             </Stack.Navigator>
           </NavigationContainer>
         </>
-      )
-      }
-
+      )}
+    </UserProvider>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
