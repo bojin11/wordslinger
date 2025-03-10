@@ -9,6 +9,7 @@ import {
 import { ProfileLanguage } from "../types/ProfileTypes";
 import React from "react";
 import Achievement from "./Achievement";
+import { GameResult } from "../types/GameResusltsType";
 
 //Want username, avatar url, and bio and also the data in the array below, for a specific user
 const testLanguageData: Array<ProfileLanguage> = [
@@ -31,7 +32,22 @@ const testLanguageData: Array<ProfileLanguage> = [
     numOfMasterWords: 0,
   },
 ];
-
+const testGameResults: Array<GameResult> = [
+  {
+    userId: "1",
+    gameNumber: 1,
+    result: "Loss",
+    wordsCorrect: "apple, banana",
+    wordsWrong: "plum, pencil, bread",
+  },
+  {
+    userId: "1",
+    gameNumber: 2,
+    result: "Win",
+    wordsCorrect: "apple, banana, bread",
+    wordsWrong: "plum, pencil",
+  },
+];
 //Child component to map and render language cards
 function LanguageCard({
   language,
@@ -51,7 +67,23 @@ function LanguageCard({
     </View>
   );
 }
-
+function StatsCard({
+  gameNumber,
+  result,
+  wordsCorrect,
+  wordsWrong,
+}: GameResult) {
+  return (
+    <View style={styles.statsCard}>
+      <Text style={styles.gameNo}>Game {gameNumber}</Text>
+      <View style={styles.textContainer}>
+        <Text style={styles.statsText}>Result: {result}</Text>
+        <Text style={styles.statsText}>Correct Words: {wordsCorrect}</Text>
+        <Text style={styles.statsText}>Incorrect Words: {wordsWrong}</Text>
+      </View>
+    </View>
+  );
+}
 //Want the achievement data for a given user
 const testAchievementData: [string, boolean][] = [
   ["5 words mastered!", true],
@@ -109,6 +141,23 @@ export default function Profile() {
           })}
         </View>
       </View>
+      <View style={[styles.stats, { backgroundColor: "#89CFF0" }]}>
+        <Text style={styles.statsHeader}>Game History</Text>
+        {testGameResults.map(
+          ({ userId, gameNumber, result, wordsCorrect, wordsWrong }) => {
+            return (
+              <StatsCard
+                userId={userId}
+                gameNumber={gameNumber}
+                result={result}
+                wordsCorrect={wordsCorrect}
+                wordsWrong={wordsWrong}
+                key={gameNumber}
+              ></StatsCard>
+            );
+          }
+        )}
+      </View>
     </ScrollView>
   );
 }
@@ -163,5 +212,40 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderWidth: 2,
     borderColor: "black",
+  },
+  stats: {
+    width: Dimensions.get("screen").width,
+    height: "auto",
+    marginBlockEnd: 10,
+    alignItems: "center",
+    borderRadius: 10,
+    borderColor: "black",
+    borderWidth: 2,
+  },
+  statsHeader: {
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  statsCard: { marginBlock: 8, alignItems: "center" },
+  gameNo: {
+    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  statsText: {
+    color: "black",
+    fontSize: 20,
+    fontWeight: "bold",
+    width: Dimensions.get("screen").width - 50,
+    // backgroundColor: "white",
+    marginBlock: 10,
+    textAlign: "center",
+    // borderRadius: 10,
+    height: "20%",
+  },
+  textContainer: {
+    backgroundColor: "white",
+    borderRadius: 10,
   },
 });
