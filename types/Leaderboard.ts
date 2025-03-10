@@ -1,4 +1,4 @@
-export type Language = "German" | "Spanish" | "French";
+export type Language = "German" | "Spanish" | "French" | null;
 
 export type LeaderboardEntry = {
   username: string;
