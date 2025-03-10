@@ -20,10 +20,6 @@ export default function Login() {
 
   function validUsernameCheck(username: string, password: string) {
     axios
-      // .get("https://wordslingerserver.onrender.com/api/users")
-      // .then(({ data: { users } }) => {
-      //   console.log(users);
-      // })
       .post(
         "https://wordslingerserver.onrender.com/api/verify/",
         {
