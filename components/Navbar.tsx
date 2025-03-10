@@ -16,7 +16,10 @@ const Navbar: React.FC = () => {
   return (
     <View style={styles.navbar}>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Profile")}
+        >
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={chariot}
@@ -24,15 +27,21 @@ const Navbar: React.FC = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Learn")}>
-        <Image
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Learn")}
+        >
+          <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={sheriff}
           />
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Practice")}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Practice")}
+        >
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={hayStack}
@@ -40,7 +49,10 @@ const Navbar: React.FC = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Game")}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Game")}
+        >
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={cactus}
@@ -48,7 +60,10 @@ const Navbar: React.FC = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("FriendsList")}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("FriendsList")}
+        >
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={whiskey}
@@ -57,7 +72,10 @@ const Navbar: React.FC = () => {
       </View>
 
       <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate("Leaderboard")}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Leaderboard")}
+        >
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={barrel}
@@ -72,28 +90,29 @@ const styles = StyleSheet.create({
   navbar: {
     flex: 1,
     flexDirection: "row",
-
     position: "static",
     left: 0,
     bottom: 0,
     width: "100%",
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-    padding: 15,
+    justifyContent: "center",
+    padding: "3.5%",
     zIndex: 1,
-    display: "flex",
     borderTopWidth: 2,
     maxHeight: "10%",
-    overflow: "scroll",
+  },
+  navButton: {
+    borderColor: "#2583ff",
+    borderWidth: 1.2,
+    borderRadius: 14,
+    height: 60,
+    width: 60,
   },
   iconContainer: {
     marginInlineEnd: 5,
+    alignContent: "space-between",
   },
   image: {
-    borderWidth: 1,
-    borderRadius: 24,
-    backgroundColor: "green",
-    height: 60,
-    width: 75,
+    height: "100%",
+    width: "100%",
   },
 });
