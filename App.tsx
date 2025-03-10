@@ -5,10 +5,8 @@ import React from "react";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Learn from "./components/Learn";
-import Home from "./components/Home";
 import Login from "./components/Login";
 import Practice from "./components/Practice";
 import Game from "./components/Game";
@@ -16,6 +14,7 @@ import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
+import { Settings } from "./components/Settings";
 
 const Stack = createStackNavigator();
 
@@ -26,13 +25,10 @@ export default function App() {
         <StatusBar style="auto" />
         <NavigationContainer>
           <Header />
-          <Stack.Navigator initialRouteName="Learn">
-
+          <Stack.Navigator initialRouteName="Practice">
             <Stack.Screen name="Learn" component={Learn} />
+            <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Login" component={Login} />
-
-            
-
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
             <Stack.Screen name="FriendsList" component={FriendsList} />
@@ -40,7 +36,6 @@ export default function App() {
             <Stack.Screen name="Leaderboard" component={Leaderboard} />
           </Stack.Navigator>
           <Navbar />
-          <Footer />
         </NavigationContainer>
       </View>
     </UserProvider>
