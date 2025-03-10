@@ -16,6 +16,8 @@ import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
 import { Settings } from "./components/Settings";
+import wordList from "./_testdata/words";
+import { Word } from "./types/globalTypes";
 
 const Stack = createStackNavigator();
 
@@ -66,10 +68,9 @@ export default function App() {
             </Stack.Navigator>
           </NavigationContainer>
         </>
-      )}
-    </UserProvider>
-  );
-}
+      )
+      }
+
 
 const styles = StyleSheet.create({
   container: {

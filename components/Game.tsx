@@ -12,7 +12,8 @@ import {
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
 import * as Progress from "react-native-progress";
-
+import { Language } from "../types/Leaderboard";
+import SelectLanguageMultiplayer from "./LanguageSelectorMultiplayer";
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
 const Game = () => {
@@ -26,6 +27,8 @@ const Game = () => {
   let [timer, setTimer] = useState<number>(30);
   const [roomId, setRoomId] = useState<string>("");
   const [players, setPlayers] = useState<{ [key: string]: any }>({});
+  const [language, setLanguage] = useState<Language | null>(null);
+  const [languageNotSelected, setLanguageNotSelected] = useState<Boolean>(true);
 
   const { user } = useAuth();
 
@@ -43,6 +46,7 @@ const Game = () => {
     players: Players;
     timer: number;
     wordList: string[];
+    language: Language;
   }
 
   // Listen for game events from server
@@ -97,14 +101,6 @@ const Game = () => {
       }
     );
 
-    // // Handle game over
-    // socket.on(
-    //   "gameOver",
-    //   (data: { winner: string; correctAnswers: number }) => {
-    //     setWinner(data.winner);
-    //   }
-    // );
-
     return () => {
       socket.off("gameStart");
       socket.off("nextWord");
@@ -134,7 +130,7 @@ const Game = () => {
   // Handle when the player is ready to start the game
   const handleStartGame = () => {
     setIsReady(true); // Set the player as ready
-    socket.emit("playerReady", { user }); // Notify the server that the player is ready
+    socket.emit("playerReady", { user, language }); // Notify the server that the player is ready
   };
 
   return (
@@ -197,7 +193,20 @@ const Game = () => {
                   Waiting for another player to start...
                 </Text>
               ) : (
-                <Button title="Start Game" onPress={handleStartGame} />
+                <>
+                  <Button
+                    title="Start Game"
+                    onPress={() => {
+                      languageNotSelected ? null : handleStartGame();
+                    }}
+                  />
+                  <SelectLanguageMultiplayer
+                    language={language}
+                    setLanguage={setLanguage}
+                    setLanguageNotSelected={setLanguageNotSelected}
+                  />
+                  {languageNotSelected ? <Text>Select a language!</Text> : null}
+                </>
               )}
             </>
           )}
