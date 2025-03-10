@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBlockEnd: 10,
     flex: 1,
+    backgroundColor: "#d4df9e",
   },
   card: {
     width: Dimensions.get("screen").width,
