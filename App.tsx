@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Learn from "./components/Learn";
-import Home from "./components/Home";
 import Login from "./components/Login";
 import Practice from "./components/Practice";
 import Game from "./components/Game";
@@ -16,6 +15,8 @@ import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
+import wordList from "./_testdata/words";
+import { Word } from "./types/globalTypes";
 
 const Stack = createStackNavigator();
 
@@ -27,12 +28,8 @@ export default function App() {
         <NavigationContainer>
           <Header />
           <Stack.Navigator initialRouteName="Learn">
-
             <Stack.Screen name="Learn" component={Learn} />
             <Stack.Screen name="Login" component={Login} />
-
-            
-
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
             <Stack.Screen name="FriendsList" component={FriendsList} />
