@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build": "expo start --web"
+    "build": "expo start --web",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@expo-google-fonts/sancreek": "^0.2.3",
