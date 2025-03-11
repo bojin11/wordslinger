@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,6 +8,8 @@ import {
   View,
   Alert,
   FlatList,
+  Animated,
+  ImageBackground,
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
@@ -29,6 +31,15 @@ const Game = () => {
   const [players, setPlayers] = useState<{ [key: string]: any }>({});
   const [language, setLanguage] = useState<Language | null>(null);
   const [languageNotSelected, setLanguageNotSelected] = useState<Boolean>(true);
+  const UiImages = {
+    background: require("../assets/wild-west-town.png"),
+  };
+  const playerIcons = {
+    gunLeft: require("../assets/fps-gun-leftCU.png"),
+    gunRight: require("../assets/fps-gun-rightCU.png"),
+  };
+
+  const rotation = useRef(new Animated.Value(0)).current;
 
   const { user } = useAuth();
 
@@ -76,6 +87,18 @@ const Game = () => {
     socket.on("correctAnswer", (data: { message: string }) => {
       setMessage(data.message);
       setAnswer("");
+      Animated.sequence([
+        Animated.timing(rotation, {
+          toValue: 1, // Rotate by -15 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotation, {
+          toValue: 0, // Rotate back to 0 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
     });
 
     socket.on("incorrectAnswer", (data: { message: string }) => {
@@ -134,87 +157,116 @@ const Game = () => {
     socket.emit("playerReady", { user, language }); // Notify the server that the player is ready
   };
 
+  const rotateLeft = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "-15deg"],
+  });
+  const rotateLeftStyle = { transform: [{ rotate: rotateLeft }] };
+
+  const rotateRight = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "15deg"],
+  });
+  const rotateRightStyle = { transform: [{ rotate: rotateRight }] };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Typing Game</Text>
-      {winner && finishGame ? (
-        <>
-          <Text>
-            Game is Over and winner is{" "}
-            <Text style={styles.winnerName}>{winner}</Text>
-          </Text>
-          <View style={styles.scoresContainer}>
-            {Object.keys(players).map((playerId) => (
-              <View key={playerId} style={styles.playerSummaryContainer}>
-                <Text>
-                  {players[playerId].user} got{" "}
-                  {players[playerId].correctAnswers.length} question
-                  {players[playerId].correctAnswers.length > 1 ? "s" : ""}{" "}
-                  right.
+    <ImageBackground
+      style={{ flex: 1, height: "100%", width: "100%" }}
+      source={UiImages.background}
+    >
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Typing Game</Text>
+        {winner && finishGame ? (
+          <>
+            <Text>
+              Game is Over and winner is{" "}
+              <Text style={styles.winnerName}>{winner}</Text>
+            </Text>
+            <View style={styles.scoresContainer}>
+              {Object.keys(players).map((playerId) => (
+                <View key={playerId} style={styles.playerSummaryContainer}>
+                  <Text>
+                    {players[playerId].user} got{" "}
+                    {players[playerId].correctAnswers.length} question
+                    {players[playerId].correctAnswers.length > 1
+                      ? "s"
+                      : ""}{" "}
+                    right.
+                  </Text>
+                  <Text>{players[playerId].user}'s Correct Answers:</Text>
+                  <FlatList
+                    data={players[playerId].correctAnswers}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => <Text>{item}</Text>}
+                  />
+                </View>
+              ))}
+            </View>
+          </>
+        ) : (
+          <View style={styles.gameContainer}>
+            {gameStarted ? (
+              <>
+                <Text style={styles.subtitle}>
+                  Game Instruction: Type the correct words below
                 </Text>
-                <Text>{players[playerId].user}'s Correct Answers:</Text>
-                <FlatList
-                  data={players[playerId].correctAnswers}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => <Text>{item}</Text>}
+                <Text style={styles.wordDisplay}>{currentWord}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter your answer here"
+                  value={answer}
+                  onChangeText={handleInputChange}
                 />
-              </View>
-            ))}
+                <Text style={styles.timer}>{timer} seconds remaining</Text>
+                <Progress.Bar
+                  progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
+                  width={200}
+                  color="green"
+                  height={10}
+                  borderRadius={5}
+                  animated={true}
+                  style={styles.progressBar}
+                />
+                <Text style={styles.message}>{message}</Text>
+              </>
+            ) : (
+              <>
+                {isReady ? (
+                  <Text style={styles.waiting}>
+                    Waiting for another player to start...
+                  </Text>
+                ) : (
+                  <>
+                    <Button
+                      title="Start Game"
+                      onPress={() => {
+                        languageNotSelected ? null : handleStartGame();
+                      }}
+                    />
+                    <SelectLanguageMultiplayer
+                      language={language}
+                      setLanguage={setLanguage}
+                      setLanguageNotSelected={setLanguageNotSelected}
+                    />
+                    {languageNotSelected ? (
+                      <Text>Select a language!</Text>
+                    ) : null}
+                  </>
+                )}
+              </>
+            )}
           </View>
-        </>
-      ) : (
-        <View style={styles.gameContainer}>
-          {gameStarted ? (
-            <>
-              <Text style={styles.subtitle}>
-                Game Instruction: Type the correct words below
-              </Text>
-              <Text style={styles.wordDisplay}>{currentWord}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your answer here"
-                value={answer}
-                onChangeText={handleInputChange}
-              />
-              <Text style={styles.timer}>{timer} seconds remaining</Text>
-              <Progress.Bar
-                progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
-                width={200}
-                color="green"
-                height={10}
-                borderRadius={5}
-                animated={true}
-                style={styles.progressBar}
-              />
-              <Text style={styles.message}>{message}</Text>
-            </>
-          ) : (
-            <>
-              {isReady ? (
-                <Text style={styles.waiting}>
-                  Waiting for another player to start...
-                </Text>
-              ) : (
-                <>
-                  <Button
-                    title="Start Game"
-                    onPress={() => {
-                      languageNotSelected ? null : handleStartGame();
-                    }}
-                  />
-                  <SelectLanguageMultiplayer
-                    language={language}
-                    setLanguage={setLanguage}
-                    setLanguageNotSelected={setLanguageNotSelected}
-                  />
-                  {languageNotSelected ? <Text>Select a language!</Text> : null}
-                </>
-              )}
-            </>
-          )}
-        </View>
-      )}
-    </SafeAreaView>
+        )}
+      </SafeAreaView>
+      <Animated.Image
+        style={[styles.leftGun, rotateLeftStyle]}
+        source={playerIcons.gunLeft}
+      />
+      <Animated.Image
+        style={[styles.rightGun, rotateRightStyle]}
+        source={playerIcons.gunRight}
+      />
+    </ImageBackground>
   );
 };
 
@@ -223,7 +275,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f4f4f4",
     padding: 20,
   },
   title: {
@@ -289,6 +340,22 @@ const styles = StyleSheet.create({
   },
   playerSummaryContainer: {
     marginBottom: 10,
+  },
+  leftGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    left: 0,
+    bottom: 0,
+  },
+  rightGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    right: 0,
+    bottom: 0,
   },
 });
 
