@@ -1,7 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { useAuth } from "./contexts/username";
 import axios from "axios";
+import { Signup } from "./Signup";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/NavigationTypes";
+import { useNavigation } from "@react-navigation/native";
 
 interface Users {
   [key: string]: string;
@@ -13,6 +25,8 @@ interface VerifyResponse {
 }
 
 export default function Login({ navigation, route }: any) {
+  const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
@@ -61,10 +75,24 @@ export default function Login({ navigation, route }: any) {
             validUsernameCheck(username, password);
           }}
         />
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => {
+            navigateTo.navigate("Signup");
+          }}
+        >
+          <Text>Signup</Text>
+        </TouchableOpacity>
+
         {isInvalidUsername ? (
           <Text>Username/password is not correct! </Text>
         ) : null}
       </View>
+      {/* <View>
+        <NavigationIndependentTree>
+          <Stack.Screen name="Signup" component={Signup} />
+        </NavigationIndependentTree>
+      </View> */}
     </>
   );
 }
@@ -96,5 +124,34 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderRadius: 5,
     marginBottom: 10,
+  },
+
+  navbar: {
+    flex: 1,
+    flexDirection: "row",
+    position: "static",
+    left: 0,
+    bottom: 0,
+    width: "100%",
+    justifyContent: "center",
+    padding: "3.5%",
+    zIndex: 1,
+    borderTopWidth: 2,
+    maxHeight: "10%",
+  },
+  navButton: {
+    borderColor: "#2583ff",
+    borderWidth: 1.2,
+    borderRadius: 14,
+    height: 60,
+    width: 60,
+  },
+  iconContainer: {
+    marginInlineEnd: 5,
+    alignContent: "space-between",
+  },
+  image: {
+    height: "100%",
+    width: "100%",
   },
 });
