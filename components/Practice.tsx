@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ImageBackground,
 } from "react-native";
 import * as Progress from "react-native-progress";
 
@@ -28,7 +29,9 @@ const Practice = () => {
   const [timer, setTimer] = useState<number>(30); // countdown timer
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [showCelebration, setShowCelebration] = useState<boolean>(false); // for emoji display
-
+  const UiImages = {
+    background: require("../assets/wild-west-town.png"),
+  };
   useEffect(() => {
     // Initialize the game with a random word
     setRandomWord();
@@ -77,57 +80,67 @@ const Practice = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Typing Game</Text>
-      {isGameOver ? (
-        <View style={styles.gameOverContainer}>
-          <Text style={styles.gameOverText}>Game Over!</Text>
-          <Text style={styles.finalScore}>Your Score: {score}</Text>
-          <TouchableOpacity style={styles.button} onPress={handleRestartGame}>
-            <Text style={styles.buttonText}>Restart Game</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.subtitle}>
-            Game Instruction: Type the correct words below
-          </Text>
-          <Text style={styles.word}>{currentWord}</Text>
-          <TextInput
-            style={styles.input}
-            value={inputValue}
-            onChangeText={handleInputChange}
-            placeholder="Type the word here"
-            placeholderTextColor="#888"
-          />
-          <Text style={styles.timer}>Time: {timer} seconds remaining</Text>
-          <Progress.Bar
-            progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
-            width={300}
-            color="#4CAF50"
-            height={12}
-            borderRadius={6}
-            animated={true}
-            style={styles.progressBar}
-          />
-          <Text style={styles.score}>Score: {score}</Text>
-          {showCelebration && (
-            <Text style={styles.celebrationEmoji}>🎉</Text> // Celebration emoji display
-          )}
-        </View>
-      )}
-    </View>
+    <ImageBackground
+      style={{ flex: 1, height: "100%", width: "100%" }}
+      source={UiImages.background}
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Typing Game</Text>
+        {isGameOver ? (
+          <View style={styles.gameOverContainer}>
+            <Text style={styles.gameOverText}>Game Over!</Text>
+            <Text style={styles.finalScore}>Your Score: {score}</Text>
+            <TouchableOpacity style={styles.button} onPress={handleRestartGame}>
+              <Text style={styles.buttonText}>Restart Game</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.subtitle}>
+              Game Instruction: Type the correct words below
+            </Text>
+            <Text style={styles.word}>{currentWord}</Text>
+            <TextInput
+              style={styles.input}
+              value={inputValue}
+              onChangeText={handleInputChange}
+              placeholder="Type the word here"
+              placeholderTextColor="#888"
+            />
+            <Text style={styles.timer}>Time: {timer} seconds remaining</Text>
+            <Progress.Bar
+              progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
+              width={300}
+              color="#4CAF50"
+              height={12}
+              borderRadius={6}
+              animated={true}
+              style={styles.progressBar}
+            />
+            <Text style={styles.score}>Score: {score}</Text>
+            {showCelebration && (
+              <Text style={styles.celebrationEmoji}>🎉</Text> // Celebration emoji display
+            )}
+          </View>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
 export default Practice;
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    height: 100,
+    width: 100,
+  },
+
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f4f4f4",
     padding: 20,
   },
   title: {

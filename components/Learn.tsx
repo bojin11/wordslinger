@@ -9,6 +9,7 @@ import {
 } from "react-native";
 //import { TestLearnWords } from "../types/LearnModeTypes";
 import frenchTestWordsLv1 from "../_testdata/wordsFrenchLv1";
+import { _ } from "@faker-js/faker/dist/airline-CBNP41sR";
 
 interface LearnWords {
   english: string;
@@ -38,145 +39,161 @@ console.log(frenchTestWordsLv1[3].image_url);
 const Learn: React.FunctionComponent = () => {
   return (
     <>
-      <View style={styles.learnContainer}>
-        <ImageBackground
-          style={styles.bgUI}
-          source={backgroundUI.backgroundTabel}
-        >
-          <View style={styles.dealerCards}>
-            {newWords.map((word, index) => {
-              return (
-                <View>
-                  <Image
-                    style={styles.cardBlank}
-                    source={backgroundUI.cardFront}
-                  />
-                  <Text style={styles.text}>
-                    {word.french
-                      ? word.french
-                      : word.spanish
-                      ? word.spanish
-                      : word.german}
-                  </Text>
-                  <Image
-                    style={styles.wordImage}
-                    source={{ uri: word.image_url }}
-                  />
-                </View>
-              );
-            })}
+      <ImageBackground
+        style={{ flex: 1, height: "100%", width: "100%" }}
+        source={backgroundUI.backgroundTabel}
+      >
+        <View style={styles.cardsDisplayContainer}>
+          <View style={styles.cardOutlineContainerSmall}>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <View key={index} style={styles.cardWrapper}>
+                <Image
+                  key={index}
+                  style={styles.cardOutlineStyle}
+                  source={backgroundUI.cardOutline}
+                />
+              </View>
+            ))}
           </View>
-
-          <View style={styles.cardsDisplayContainer}>
-            <Image
-              style={styles.cardOutlineBlack}
-              source={backgroundUI.cardOutline}
-            />
-            <Image
-              style={styles.cardOutlineBlack}
-              source={backgroundUI.cardOutline}
-            />
-            <Image
-              style={styles.cardOutlineBlack}
-              source={backgroundUI.cardOutline}
-            />
-            <Image
-              style={styles.cardOutlineBlack}
-              source={backgroundUI.cardOutline}
-            />
-            <Image
-              style={styles.cardOutlineBlack}
-              source={backgroundUI.cardOutline}
-            />
-          </View>
-          <View style={styles.selectedCardView}>
-            <Image style={styles.cardBlank} source={backgroundUI.cardFront} />
-            <Text style={styles.textSmallOverlay}>
-              {newWords[3].french
-                ? newWords[3].french
-                : newWords[3].spanish
-                ? newWords[3].spanish
-                : newWords[3].german}
-            </Text>
-            <Image
-              style={styles.wordImage}
-              source={{ uri: newWords[3].image_url }}
-            />
-            <Image style={styles.cardBlank} source={backgroundUI.cardFront} />
-            <Text style={styles.textLargeOverlay}>{newWords[0].english}</Text>
-            <Image
-              style={styles.wordImage}
-              source={{ uri: newWords[3].image_url }}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={handleReview}
-          >
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>review</Text>
+          <View>
+            <View style={styles.wordContainer}>
+              {newWords.map((word, index) => {
+                return (
+                  <View style={styles.imageWrapper}>
+                    <Image
+                      style={styles.smallCards}
+                      source={backgroundUI.cardFront}
+                    />
+                    <Text style={styles.textSmallOverlay}>
+                      {word.french
+                        ? word.french
+                        : word.spanish
+                        ? word.spanish
+                        : word.german}
+                    </Text>
+                    <Image
+                      style={{
+                        maxHeight: "100%",
+                        maxWidth: 150,
+                        resizeMode: "contain",
+                        zIndex: 2,
+                      }}
+                      source={{ uri: word.image_url }}
+                    />
+                  </View>
+                );
+              })}
             </View>
-          </TouchableOpacity>
-        </ImageBackground>
-      </View>
+          </View>
+        </View>
+        <View style={styles.cardsDisplayContainer}>
+          <View style={styles.cardOutlineContainerLarge}>
+            {Array.from({ length: 2 }).map((_, index) => (
+              <View key={index} style={styles.cardWrapper}>
+                <Image
+                  key={index}
+                  style={styles.cardOutlineStyleLarge}
+                  source={backgroundUI.cardOutlineWhite}
+                />
+              </View>
+            ))}
+          </View>
+          <View style={styles.wordContainer}>
+            <View style={styles.imageWrapper}>
+              <Image
+                style={{ height: "10%", width: "10%" }}
+                source={backgroundUI.cardFront}
+              />
+              <Text style={styles.textLargeOverlay}>
+                {newWords[3].french
+                  ? newWords[3].french
+                  : newWords[3].spanish
+                  ? newWords[3].spanish
+                  : newWords[3].german}
+              </Text>
+              <Image
+                style={styles.wordImage}
+                source={{ uri: newWords[3].image_url }}
+              />
+            </View>
+
+            {/* <Image style={styles.cardBlank} source={backgroundUI.cardFront} />
+            <Text style={styles.textLargeOverlay}>{newWords[3].english}</Text>
+            <Image
+              style={styles.wordImage}
+              source={{ uri: newWords[3].image_url }}
+            /> */}
+          </View>
+        </View>
+        <TouchableOpacity style={styles.buttonContainer} onPress={handleReview}>
+          <View style={styles.button}>
+            <Text style={styles.buttonText}>review</Text>
+          </View>
+        </TouchableOpacity>
+      </ImageBackground>
     </>
   );
 };
 export default Learn;
 const styles = StyleSheet.create({
-  learnContainer: {
-    flex: 1,
-  },
+  learnContainer: {},
   cardsDisplayContainer: {
-    flex: 1,
+    display: "flex",
+    padding: "2.5%",
     flexDirection: "row",
-    justifyContent: "center",
-
-    margin: 10,
-    padding: "3%",
+    top: 0,
+    margin: 2,
+    height: "20%",
+  },
+  cardOutlineContainerSmall: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 100,
+    marginBottom: 10,
+  },
+  cardOutlineStyle: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+  },
+  cardOutlineStyleLarge: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
   },
 
-  bgUI: {
+  cardOutlineContainerLarge: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 200,
+    marginBottom: 10,
+    backgroundColor: "grey",
+  },
+
+  smallCards: {
+    position: "absolute",
     height: "100%",
     width: "100%",
-  },
-
-  dealerCards: {
-    flex: 1,
-    flexDirection: "row",
-    position: "static",
-    left: 0,
-    bottom: 0,
-    width: "100%",
-    justifyContent: "space-evenly",
-    padding: "3.5%",
+    resizeMode: "contain",
     zIndex: 1,
-    borderTopWidth: 2,
-  },
-  cardOutlineBlack: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    zIndex: 3,
   },
 
-  selectedCardView: {
-    flex: 1,
+  cardsDisplay: {
     flexDirection: "row",
-    alignItems: "center",
-    width: "95%",
-    height: "50%",
-    bottom: 0,
-    margin: 10,
-    padding: "3%",
-    left: 0,
-    zIndex: 0,
+    flexWrap: "wrap",
   },
 
-  cardBlank: {
-    height: "100%",
-    width: "100%",
+  dealerCards: {},
+  cardOutlineBlack: {},
+
+  wordContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
+
+  cardBlank: { height: 100, width: 100, resizeMode: "contain", zIndex: 1 },
 
   wordImage: {
     flex: 1,
@@ -184,6 +201,17 @@ const styles = StyleSheet.create({
     maxHeight: 150,
     zIndex: 3,
     resizeMode: "contain",
+  },
+  cardWrapper: {
+    position: "relative",
+  },
+  imageWrapper: {
+    position: "relative",
+    width: 100,
+    height: 100,
+    margin: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   buttonContainer: {
@@ -224,7 +252,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   textSmallOverlay: {
-    position: "absolute",
     top: "40%",
     left: 0,
     right: 0,
