@@ -45,7 +45,8 @@ const Game = () => {
   interface GameInstance {
     players: Players;
     timer: number;
-    wordList: string[];
+    englishTranslations: string[];
+    nonEnglishTranslations: string[];
     language: Language;
   }
 
@@ -85,18 +86,19 @@ const Game = () => {
     socket.on(
       "gameOver",
       (data: {
-        winner: string;
+        winnerUsername: string;
         gameInstance: {
           players: Players;
           timer: number;
-          wordList: string[];
+          englishTranslations: string[];
+          nonEnglishTranslations: string[];
         };
       }) => {
-        console.log("winner is " + data.winner);
+        console.log("winner is " + data.winnerUsername);
         console.log(data.gameInstance.players);
 
         setFinishGame(true);
-        setWinner(data.winner);
+        setWinner(data.winnerUsername);
         setPlayers(data.gameInstance.players);
       }
     );

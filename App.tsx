@@ -28,7 +28,7 @@ export default function App() {
         <NavigationContainer>
           <Header />
           <Stack.Navigator initialRouteName="Learn">
-            <Stack.Screen name="Learn" component={Learn} />
+            <Stack.Screen name="Learn" component={Login} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Practice" component={Practice} />
             <Stack.Screen name="Game" component={Game} />
