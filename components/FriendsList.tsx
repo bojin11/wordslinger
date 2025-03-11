@@ -34,10 +34,11 @@ const FriendsList: React.FC = () => {
       <View style={styles.container}>
         <Text style={styles.title}>BOUNTY BOARD</Text>
         <FlatList
+          style={styles.list}
           data={friendsListData}
           renderItem={({ item }) => <FriendCard {...item} />}
           keyExtractor={(item) => item.username}
-          numColumns={3}
+          numColumns={2}
         />
       </View>{" "}
     </ScrollView>
@@ -45,11 +46,12 @@ const FriendsList: React.FC = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    // padding: 16,
     backgroundColor: "#fff",
     borderStyle: "solid",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
 
   title: {
@@ -66,12 +68,14 @@ const styles = StyleSheet.create({
   friendCard: {
     justifyContent: "center",
     alignItems: "center",
-    width: 270,
+    width: "45%",
     height: 310,
     borderWidth: 2,
     borderColor: "#000",
-    padding: 16,
+    padding: 10,
     margin: 25,
+    marginLeft: 10,
+    marginRight: 12,
     textAlign: "center",
     backgroundColor: "#F5F5DC",
     shadowOffset: { width: 0, height: 2 },
@@ -80,14 +84,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   avatar: {
-    width: 130,
-    height: 150,
+    width: "80%",
+    height: 140,
     marginBottom: 16,
   },
   info: {
     flex: 1,
     marginBottom: 5,
     alignItems: "center",
+    width: "90%",
     fontFamily: Platform.select({
       web: "Smokum",
       ios: "Smokum-Regular",
@@ -95,13 +100,14 @@ const styles = StyleSheet.create({
     }),
   },
   username: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     fontFamily: Platform.select({
       web: "Sancreek",
       ios: "Smokum-Regular",
       android: "Smokum_400Regular",
     }),
+    textAlign: "auto",
   },
   status: {
     fontSize: 14,
@@ -116,6 +122,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // fontWeight: "bold",
     fontSize: 40,
+  },
+  list: {
+    width: 440,
+    paddingLeft: 5,
+    paddingRight: 5,
+    alignContent: "center",
   },
 });
 

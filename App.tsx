@@ -18,7 +18,7 @@ import Profile from "./components/Profile";
 import { Settings } from "./components/Settings";
 import wordList from "./_testdata/words";
 import { Word } from "./types/globalTypes";
-import Signup from "./components/Signup";
+import { Signup } from "./components/Signup";
 
 const Stack = createStackNavigator();
 
