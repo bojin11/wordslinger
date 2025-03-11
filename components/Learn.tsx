@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -10,8 +10,8 @@ import {
 //import { TestLearnWords } from "../types/LearnModeTypes";
 import frenchTestWordsLv1 from "../_testdata/wordsFrenchLv1";
 import { _, F } from "@faker-js/faker/dist/airline-CBNP41sR";
-import { CardAnimationContext } from "@react-navigation/stack";
-import { fakerES } from "@faker-js/faker/.";
+import axios from "axios";
+import useFetchData from "../customHooks/useFetchData";
 
 const backgroundUI = {
   backgroundTabel: require("../assets/learn/dealers-table.png"),
@@ -35,6 +35,14 @@ interface LearnWords {
 const handleReview = () => {};
 
 const Learn: React.FunctionComponent = () => {
+  // const {
+  //   data: words,
+  //   error,
+  //   isPending,
+  // } = useFetchData(
+  //   "https://wordslingerserver.onrender.com/api/word-list/french/level-1"
+  // );
+
   const [faceDownCards, setFaceDownCards] = useState([
     false,
     false,
@@ -42,16 +50,21 @@ const Learn: React.FunctionComponent = () => {
     false,
     false,
   ]);
-
-  const newWords: LearnWords[] = frenchTestWordsLv1;
-
-  const arrary = [false, false, false, false, false];
+  const [isDisplaying, setIsDisplaying] = useState(Number);
+  //const wordsToLearn: LearnWords[] = words;
+  const wordsToLearn: LearnWords[] = frenchTestWordsLv1;
+  const [isZero, setIsZero] = useState(wordsToLearn.length);
 
   const handleFlip = (index: number) => {
-    console.log(`card ${index} pressed`);
     let flipCard = [...faceDownCards];
     flipCard[index] = true;
     setFaceDownCards(flipCard);
+
+    setIsZero(isZero - 1);
+  };
+
+  const handleShowCard = (index: number) => {
+    setIsDisplaying(index);
   };
 
   return (
@@ -60,6 +73,8 @@ const Learn: React.FunctionComponent = () => {
         style={{ flex: 1, height: "100%", width: "100%" }}
         source={backgroundUI.backgroundTabel}
       >
+        {/* {isPending && <div>Loading...</div>}
+        {error && <div>{error}</div>} */}
         <View style={styles.displayContainer}>
           <View style={styles.outlineContainerSmall}>
             {Array.from({ length: 5 }).map((_, index) => (
@@ -74,31 +89,37 @@ const Learn: React.FunctionComponent = () => {
           </View>
           <View>
             <View style={styles.wordContainer}>
-              {newWords.map((word, index) => {
+              {wordsToLearn.map((word, index) => {
                 return (
                   <View style={{ flexDirection: "column" }}>
                     {faceDownCards[index] ? (
                       <View style={styles.cardWrapper}>
-                        <Image
-                          style={styles.smallCards}
-                          source={backgroundUI.cardFront}
-                        />
-                        <Text style={styles.textSmallOverlay}>
-                          {word.french
-                            ? word.french
-                            : word.spanish
-                            ? word.spanish
-                            : word.german}
-                        </Text>
-                        <Image
-                          style={{
-                            maxHeight: "100%",
-                            maxWidth: 150,
-                            resizeMode: "contain",
-                            zIndex: 2,
+                        <TouchableOpacity
+                          onPress={() => {
+                            handleShowCard(index);
                           }}
-                          source={{ uri: word.image_url }}
-                        />
+                        >
+                          <Image
+                            style={styles.smallCards}
+                            source={backgroundUI.cardFront}
+                          />
+                          <Text style={styles.textSmallOverlay}>
+                            {word.french
+                              ? word.french
+                              : word.spanish
+                              ? word.spanish
+                              : word.german}
+                          </Text>
+                          <Image
+                            style={{
+                              maxHeight: "100%",
+                              maxWidth: 150,
+                              resizeMode: "contain",
+                              zIndex: 2,
+                            }}
+                            source={{ uri: word.image_url }}
+                          />
+                        </TouchableOpacity>
                       </View>
                     ) : (
                       <View style={styles.cardWrapper}>
@@ -135,25 +156,42 @@ const Learn: React.FunctionComponent = () => {
             <View style={styles.cardWrapper}>
               <Image style={styles.largeCard} source={backgroundUI.cardFront} />
               <Text style={styles.textLargeOverlay}>
-                {newWords[3].french
-                  ? newWords[3].french
-                  : newWords[3].spanish
-                  ? newWords[3].spanish
-                  : newWords[3].german}
+                {wordsToLearn[isDisplaying].french
+                  ? wordsToLearn[isDisplaying].french
+                  : wordsToLearn[isDisplaying].spanish
+                  ? wordsToLearn[isDisplaying].spanish
+                  : wordsToLearn[isDisplaying].german}
               </Text>
               <Image style={styles.wordImage} source={testImages.baby} />
             </View>
             <View style={styles.cardWrapper}>
               <Image style={styles.largeCard} source={backgroundUI.cardFront} />
-              <Text style={styles.textLargeOverlay}>{newWords[3].english}</Text>
+              <Text style={styles.textLargeOverlay}>
+                {wordsToLearn[isDisplaying].english}
+              </Text>
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.buttonContainer} onPress={handleReview}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>review</Text>
-          </View>
-        </TouchableOpacity>
+        <View>
+          {isZero === 0 ? (
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={() => {
+                console.log("Go to review mode");
+              }}
+            >
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>review</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>review</Text>
+              </View>
+            </View>
+          )}
+        </View>
       </ImageBackground>
     </>
   );
