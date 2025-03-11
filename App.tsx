@@ -23,6 +23,8 @@ const Stack = createStackNavigator();
 
 function LoadingScreen() {
   return (
+
+
     <View>
       <Text>Loading...</Text>
     </View>
@@ -69,6 +71,7 @@ export default function App() {
           </NavigationContainer>
         </>
       )}
+
     </UserProvider>
   );
 }
