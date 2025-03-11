@@ -75,6 +75,7 @@ const Game = () => {
     // Listen for correct/incorrect answers
     socket.on("correctAnswer", (data: { message: string }) => {
       setMessage(data.message);
+      setAnswer("");
     });
 
     socket.on("incorrectAnswer", (data: { message: string }) => {
@@ -122,9 +123,9 @@ const Game = () => {
   };
 
   // Submit the player's answer to the server
-  const submitAnswer = () => {
-    socket.emit("submitAnswer", { answer, roomId });
-    setAnswer(""); // Clear input field after submission
+  const handleInputChange = (text: string) => {
+    setAnswer(text);
+    socket.emit("submitAnswer", { answer: text, roomId });
   };
 
   // Handle when the player is ready to start the game
@@ -168,6 +169,13 @@ const Game = () => {
               <Text style={styles.subtitle}>
                 Game Instruction: Type the correct words below
               </Text>
+              <Text style={styles.wordDisplay}>{currentWord}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your answer here"
+                value={answer}
+                onChangeText={handleInputChange}
+              />
               <Text style={styles.timer}>{timer} seconds remaining</Text>
               <Progress.Bar
                 progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
@@ -178,14 +186,6 @@ const Game = () => {
                 animated={true}
                 style={styles.progressBar}
               />
-              <Text style={styles.wordDisplay}>{currentWord}</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your answer here"
-                value={answer}
-                onChangeText={setAnswer}
-              />
-              <Button title="Submit Answer" onPress={submitAnswer} />
               <Text style={styles.message}>{message}</Text>
             </>
           ) : (
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    color: "#888",
+    color: "black",
     marginBottom: 20,
     textAlign: "center",
   },
