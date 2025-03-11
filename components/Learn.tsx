@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -9,8 +9,20 @@ import {
 } from "react-native";
 //import { TestLearnWords } from "../types/LearnModeTypes";
 import frenchTestWordsLv1 from "../_testdata/wordsFrenchLv1";
-import { _ } from "@faker-js/faker/dist/airline-CBNP41sR";
+import { _, F } from "@faker-js/faker/dist/airline-CBNP41sR";
+import { CardAnimationContext } from "@react-navigation/stack";
+import { fakerES } from "@faker-js/faker/.";
 
+const backgroundUI = {
+  backgroundTabel: require("../assets/learn/dealers-table.png"),
+  cardOutline: require("../assets/learn/card-outline-black.png"),
+  cardOutlineWhite: require("../assets/learn/card-outline-white.svg"),
+  cardFront: require("../assets/learn/card-front.svg"),
+  cardBack: require("../assets/learn/card-back.svg"),
+};
+const testImages = {
+  baby: require("../assets/learn/baby.png"),
+};
 interface LearnWords {
   english: string;
   french?: string;
@@ -20,31 +32,36 @@ interface LearnWords {
   image_url: string;
 }
 
-const newWords: LearnWords[] = frenchTestWordsLv1;
-
-console.log(newWords);
-
-const backgroundUI = {
-  backgroundTabel: require("../assets/learn/dealers-table.png"),
-  cardOutline: require("../assets/learn/card-outline-black.png"),
-  cardOutlineWhite: require("../assets/learn/card-outline-white.svg"),
-  cardFront: require("../assets/learn/card-front.svg"),
-  cardBack: require("../assets/learn/card-back.svg"),
-};
-
 const handleReview = () => {};
 
-console.log(frenchTestWordsLv1[3].image_url);
-
 const Learn: React.FunctionComponent = () => {
+  const [faceDownCards, setFaceDownCards] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const newWords: LearnWords[] = frenchTestWordsLv1;
+
+  const arrary = [false, false, false, false, false];
+
+  const handleFlip = (index: number) => {
+    console.log(`card ${index} pressed`);
+    let flipCard = [...faceDownCards];
+    flipCard[index] = true;
+    setFaceDownCards(flipCard);
+  };
+
   return (
     <>
       <ImageBackground
         style={{ flex: 1, height: "100%", width: "100%" }}
         source={backgroundUI.backgroundTabel}
       >
-        <View style={styles.cardsDisplayContainer}>
-          <View style={styles.cardOutlineContainerSmall}>
+        <View style={styles.displayContainer}>
+          <View style={styles.outlineContainerSmall}>
             {Array.from({ length: 5 }).map((_, index) => (
               <View key={index} style={styles.cardWrapper}>
                 <Image
@@ -59,51 +76,64 @@ const Learn: React.FunctionComponent = () => {
             <View style={styles.wordContainer}>
               {newWords.map((word, index) => {
                 return (
-                  <View style={styles.imageWrapper}>
-                    <Image
-                      style={styles.smallCards}
-                      source={backgroundUI.cardFront}
-                    />
-                    <Text style={styles.textSmallOverlay}>
-                      {word.french
-                        ? word.french
-                        : word.spanish
-                        ? word.spanish
-                        : word.german}
-                    </Text>
-                    <Image
-                      style={{
-                        maxHeight: "100%",
-                        maxWidth: 150,
-                        resizeMode: "contain",
-                        zIndex: 2,
-                      }}
-                      source={{ uri: word.image_url }}
-                    />
+                  <View style={{ flexDirection: "column" }}>
+                    {faceDownCards[index] ? (
+                      <View style={styles.cardWrapper}>
+                        <Image
+                          style={styles.smallCards}
+                          source={backgroundUI.cardFront}
+                        />
+                        <Text style={styles.textSmallOverlay}>
+                          {word.french
+                            ? word.french
+                            : word.spanish
+                            ? word.spanish
+                            : word.german}
+                        </Text>
+                        <Image
+                          style={{
+                            maxHeight: "100%",
+                            maxWidth: 150,
+                            resizeMode: "contain",
+                            zIndex: 2,
+                          }}
+                          source={{ uri: word.image_url }}
+                        />
+                      </View>
+                    ) : (
+                      <View style={styles.cardWrapper}>
+                        <TouchableOpacity onPress={() => handleFlip(index)}>
+                          <Image
+                            style={styles.smallCardBack}
+                            source={backgroundUI.cardBack}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    )}
                   </View>
                 );
               })}
             </View>
           </View>
         </View>
-        <View style={styles.cardsDisplayContainer}>
-          <View style={styles.cardOutlineContainerLarge}>
-            {Array.from({ length: 2 }).map((_, index) => (
-              <View key={index} style={styles.cardWrapper}>
-                <Image
-                  key={index}
-                  style={styles.cardOutlineStyleLarge}
-                  source={backgroundUI.cardOutlineWhite}
-                />
-              </View>
-            ))}
-          </View>
-          <View style={styles.wordContainer}>
-            <View style={styles.imageWrapper}>
+        <View style={styles.inspectContainer}>
+          <View style={styles.cardContainerLarge}>
+            <View style={styles.cardWrapper}>
               <Image
-                style={{ height: "10%", width: "10%" }}
-                source={backgroundUI.cardFront}
+                key={0}
+                style={styles.largeCard}
+                source={backgroundUI.cardOutlineWhite}
               />
+              <Image
+                key={1}
+                style={styles.largeCard}
+                source={backgroundUI.cardOutlineWhite}
+              />
+            </View>
+          </View>
+          <View style={styles.cardContainerLarge}>
+            <View style={styles.cardWrapper}>
+              <Image style={styles.largeCard} source={backgroundUI.cardFront} />
               <Text style={styles.textLargeOverlay}>
                 {newWords[3].french
                   ? newWords[3].french
@@ -111,18 +141,12 @@ const Learn: React.FunctionComponent = () => {
                   ? newWords[3].spanish
                   : newWords[3].german}
               </Text>
-              <Image
-                style={styles.wordImage}
-                source={{ uri: newWords[3].image_url }}
-              />
+              <Image style={styles.wordImage} source={testImages.baby} />
             </View>
-
-            {/* <Image style={styles.cardBlank} source={backgroundUI.cardFront} />
-            <Text style={styles.textLargeOverlay}>{newWords[3].english}</Text>
-            <Image
-              style={styles.wordImage}
-              source={{ uri: newWords[3].image_url }}
-            /> */}
+            <View style={styles.cardWrapper}>
+              <Image style={styles.largeCard} source={backgroundUI.cardFront} />
+              <Text style={styles.textLargeOverlay}>{newWords[3].english}</Text>
+            </View>
           </View>
         </View>
         <TouchableOpacity style={styles.buttonContainer} onPress={handleReview}>
@@ -137,15 +161,21 @@ const Learn: React.FunctionComponent = () => {
 export default Learn;
 const styles = StyleSheet.create({
   learnContainer: {},
-  cardsDisplayContainer: {
-    display: "flex",
+  displayContainer: {
     padding: "2.5%",
-    flexDirection: "row",
+    flex: 1,
     top: 0,
     margin: 2,
     height: "20%",
   },
-  cardOutlineContainerSmall: {
+  inspectContainer: {
+    flex: 2,
+    padding: "2.5%",
+    top: 0,
+    margin: 2,
+    height: "20%",
+  },
+  outlineContainerSmall: {
     flexDirection: "row",
     justifyContent: "space-between",
     height: 100,
@@ -155,27 +185,32 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "contain",
-  },
-  cardOutlineStyleLarge: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
+    zIndex: 1,
   },
 
-  cardOutlineContainerLarge: {
+  cardContainerLarge: {
     flexDirection: "row",
     justifyContent: "space-between",
     height: 200,
     marginBottom: 10,
-    backgroundColor: "grey",
   },
 
-  smallCards: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
+  largeCard: {
+    width: 200,
+    height: 200,
     resizeMode: "contain",
-    zIndex: 1,
+  },
+  smallCards: {
+    height: 100,
+    width: 100,
+    resizeMode: "contain",
+    zIndex: 2,
+  },
+  smallCardBack: {
+    height: 125,
+    width: 125,
+    resizeMode: "contain",
+    zIndex: 2,
   },
 
   cardsDisplay: {
@@ -188,30 +223,22 @@ const styles = StyleSheet.create({
 
   wordContainer: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
+    alignContent: "center",
+    height: 200,
     marginBottom: 10,
   },
 
   cardBlank: { height: 100, width: 100, resizeMode: "contain", zIndex: 1 },
 
   wordImage: {
-    flex: 1,
-    maxWidth: "100%",
-    maxHeight: 150,
-    zIndex: 3,
+    width: 120,
+    height: 120,
     resizeMode: "contain",
+    zIndex: 5,
   },
   cardWrapper: {
     position: "relative",
-  },
-  imageWrapper: {
-    position: "relative",
-    width: 100,
-    height: 100,
-    margin: 5,
-    justifyContent: "center",
-    alignItems: "center",
   },
 
   buttonContainer: {
@@ -243,18 +270,21 @@ const styles = StyleSheet.create({
   },
   textLargeOverlay: {
     position: "absolute",
-    top: "40%",
+    top: "65%",
     left: 0,
     right: 0,
+    bottom: 0,
     textAlign: "center",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 36,
     zIndex: 2,
   },
   textSmallOverlay: {
+    position: "absolute",
     top: "40%",
     left: 0,
     right: 0,
+    bottom: 0,
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 16,
