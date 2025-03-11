@@ -11,8 +11,9 @@ import {
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
-// import * as Progress from "react-native-progress";
-
+import * as Progress from "react-native-progress";
+import { Language } from "../types/Leaderboard";
+import SelectLanguageMultiplayer from "./LanguageSelectorMultiplayer";
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
 const Game = () => {
@@ -26,6 +27,8 @@ const Game = () => {
   let [timer, setTimer] = useState<number>(30);
   const [roomId, setRoomId] = useState<string>("");
   const [players, setPlayers] = useState<{ [key: string]: any }>({});
+  const [language, setLanguage] = useState<Language | null>(null);
+  const [languageNotSelected, setLanguageNotSelected] = useState<Boolean>(true);
 
   const { user } = useAuth();
 
@@ -42,7 +45,9 @@ const Game = () => {
   interface GameInstance {
     players: Players;
     timer: number;
-    wordList: string[];
+    englishTranslations: string[];
+    nonEnglishTranslations: string[];
+    language: Language;
   }
 
   // Listen for game events from server
@@ -71,6 +76,7 @@ const Game = () => {
     // Listen for correct/incorrect answers
     socket.on("correctAnswer", (data: { message: string }) => {
       setMessage(data.message);
+      setAnswer("");
     });
 
     socket.on("incorrectAnswer", (data: { message: string }) => {
@@ -81,29 +87,22 @@ const Game = () => {
     socket.on(
       "gameOver",
       (data: {
-        winner: string;
+        winnerUsername: string;
         gameInstance: {
           players: Players;
           timer: number;
-          wordList: string[];
+          englishTranslations: string[];
+          nonEnglishTranslations: string[];
         };
       }) => {
-        console.log("winner is " + data.winner);
+        console.log("winner is " + data.winnerUsername);
         console.log(data.gameInstance.players);
 
         setFinishGame(true);
-        setWinner(data.winner);
+        setWinner(data.winnerUsername);
         setPlayers(data.gameInstance.players);
       }
     );
-
-    // // Handle game over
-    // socket.on(
-    //   "gameOver",
-    //   (data: { winner: string; correctAnswers: number }) => {
-    //     setWinner(data.winner);
-    //   }
-    // );
 
     return () => {
       socket.off("gameStart");
@@ -126,19 +125,20 @@ const Game = () => {
   };
 
   // Submit the player's answer to the server
-  const submitAnswer = () => {
-    socket.emit("submitAnswer", { answer, roomId });
-    setAnswer(""); // Clear input field after submission
+  const handleInputChange = (text: string) => {
+    setAnswer(text);
+    socket.emit("submitAnswer", { answer: text, roomId });
   };
 
   // Handle when the player is ready to start the game
   const handleStartGame = () => {
     setIsReady(true); // Set the player as ready
-    socket.emit("playerReady", { user }); // Notify the server that the player is ready
+    socket.emit("playerReady", { user, language }); // Notify the server that the player is ready
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Typing Game</Text>
       {winner && finishGame ? (
         <>
           <Text>
@@ -168,7 +168,17 @@ const Game = () => {
         <View style={styles.gameContainer}>
           {gameStarted ? (
             <>
-              <Text>{timer} seconds remaining</Text>
+              <Text style={styles.subtitle}>
+                Game Instruction: Type the correct words below
+              </Text>
+              <Text style={styles.wordDisplay}>{currentWord}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your answer here"
+                value={answer}
+                onChangeText={handleInputChange}
+              />
+              <Text style={styles.timer}>{timer} seconds remaining</Text>
               <Progress.Bar
                 progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
                 width={200}
@@ -178,16 +188,6 @@ const Game = () => {
                 animated={true}
                 style={styles.progressBar}
               />
-              <Text style={styles.wordDisplay}>
-                Current Word: {currentWord}
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your answer here"
-                value={answer}
-                onChangeText={setAnswer}
-              />
-              <Button title="Submit Answer" onPress={submitAnswer} />
               <Text style={styles.message}>{message}</Text>
             </>
           ) : (
@@ -197,7 +197,20 @@ const Game = () => {
                   Waiting for another player to start...
                 </Text>
               ) : (
-                <Button title="Start Game" onPress={handleStartGame} />
+                <>
+                  <Button
+                    title="Start Game"
+                    onPress={() => {
+                      languageNotSelected ? null : handleStartGame();
+                    }}
+                  />
+                  <SelectLanguageMultiplayer
+                    language={language}
+                    setLanguage={setLanguage}
+                    setLanguageNotSelected={setLanguageNotSelected}
+                  />
+                  {languageNotSelected ? <Text>Select a language!</Text> : null}
+                </>
               )}
             </>
           )}
@@ -210,9 +223,22 @@ const Game = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f4f4f4",
+    padding: 20,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 30,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "black",
+    marginBottom: 20,
+    textAlign: "center",
   },
   gameContainer: {
     width: "80%",
@@ -220,17 +246,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   wordDisplay: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 32,
+    fontWeight: "600",
+    color: "#ff5722",
     marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    height: 50,
     width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 20,
+    marginBottom: 20,
+    backgroundColor: "#f9f9f9",
+  },
+  timer: {
+    fontSize: 20,
+    color: "#ff0000",
+    marginBottom: 20,
   },
   message: {
     marginTop: 20,

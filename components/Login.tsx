@@ -12,7 +12,7 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-export default function Login() {
+export default function Login({ navigation, route }: any) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
@@ -28,7 +28,7 @@ export default function Login() {
         if (verification) {
           setUser(username);
           setIsInvalidUsername(false);
-          //please add nav to learner or home page here!
+          route.params.setIsLoggedIn(true);
         } else {
           setIsInvalidUsername(true);
         }
