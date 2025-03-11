@@ -1,45 +1,74 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Learn from "./components/Learn";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 import Practice from "./components/Practice";
 import Game from "./components/Game";
 import FriendsList from "./components/FriendsList";
 import Leaderboard from "./components/Leaderboard";
 import { UserProvider } from "./components/contexts/username";
 import Profile from "./components/Profile";
+import { Settings } from "./components/Settings";
 import wordList from "./_testdata/words";
 import { Word } from "./types/globalTypes";
 
 const Stack = createStackNavigator();
 
+function LoadingScreen() {
+  return (
+    <View>
+      <Text>Loading...</Text>
+    </View>
+  );
+}
+
 export default function App() {
+  const [loaded, isLoading] = useState(true);
+  // // if (isLoading === true) {
+  // //   return LoadingScreen;
+  // // }
+
+  const [isLoggedin, setIsLoggedIn] = useState(false);
   return (
     <UserProvider>
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        <NavigationContainer>
-          <Header />
-          <Stack.Navigator initialRouteName="Learn">
-            <Stack.Screen name="Learn" component={Login} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Practice" component={Practice} />
-            <Stack.Screen name="Game" component={Game} />
-            <Stack.Screen name="FriendsList" component={FriendsList} />
-            <Stack.Screen name="Profile" component={Profile} />
-            <Stack.Screen name="Leaderboard" component={Leaderboard} />
-          </Stack.Navigator>
-          <Navbar />
-          <Footer />
-        </NavigationContainer>
-      </View>
+      {isLoggedin ? (
+        <View style={styles.container}>
+          <StatusBar style="auto" />
+          <NavigationContainer>
+            <Header />
+            <Stack.Navigator initialRouteName="Practice">
+              <Stack.Screen name="Practice" component={Practice} />
+              <Stack.Screen name="Learn" component={Learn} />
+              <Stack.Screen name="Settings" component={Settings} />
+              <Stack.Screen name="Game" component={Game} />
+              <Stack.Screen name="FriendsList" component={FriendsList} />
+              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="Leaderboard" component={Leaderboard} />
+            </Stack.Navigator>
+            <Navbar />
+          </NavigationContainer>
+        </View>
+      ) : (
+        <>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                initialParams={{ setIsLoggedIn: setIsLoggedIn }}
+              />
+              {/* <Stack.Screen name="Signup" component={Signup} /> */}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </>
+      )}
     </UserProvider>
   );
 }

@@ -12,7 +12,7 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-export default function Login() {
+export default function Login({ navigation, route }: any) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
@@ -20,23 +20,17 @@ export default function Login() {
 
   function validUsernameCheck(username: string, password: string) {
     axios
-      .post(
-        "https://wordslingerserver.onrender.com/api/verify/",
-        {
-          username: username,
-          password: password,
-        },
-        { headers: { "Content-Type": "application/json" } }
+      .post<VerifyResponse>(
+        "https://wordslingerserver.onrender.com/api/verify",
+        { username: username, password: password }
       )
       .then(({ data: { verification, username } }) => {
         if (verification) {
           setUser(username);
           setIsInvalidUsername(false);
-          console.log("valid");
-          //please add nav to learner or home page here!
+          route.params.setIsLoggedIn(true);
         } else {
           setIsInvalidUsername(true);
-          console.log("invalid");
         }
       })
       .catch((err) => {

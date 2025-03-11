@@ -76,6 +76,7 @@ const Game = () => {
     // Listen for correct/incorrect answers
     socket.on("correctAnswer", (data: { message: string }) => {
       setMessage(data.message);
+      setAnswer("");
     });
 
     socket.on("incorrectAnswer", (data: { message: string }) => {
@@ -124,9 +125,9 @@ const Game = () => {
   };
 
   // Submit the player's answer to the server
-  const submitAnswer = () => {
-    socket.emit("submitAnswer", { answer, roomId });
-    setAnswer(""); // Clear input field after submission
+  const handleInputChange = (text: string) => {
+    setAnswer(text);
+    socket.emit("submitAnswer", { answer: text, roomId });
   };
 
   // Handle when the player is ready to start the game
@@ -137,6 +138,7 @@ const Game = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Typing Game</Text>
       {winner && finishGame ? (
         <>
           <Text>
@@ -166,7 +168,17 @@ const Game = () => {
         <View style={styles.gameContainer}>
           {gameStarted ? (
             <>
-              <Text>{timer} seconds remaining</Text>
+              <Text style={styles.subtitle}>
+                Game Instruction: Type the correct words below
+              </Text>
+              <Text style={styles.wordDisplay}>{currentWord}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your answer here"
+                value={answer}
+                onChangeText={handleInputChange}
+              />
+              <Text style={styles.timer}>{timer} seconds remaining</Text>
               <Progress.Bar
                 progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
                 width={200}
@@ -176,16 +188,6 @@ const Game = () => {
                 animated={true}
                 style={styles.progressBar}
               />
-              <Text style={styles.wordDisplay}>
-                Current Word: {currentWord}
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your answer here"
-                value={answer}
-                onChangeText={setAnswer}
-              />
-              <Button title="Submit Answer" onPress={submitAnswer} />
               <Text style={styles.message}>{message}</Text>
             </>
           ) : (
@@ -221,9 +223,22 @@ const Game = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f4f4f4",
+    padding: 20,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 30,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "black",
+    marginBottom: 20,
+    textAlign: "center",
   },
   gameContainer: {
     width: "80%",
@@ -231,17 +246,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   wordDisplay: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 32,
+    fontWeight: "600",
+    color: "#ff5722",
     marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    height: 50,
     width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 20,
+    marginBottom: 20,
+    backgroundColor: "#f9f9f9",
+  },
+  timer: {
+    fontSize: 20,
+    color: "#ff0000",
+    marginBottom: 20,
   },
   message: {
     marginTop: 20,
