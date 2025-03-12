@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { transform } from "@babel/core";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,6 +8,8 @@ import {
   TouchableOpacity,
   Alert,
   ImageBackground,
+  Image,
+  Animated,
 } from "react-native";
 import * as Progress from "react-native-progress";
 
@@ -28,10 +31,17 @@ const Practice = () => {
   const [score, setScore] = useState<number>(0); // score tracking
   const [timer, setTimer] = useState<number>(30); // countdown timer
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [showCelebration, setShowCelebration] = useState<boolean>(false); // for emoji display
+  // const [showCelebration, setShowCelebration] = useState<boolean>(false); // for emoji display
   const UiImages = {
     background: require("../assets/wild-west-town.png"),
   };
+  const playerIcons = {
+    gunLeft: require("../assets/fps-gun-leftCU.png"),
+    gunRight: require("../assets/fps-gun-rightCU.png"),
+  };
+
+  const rotation = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     // Initialize the game with a random word
     setRandomWord();
@@ -60,15 +70,20 @@ const Practice = () => {
       setScore(score + 1);
       setInputValue("");
       setRandomWord(); // Set new word
-      showCelebrationEmoji(); // Trigger emoji display
-    }
-  };
 
-  const showCelebrationEmoji = () => {
-    setShowCelebration(true); // Show emoji
-    setTimeout(() => {
-      setShowCelebration(false); // Hide emoji after 1 second
-    }, 1000);
+      Animated.sequence([
+        Animated.timing(rotation, {
+          toValue: 1, // Rotate by -15 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotation, {
+          toValue: 0, // Rotate back to 0 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
   };
 
   const handleRestartGame = () => {
@@ -78,6 +93,18 @@ const Practice = () => {
     setRandomWord();
     setInputValue("");
   };
+
+  const rotateLeft = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "-15deg"],
+  });
+  const rotateLeftStyle = { transform: [{ rotate: rotateLeft }] };
+
+  const rotateRight = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "15deg"],
+  });
+  const rotateRightStyle = { transform: [{ rotate: rotateRight }] };
 
   return (
     <ImageBackground
@@ -117,12 +144,16 @@ const Practice = () => {
               animated={true}
               style={styles.progressBar}
             />
-            <Text style={styles.score}>Score: {score}</Text>
-            {showCelebration && (
-              <Text style={styles.celebrationEmoji}>🎉</Text> // Celebration emoji display
-            )}
           </View>
         )}
+        <Animated.Image
+          style={[styles.leftGun, rotateLeftStyle]}
+          source={playerIcons.gunLeft}
+        />
+        <Animated.Image
+          style={[styles.rightGun, rotateRightStyle]}
+          source={playerIcons.gunRight}
+        />
       </View>
     </ImageBackground>
   );
@@ -220,5 +251,22 @@ const styles = StyleSheet.create({
   celebrationEmoji: {
     fontSize: 40,
     marginTop: 15,
+  },
+
+  leftGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    left: 0,
+    bottom: 0,
+  },
+  rightGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    right: 0,
+    bottom: 0,
   },
 });
