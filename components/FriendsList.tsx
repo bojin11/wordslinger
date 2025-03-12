@@ -22,6 +22,11 @@ const FriendCard: React.FC<FriendList> = ({ username, status, avatar_url }) => (
   </View>
 );
 
+const image1 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1OS5wbmc=/794x1000/hnUX4e.png";
+const image2 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1Ny5wbmc=/794x1000/VX87t1.png";
+
 const FriendsList: React.FC = () => {
   const [friends, setFriends] = useState<FriendList[]>([]);
 

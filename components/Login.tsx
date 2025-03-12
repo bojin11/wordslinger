@@ -24,7 +24,7 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-export default function Login({ navigation, route }: any) {
+export default function Login({ navigation, route }: React.FunctionComponent) {
   const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
   const [username, setUsername] = useState("");
