@@ -179,7 +179,7 @@ const Game = () => {
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Typing Game</Text>
         {winner && finishGame ? (
-          <>
+          <View style={styles.resultDisplay}>
             <Text>
               Game is Over and winner is{" "}
               <Text style={styles.winnerName}>{winner}</Text>
@@ -204,18 +204,18 @@ const Game = () => {
                 </View>
               ))}
             </View>
-          </>
+          </View>
         ) : (
           <View style={styles.gameContainer}>
             {gameStarted ? (
-              <>
+              <View style={styles.gameStarted}>
                 <Text style={styles.subtitle}>
-                  Game Instruction: Type the correct words below
+                  Type the English translation of the following word:
                 </Text>
                 <Text style={styles.wordDisplay}>{currentWord}</Text>
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter your answer here"
+                  placeholder="Type the translation here"
                   value={answer}
                   onChangeText={handleInputChange}
                 />
@@ -230,7 +230,7 @@ const Game = () => {
                   style={styles.progressBar}
                 />
                 <Text style={styles.message}>{message}</Text>
-              </>
+              </View>
             ) : (
               <>
                 {isReady ? (
@@ -296,6 +296,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  gameStarted: {
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
+  },
   wordDisplay: {
     fontSize: 32,
     fontWeight: "600",
@@ -358,6 +361,9 @@ const styles = StyleSheet.create({
     maxHeight: "30%",
     right: 0,
     bottom: 0,
+  },
+  resultDisplay: {
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
   },
 });
 
