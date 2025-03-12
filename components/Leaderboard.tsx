@@ -81,7 +81,18 @@ export default function Leaderboard() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Text style={styles.title}>leaderboard!</Text>
         {isLoading ? (
-          <Text>Loading!</Text>
+          <View>
+            <Image
+              source={require("../assets/tumbleweedtransparent.gif")}
+              style={{
+                width: "1000%",
+                height: "1000%",
+                alignSelf: "center",
+                resizeMode: "contain",
+              }}
+            />
+            <Text style={styles.loadingText}>Loading...</Text>
+          </View>
         ) : (
           <>
             <LanguageDropDownBar
