@@ -48,7 +48,6 @@ export const Signup: React.FC = () => {
 
   const addNewUser = (values: any): Promise<any> => {
     return new Promise((resolve, reject) => {
-      console.log(values, "add new user func");
       setNewUser(values);
       return postNewUser(values);
     });
@@ -63,7 +62,31 @@ export const Signup: React.FC = () => {
     return axios
       .post("https://wordslingerserver.onrender.com/api/users", newUser)
       .then(({ data }) => {
+        console.log(data);
         return data;
+      })
+      .then(({ user }) => {
+        const url = `https://wordslingerserver.onrender.com/api/leaderboard/`;
+        const french = {
+          user_id: user[0].user_id,
+          language: "French",
+        };
+        const spanish = {
+          user_id: user[0].user_id,
+          language: "Spanish",
+        };
+        const german = {
+          user_id: user[0].user_id,
+          language: "Spanish",
+        };
+        return Promise.all([
+          axios.post(url, french),
+          axios.post(url, spanish),
+          axios.post(url, german),
+        ]);
+      })
+      .then((data) => {
+        console.log(data, "done");
       })
       .catch((error) => {
         return Promise.reject(error);
