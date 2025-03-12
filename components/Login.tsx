@@ -100,7 +100,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
             bottom: "0%",
             resizeMode: "stretch",
             height: "110%",
-            zIndex: 1,
+            // zIndex: 1,
           }}
           source={backgroundUI.moutain}
         />
