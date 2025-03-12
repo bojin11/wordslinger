@@ -9,7 +9,8 @@ import {
 import { ProfileLanguage } from "../types/ProfileTypes";
 import React from "react";
 import Achievement from "./Achievement";
-
+import axios from "axios";
+import { useAuth } from "./contexts/username";
 //Want username, avatar url, and bio and also the data in the array below, for a specific user
 const testLanguageData: Array<ProfileLanguage> = [
   {
@@ -59,6 +60,31 @@ const testAchievementData: [string, boolean][] = [
 ];
 
 export default function Profile() {
+  const { user } = useAuth();
+  const getUserId = () => {
+    return axios
+      .get(
+        `      https://wordslingerserver.onrender.com/api/users/${user}
+`
+      )
+      .then(({ data }) => {
+        return data.user[0];
+      });
+  };
+
+  const getUser = () => {
+    const user_id = getUserId();
+    console.log(user_id);
+    return axios
+      .get(`      https://wordslingerserver.onrender.com/api/users/${user_id}`)
+      .then((result) => {
+        return result;
+      });
+  };
+
+  const userInfo = getUser();
+  console.log(userInfo);
+
   return (
     <ScrollView style={{ flex: 1, height: "100%", marginInline: "auto" }}>
       <View style={styles.container}>
@@ -66,11 +92,11 @@ export default function Profile() {
           <Image
             style={styles.tinyProfilePic}
             source={{
-              uri: "https://avatars.githubusercontent.com/u/24693797",
+              uri: "url",
             }}
             alt="Profile picture"
           />
-          <Text>Axel_Nicolas-Emmerich54</Text>
+          <Text>"user </Text>
         </View>
         <View style={styles.bioCard}>
           <Text>blogger, parent, scientist</Text>

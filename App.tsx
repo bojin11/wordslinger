@@ -52,7 +52,11 @@ export default function App() {
               <Stack.Screen name="Settings" component={Settings} />
               <Stack.Screen name="Game" component={Game} />
               <Stack.Screen name="FriendsList" component={FriendsList} />
-              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                initialParams={{ setIsLoggedIn: setIsLoggedIn }}
+              />
               <Stack.Screen name="Leaderboard" component={Leaderboard} />
             </Stack.Navigator>
             <Navbar />
