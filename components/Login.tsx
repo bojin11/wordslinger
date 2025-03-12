@@ -77,19 +77,23 @@ export default function Login({ navigation, route }: any) {
           }}
         >
           <Image
-            style={{ top: 200, right: 200, width: "100%" }}
+            style={{ top: "75%", left: "-30%", width: "100%" }}
             source={backgroundUI.cloud1}
           />
-          <Image style={{ right: 400 }} source={backgroundUI.cloud2} />
           <Image
-            style={{ top: 300, right: 200 }}
+            style={{ top: "75%", right: "100%", zIndex: 3 }}
+            source={backgroundUI.cloud2}
+          />
+          <Image
+            style={{ top: "0%", right: "180%" }}
             source={backgroundUI.cloud3}
           />
           <Image
-            style={{ right: 700, height: "100%" }}
+            style={{ top: "15%", right: "160%" }}
             source={backgroundUI.cloud4}
           />
         </View>
+        {/* ABOVE WORKS */}
         <Image
           style={{
             position: "absolute",
@@ -99,8 +103,19 @@ export default function Login({ navigation, route }: any) {
           }}
           source={backgroundUI.moutain}
         />
+        {/* <Image
+          style={{
+            position: "absolute",
+            bottom: "0%",
+            resizeMode: "stretch",
+            height: "110%",
+            zIndex: 1,
+          }}
+          source={backgroundUI.moutain}
+        /> */}
+        {/* CHANGING THIS TO MATCH ROBBS STYLING SEEMS TO STOP THINGS WORKING? */}
         <View style={styles.container}>
-          <Text style={styles.title}>Login {user}</Text>
+          <Text style={styles.title}>Log in{user}</Text>
           <TextInput
             style={styles.pwInput}
             placeholder="Enter Username"
@@ -146,7 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: "5%",
     borderWidth: 3,
     borderColor: "grey",
     borderRadius: 20,
@@ -157,26 +172,21 @@ const styles = StyleSheet.create({
     marginInline: "10%",
     bottom: "40%",
   },
-
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: "7.5%",
   },
-  // input: {
-  //   width: "100%",
-  //   padding: 10,
-  //   borderWidth: 1,
-  //   borderColor: "gray",
-  //   borderRadius: 5,
-  //   marginBottom: 10,
-  //   justifyContent: "center",
-  //   alignContent: "center",
-  //   alignItems: "center",
-  // },
-
-  pwInput: {
+  input: {
     width: "80%",
     padding: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  pwInput: {
+    width: "80%",
+    padding: "2.5%",
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 5,
@@ -189,12 +199,4 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
   },
-  // iconContainer: {
-  //   marginInlineEnd: 5,
-  //   alignContent: "space-between",
-  // },
-  // image: {
-  //   height: "100%",
-  //   width: "100%",
-  // },
 });

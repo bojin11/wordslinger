@@ -154,7 +154,7 @@ export const Signup: React.FC<{}> = () => {
               </View>
             </Form>
 
-            <Button onPress={handleSubmit} title="Submit" disabled={!isValid} />
+            <Button onPress={handleSubmit} title="Submit" />
           </View>
         )}
       </Formik>

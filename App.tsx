@@ -8,7 +8,6 @@ import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Learn from "./components/Learn";
 import Login from "./components/Login";
-import LogInSignUp from "./components/Signup";
 import Practice from "./components/Practice";
 import Game from "./components/Game";
 import FriendsList from "./components/FriendsList";
