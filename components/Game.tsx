@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,11 +8,14 @@ import {
   View,
   Alert,
   FlatList,
+  Animated,
+  ImageBackground,
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import io from "socket.io-client";
-// import * as Progress from "react-native-progress";
-
+import * as Progress from "react-native-progress";
+import { Language } from "../types/Leaderboard";
+import SelectLanguageMultiplayer from "./LanguageSelectorMultiplayer";
 const socket = io("http://localhost:3000"); // Replace with your server URL
 
 const Game = () => {
@@ -23,9 +26,20 @@ const Game = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [finishGame, setFinishGame] = useState<boolean>(false);
   const [winner, setWinner] = useState<string>("");
-  let [timer, setTimer] = useState<number>(30);
+  let [timer, setTimer] = useState<number>(29);
   const [roomId, setRoomId] = useState<string>("");
   const [players, setPlayers] = useState<{ [key: string]: any }>({});
+  const [language, setLanguage] = useState<Language | null>(null);
+  const [languageNotSelected, setLanguageNotSelected] = useState<Boolean>(true);
+  const UiImages = {
+    background: require("../assets/wild-west-town.png"),
+  };
+  const playerIcons = {
+    gunLeft: require("../assets/fps-gun-leftCU.png"),
+    gunRight: require("../assets/fps-gun-rightCU.png"),
+  };
+
+  const rotation = useRef(new Animated.Value(0)).current;
 
   const { user } = useAuth();
 
@@ -42,7 +56,9 @@ const Game = () => {
   interface GameInstance {
     players: Players;
     timer: number;
-    wordList: string[];
+    englishTranslations: string[];
+    nonEnglishTranslations: string[];
+    language: Language;
   }
 
   // Listen for game events from server
@@ -71,6 +87,19 @@ const Game = () => {
     // Listen for correct/incorrect answers
     socket.on("correctAnswer", (data: { message: string }) => {
       setMessage(data.message);
+      setAnswer("");
+      Animated.sequence([
+        Animated.timing(rotation, {
+          toValue: 1, // Rotate by -15 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotation, {
+          toValue: 0, // Rotate back to 0 degrees
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
     });
 
     socket.on("incorrectAnswer", (data: { message: string }) => {
@@ -81,29 +110,22 @@ const Game = () => {
     socket.on(
       "gameOver",
       (data: {
-        winner: string;
+        winnerUsername: string;
         gameInstance: {
           players: Players;
           timer: number;
-          wordList: string[];
+          englishTranslations: string[];
+          nonEnglishTranslations: string[];
         };
       }) => {
-        console.log("winner is " + data.winner);
+        console.log("winner is " + data.winnerUsername);
         console.log(data.gameInstance.players);
 
         setFinishGame(true);
-        setWinner(data.winner);
+        setWinner(data.winnerUsername);
         setPlayers(data.gameInstance.players);
       }
     );
-
-    // // Handle game over
-    // socket.on(
-    //   "gameOver",
-    //   (data: { winner: string; correctAnswers: number }) => {
-    //     setWinner(data.winner);
-    //   }
-    // );
 
     return () => {
       socket.off("gameStart");
@@ -119,118 +141,184 @@ const Game = () => {
     for (let i = 0; i <= timer; i++) {
       setTimeout(() => {
         console.log(timer);
-        console.log(roomId);
         setTimer(timer--);
       }, i * 1000);
     }
   };
 
   // Submit the player's answer to the server
-  const submitAnswer = () => {
-    socket.emit("submitAnswer", { answer, roomId });
-    setAnswer(""); // Clear input field after submission
+  const handleInputChange = (text: string) => {
+    setAnswer(text);
+    socket.emit("submitAnswer", { answer: text, roomId });
   };
 
   // Handle when the player is ready to start the game
   const handleStartGame = () => {
     setIsReady(true); // Set the player as ready
-    socket.emit("playerReady", { user }); // Notify the server that the player is ready
+    socket.emit("playerReady", { user, language }); // Notify the server that the player is ready
   };
 
+  const rotateLeft = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "-15deg"],
+  });
+  const rotateLeftStyle = { transform: [{ rotate: rotateLeft }] };
+
+  const rotateRight = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "15deg"],
+  });
+  const rotateRightStyle = { transform: [{ rotate: rotateRight }] };
+
   return (
-    <SafeAreaView style={styles.container}>
-      {winner && finishGame ? (
-        <>
-          <Text>
-            Game is Over and winner is{" "}
-            <Text style={styles.winnerName}>{winner}</Text>
-          </Text>
-          <View style={styles.scoresContainer}>
-            {Object.keys(players).map((playerId) => (
-              <View key={playerId} style={styles.playerSummaryContainer}>
-                <Text>
-                  {players[playerId].user} got{" "}
-                  {players[playerId].correctAnswers.length} question
-                  {players[playerId].correctAnswers.length > 1 ? "s" : ""}{" "}
-                  right.
-                </Text>
-                <Text>{players[playerId].user}'s Correct Answers:</Text>
-                <FlatList
-                  data={players[playerId].correctAnswers}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={({ item }) => <Text>{item}</Text>}
-                />
-              </View>
-            ))}
+    <ImageBackground
+      style={{ flex: 1, height: "100%", width: "100%" }}
+      source={UiImages.background}
+    >
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Typing Game</Text>
+        {winner && finishGame ? (
+          <View style={styles.resultDisplay}>
+            <Text>
+              Game is Over and winner is{" "}
+              <Text style={styles.winnerName}>{winner}</Text>
+            </Text>
+            <View style={styles.scoresContainer}>
+              {Object.keys(players).map((playerId) => (
+                <View key={playerId} style={styles.playerSummaryContainer}>
+                  <Text>
+                    {players[playerId].user} got{" "}
+                    {players[playerId].correctAnswers.length} question
+                    {players[playerId].correctAnswers.length > 1
+                      ? "s"
+                      : ""}{" "}
+                    right.
+                  </Text>
+                  <Text>{players[playerId].user}'s Correct Answers:</Text>
+                  <FlatList
+                    data={players[playerId].correctAnswers}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => <Text>{item}</Text>}
+                  />
+                </View>
+              ))}
+            </View>
           </View>
-        </>
-      ) : (
-        <View style={styles.gameContainer}>
-          {gameStarted ? (
-            <>
-              <Text>{timer} seconds remaining</Text>
-              <Progress.Bar
-                progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
-                width={200}
-                color="green"
-                height={10}
-                borderRadius={5}
-                animated={true}
-                style={styles.progressBar}
-              />
-              <Text style={styles.wordDisplay}>
-                Current Word: {currentWord}
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter your answer here"
-                value={answer}
-                onChangeText={setAnswer}
-              />
-              <Button title="Submit Answer" onPress={submitAnswer} />
-              <Text style={styles.message}>{message}</Text>
-            </>
-          ) : (
-            <>
-              {isReady ? (
-                <Text style={styles.waiting}>
-                  Waiting for another player to start...
+        ) : (
+          <View style={styles.gameContainer}>
+            {gameStarted ? (
+              <View style={styles.gameStarted}>
+                <Text style={styles.subtitle}>
+                  Type the English translation of the following word:
                 </Text>
-              ) : (
-                <Button title="Start Game" onPress={handleStartGame} />
-              )}
-            </>
-          )}
-        </View>
-      )}
-    </SafeAreaView>
+                <Text style={styles.wordDisplay}>{currentWord}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Type the translation here"
+                  value={answer}
+                  onChangeText={handleInputChange}
+                />
+                <Text style={styles.timer}>{timer} seconds remaining</Text>
+                <Progress.Bar
+                  progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
+                  width={200}
+                  color="green"
+                  height={10}
+                  borderRadius={5}
+                  animated={true}
+                  style={styles.progressBar}
+                />
+                <Text style={styles.message}>{message}</Text>
+              </View>
+            ) : (
+              <>
+                {isReady ? (
+                  <Text style={styles.waiting}>
+                    Waiting for another player to start...
+                  </Text>
+                ) : (
+                  <>
+                    <Button
+                      title="Start Game"
+                      onPress={() => {
+                        languageNotSelected ? null : handleStartGame();
+                      }}
+                    />
+                    <SelectLanguageMultiplayer
+                      language={language}
+                      setLanguage={setLanguage}
+                      setLanguageNotSelected={setLanguageNotSelected}
+                    />
+                    {languageNotSelected ? (
+                      <Text>Select a language!</Text>
+                    ) : null}
+                  </>
+                )}
+              </>
+            )}
+          </View>
+        )}
+      </SafeAreaView>
+      <Animated.Image
+        style={[styles.leftGun, rotateLeftStyle]}
+        source={playerIcons.gunLeft}
+      />
+      <Animated.Image
+        style={[styles.rightGun, rotateRightStyle]}
+        source={playerIcons.gunRight}
+      />
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 30,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: "black",
+    marginBottom: 20,
+    textAlign: "center",
   },
   gameContainer: {
     width: "80%",
     justifyContent: "center",
     alignItems: "center",
   },
+  gameStarted: {
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
+  },
   wordDisplay: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 32,
+    fontWeight: "600",
+    color: "#ff5722",
     marginBottom: 20,
   },
   input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginBottom: 20,
+    height: 50,
     width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 20,
+    marginBottom: 20,
+    backgroundColor: "#f9f9f9",
+  },
+  timer: {
+    fontSize: 20,
+    color: "#ff0000",
+    marginBottom: 20,
   },
   message: {
     marginTop: 20,
@@ -256,6 +344,25 @@ const styles = StyleSheet.create({
   },
   playerSummaryContainer: {
     marginBottom: 10,
+  },
+  leftGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    left: 0,
+    bottom: 0,
+  },
+  rightGun: {
+    position: "absolute",
+    resizeMode: "contain",
+    maxWidth: "30%",
+    maxHeight: "30%",
+    right: 0,
+    bottom: 0,
+  },
+  resultDisplay: {
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
   },
 });
 

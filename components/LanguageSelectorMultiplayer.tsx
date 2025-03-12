@@ -18,12 +18,12 @@ const languagesData = [
     lable: "Spanish",
     image: require("../assets/icons/spain.svg"),
   },
-  { value: "", lable: "all langugages" },
 ];
 
-const SelectLanguageScreen = ({
+const SelectLanguageMultiplayer = ({
   language,
   setLanguage,
+  setLanguageNotSelected,
 }: {
   language: Language;
 }) => {
@@ -42,13 +42,14 @@ const SelectLanguageScreen = ({
       imageField="image"
       placeholder="Select language"
       onChange={(e) => {
+        setLanguageNotSelected(false);
         setLanguage(e.value);
       }}
     />
   );
 };
 
-export default SelectLanguageScreen;
+export default SelectLanguageMultiplayer;
 
 const styles = StyleSheet.create({
   dropdown: {

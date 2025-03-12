@@ -1,7 +1,7 @@
-export type Language = "German" | "Spanish" | "French";
+export type Language = "German" | "Spanish" | "French" | null;
 
 export type LeaderboardEntry = {
-  username: string;
+  user_id: number;
   rank: number;
   avatar_url: string;
   language: Language;
