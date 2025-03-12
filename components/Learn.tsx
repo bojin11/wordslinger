@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,7 +10,6 @@ import {
 //import { TestLearnWords } from "../types/LearnModeTypes";
 import frenchTestWordsLv1 from "../_testdata/wordsFrenchLv1";
 import { _, F } from "@faker-js/faker/dist/airline-CBNP41sR";
-import axios from "axios";
 import useFetchData from "../customHooks/useFetchData";
 
 const backgroundUI = {
@@ -35,12 +34,12 @@ interface LearnWords {
 const handleReview = () => {};
 
 const Learn: React.FunctionComponent = () => {
-  // const {
+  // const async {
   //   data: words,
   //   error,
   //   isPending,
   // } = useFetchData(
-  //   "https://wordslingerserver.onrender.com/api/word-list/french/level-1"
+  //   "https://wordslingerserver.onrender.com/api/word-list/french"
   // );
 
   const [faceDownCards, setFaceDownCards] = useState([
@@ -50,27 +49,31 @@ const Learn: React.FunctionComponent = () => {
     false,
     false,
   ]);
-  const [isDisplaying, setIsDisplaying] = useState(Number);
+
   //const wordsToLearn: LearnWords[] = words;
+  const [isDisplaying, setIsDisplaying] = useState(Number);
   const wordsToLearn: LearnWords[] = frenchTestWordsLv1;
+
+  //const dogEatsBaby: string = wordsToLearn[isDisplaying].image_url;
+  const dogEatsBaby: string = "https://imgur.com/du8Ctb2";
+
   const [isZero, setIsZero] = useState(wordsToLearn.length);
-
-  const handleFlip = (index: number) => {
-    let flipCard = [...faceDownCards];
-    flipCard[index] = true;
-    setFaceDownCards(flipCard);
-
-    setIsZero(isZero - 1);
-  };
-
   const handleShowCard = (index: number) => {
     setIsDisplaying(index);
   };
 
+  const handleFlip = (index: number) => {
+    console.log(index);
+    let flipCard = [...faceDownCards];
+    flipCard[index] = true;
+    setFaceDownCards(flipCard);
+    setIsZero(isZero - 1);
+    handleShowCard(index);
+  };
   return (
     <>
       <ImageBackground
-        style={{ flex: 1, height: "100 %", width: "100%" }}
+        style={{ flex: 1, height: "120 %", width: "100%" }}
         source={backgroundUI.backgroundTabel}
       >
         {/* {isPending && <div>Loading...</div>}
@@ -111,13 +114,8 @@ const Learn: React.FunctionComponent = () => {
                               : word.german}
                           </Text>
                           <Image
-                            style={{
-                              maxHeight: "100%",
-                              maxWidth: 150,
-                              resizeMode: "contain",
-                              zIndex: 2,
-                            }}
-                            source={{ uri: word.image_url }}
+                            style={styles.wordImageSmall}
+                            source={word.image_url}
                           />
                         </TouchableOpacity>
                       </View>
@@ -155,6 +153,10 @@ const Learn: React.FunctionComponent = () => {
           <View style={styles.cardContainerLarge}>
             <View style={styles.cardWrapper}>
               <Image style={styles.largeCard} source={backgroundUI.cardFront} />
+              <Image
+                style={styles.wordImage}
+                source={wordsToLearn[isDisplaying].image_url}
+              />
               <Text style={styles.textLargeOverlay}>
                 {wordsToLearn[isDisplaying].french
                   ? wordsToLearn[isDisplaying].french
@@ -162,10 +164,13 @@ const Learn: React.FunctionComponent = () => {
                   ? wordsToLearn[isDisplaying].spanish
                   : wordsToLearn[isDisplaying].german}
               </Text>
-              <Image style={styles.wordImage} source={testImages.baby} />
             </View>
             <View style={styles.cardWrapper}>
               <Image style={styles.largeCard} source={backgroundUI.cardFront} />
+              <Image
+                style={styles.wordImage}
+                source={wordsToLearn[isDisplaying].image_url}
+              />
               <Text style={styles.textLargeOverlay}>
                 {wordsToLearn[isDisplaying].english}
               </Text>
@@ -216,12 +221,10 @@ const styles = StyleSheet.create({
   outlineContainerSmall: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: 100,
     marginBottom: 10,
   },
   cardOutlineStyle: {
-    width: "100%",
-    height: "100%",
+    height: "25%",
     resizeMode: "contain",
     zIndex: 1,
   },
@@ -263,16 +266,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignContent: "center",
-    height: 200,
+    height: "100%",
     marginBottom: 10,
   },
 
-  cardBlank: { height: 100, width: 100, resizeMode: "contain", zIndex: 1 },
+  wordImageSmall: {
+    width: "55%",
+    height: "55%",
+    alignSelf: "center",
+    resizeMode: "contain",
+    bottom: "90%",
+    zIndex: 5,
+  },
 
   wordImage: {
-    width: "120%",
-    height: "120%",
+    width: "60%",
+    height: "60%",
+    alignSelf: "center",
     resizeMode: "contain",
+    bottom: "100%",
     zIndex: 5,
   },
   cardWrapper: {
@@ -319,7 +331,7 @@ const styles = StyleSheet.create({
   },
   textSmallOverlay: {
     position: "absolute",
-    top: "40%",
+    top: "65%",
     left: 0,
     right: 0,
     bottom: 0,

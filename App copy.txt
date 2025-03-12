@@ -43,7 +43,10 @@ export default function App() {
           <StatusBar style="auto" />
           <NavigationContainer>
             <Header />
-            <Stack.Navigator  screenOptions={{ headerShown: false }} initialRouteName="Practice">
+            <Stack.Navigator
+              screenOptions={{ headerShown: false }}
+              initialRouteName="Practice"
+            >
               <Stack.Screen name="Practice" component={Practice} />
               <Stack.Screen name="Learn" component={Learn} />
               <Stack.Screen name="Settings" component={Settings} />
@@ -58,7 +61,7 @@ export default function App() {
       ) : (
         <>
           <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
               <Stack.Screen
                 name="Login"
                 component={Login}

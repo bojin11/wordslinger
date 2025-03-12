@@ -24,6 +24,7 @@ interface VerifyResponse {
   verification: boolean;
 }
 
+
 export default function Login({ navigation, route }: React.FunctionComponent) {
   const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
@@ -99,8 +100,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
             position: "absolute",
             bottom: "0%",
             resizeMode: "stretch",
-            height: "110%",
-            // zIndex: 1,
+            width: "110%",
           }}
           source={backgroundUI.moutain}
         />
@@ -110,7 +110,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
             bottom: "0%",
             resizeMode: "stretch",
             height: "110%",
-            zIndex: 1,
+            // zIndex: 1,
           }}
           source={backgroundUI.moutain}
         /> */}
