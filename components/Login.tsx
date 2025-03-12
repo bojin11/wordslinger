@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Image, ImageBackground } from "react-native";
 import {
   View,
   Text,
@@ -6,11 +7,13 @@ import {
   Button,
   StyleSheet,
   Alert,
-  Image,
-  ImageBackground,
+  TouchableOpacity,
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import axios from "axios";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/NavigationTypes";
+import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 
 interface Users {
   [key: string]: string;
@@ -21,7 +24,9 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-export default function Login({ navigation, route }: any) {
+export default function Login({ navigation, route }: React.FunctionComponent) {
+  const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
@@ -88,6 +93,7 @@ export default function Login({ navigation, route }: any) {
             source={backgroundUI.cloud4}
           />
         </View>
+        {/* ABOVE WORKS */}
         <Image
           style={{
             position: "absolute",
@@ -98,10 +104,21 @@ export default function Login({ navigation, route }: any) {
           }}
           source={backgroundUI.moutain}
         />
+        {/* <Image
+          style={{
+            position: "absolute",
+            bottom: "0%",
+            resizeMode: "stretch",
+            height: "110%",
+            zIndex: 1,
+          }}
+          source={backgroundUI.moutain}
+        /> */}
+        {/* CHANGING THIS TO MATCH ROBBS STYLING SEEMS TO STOP THINGS WORKING? */}
         <View style={styles.container}>
-          <Text style={styles.title}>Login {user}</Text>
+          <Text style={styles.title}>Log in{user}</Text>
           <TextInput
-            style={styles.input}
+            style={styles.pwInput}
             placeholder="Enter Username"
             value={username}
             onChangeText={setUsername}
@@ -112,13 +129,25 @@ export default function Login({ navigation, route }: any) {
             placeholder="Enter Password"
             value={password}
             onChangeText={setPassword}
+            secureTextEntry={true}
           />
-          <Button
-            title="Login"
+          <TouchableOpacity
+            style={styles.navButton}
             onPress={() => {
               validUsernameCheck(username, password);
             }}
-          />
+          >
+            <Text>Log in</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={() => {
+              navigateTo.navigate("Signup");
+            }}
+          >
+            <Text>Sign up</Text>
+          </TouchableOpacity>
+
           {isInvalidUsername ? (
             <Text>Username/password is not correct! </Text>
           ) : null}
@@ -156,7 +185,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
-
   pwInput: {
     width: "80%",
     padding: "2.5%",
@@ -164,5 +192,12 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderRadius: 5,
     marginBottom: 10,
+  },
+  navButton: {
+    borderColor: "#2583ff",
+    borderWidth: 1.2,
+    borderRadius: 14,
+    height: 60,
+    width: 60,
   },
 });
