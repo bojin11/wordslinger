@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -8,10 +8,18 @@ import {
   Image,
 } from "react-native";
 import LanguageDropDownBar from "./LanguageDropDownBar";
-const leaderboardData = require("../testdata/leaderboard");
 import { Language, LeaderboardEntry } from "../types/Leaderboard";
+import axios from "axios";
 //data coming in > [{username, language, rank, avatar_url}...]
-
+type User = {
+  user_id: Number;
+  username: String;
+  password: String;
+  name: String;
+  avatar_url: String;
+  role: "admin" | "user";
+  bio: String;
+};
 const languageIcons = {
   German: require("../assets/icons/germany.svg"),
   French: require("../assets/icons/france.svg"),
@@ -19,13 +27,48 @@ const languageIcons = {
 };
 
 export default function Leaderboard() {
+  const [leaderboardData, setLeaderboardData] = useState<
+    LeaderboardEntry[] | null
+  >(null);
   const [language, setLanguage] = useState<Language | null>(null);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
-  const sortedLeaderboard: LeaderboardEntry[] = [...leaderboardData].sort(
-    (a, b) => {
-      return b.rank - a.rank;
-    }
-  );
+  useEffect(() => {
+    axios
+      .get("https://wordslingerserver.onrender.com/api/leaderboard")
+      .then(({ data: { leaderboardEntries } }) => {
+        setLeaderboardData(leaderboardEntries);
+        return axios.get("https://wordslingerserver.onrender.com/api/users");
+      })
+      .then(({ data: { users } }) => {
+        setLeaderboardData((leaderboardEntries: any) => {
+          return leaderboardEntries?.map(
+            (leaderboardEntry: LeaderboardEntry) => {
+              const relevantUser = users.find(
+                (user: User) => user.user_id === leaderboardEntry.user_id
+              );
+
+              return relevantUser
+                ? {
+                    ...leaderboardEntry,
+                    username: relevantUser.username,
+                    avatar_url: relevantUser.avatar_url,
+                  }
+                : leaderboardEntry;
+            }
+          );
+        });
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const sortedLeaderboard: LeaderboardEntry[] = [
+    ...(leaderboardData ?? []),
+  ].sort((a, b) => {
+    return b.rank - a.rank;
+  });
 
   const filteredLeaderboard: LeaderboardEntry[] = language
     ? sortedLeaderboard.filter((leaderboardEntry) => {
@@ -37,61 +80,70 @@ export default function Leaderboard() {
     <View style={styles.leaderboard}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Text style={styles.title}>leaderboard!</Text>
-        <LanguageDropDownBar language={language} setLanguage={setLanguage} />
-        <View style={styles.podiumContainer}>
-          {[1, 0, 2].map((podiumIndex, index) => {
-            const entry = filteredLeaderboard[podiumIndex];
-            return (
-              <View
-                key={entry.username + entry.language}
-                style={(styles.podium, styles[`position${podiumIndex}`])}
-              >
-                <Image
-                  source={{ uri: entry.avatar_url }}
-                  style={styles.podiumAvatar}
-                />
-                <Text style={styles.username}>{entry.username}</Text>
-                <Text style={styles.points}>{entry.rank}</Text>
+        {isLoading ? (
+          <Text>Loading!</Text>
+        ) : (
+          <>
+            <LanguageDropDownBar
+              language={language}
+              setLanguage={setLanguage}
+            />
+            <View style={styles.podiumContainer}>
+              {[1, 0, 2].map((podiumIndex, index) => {
+                const entry = filteredLeaderboard[podiumIndex];
+                return (
+                  <View
+                    key={entry.username + entry.language}
+                    style={(styles.podium, styles[`position${podiumIndex}`])}
+                  >
+                    <Image
+                      source={{ uri: entry.avatar_url }}
+                      style={styles.podiumAvatar}
+                    />
+                    <Text style={styles.username}>{entry.username}</Text>
+                    <Text style={styles.points}>{entry.rank}</Text>
 
-                <Image
-                  source={languageIcons[entry.language]}
-                  style={styles.icon}
-                />
-              </View>
-            );
-          })}
-        </View>
-
-        <FlatList
-          data={filteredLeaderboard.slice(3)}
-          keyExtractor={(leaderboardEntry) => {
-            return leaderboardEntry.username + leaderboardEntry.language;
-          }}
-          renderItem={({ item, index }) => (
-            <View style={styles.regularEntry}>
-              <Text style={styles.rankPosition}>{index + 4}</Text>
-              <View style={styles.entryDetails}>
-                <Image
-                  source={{ uri: item.avatar_url }}
-                  style={styles.avatar}
-                />
-                <Text
-                  style={styles.regularUsername}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
-                  {item.username}
-                </Text>
-              </View>
-              <Text style={styles.regularPoints}>{item.rank}</Text>
-
-              <Image
-                source={languageIcons[item.language]}
-                style={styles.regularIcon}
-              />
+                    <Image
+                      source={languageIcons[entry.language]}
+                      style={styles.icon}
+                    />
+                  </View>
+                );
+              })}
             </View>
-          )}
-        />
+
+            <FlatList
+              data={filteredLeaderboard.slice(3)}
+              keyExtractor={(leaderboardEntry) => {
+                return leaderboardEntry.username + leaderboardEntry.language;
+              }}
+              renderItem={({ item, index }) => (
+                <View style={styles.regularEntry}>
+                  <Text style={styles.rankPosition}>{index + 4}</Text>
+                  <View style={styles.entryDetails}>
+                    <Image
+                      source={{ uri: item.avatar_url }}
+                      style={styles.avatar}
+                    />
+                    <Text
+                      style={styles.regularUsername}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {item.username}
+                    </Text>
+                  </View>
+                  <Text style={styles.regularPoints}>{item.rank}</Text>
+
+                  <Image
+                    source={languageIcons[item.language]}
+                    style={styles.regularIcon}
+                  />
+                </View>
+              )}
+            />
+          </>
+        )}
       </ScrollView>
     </View>
   );
