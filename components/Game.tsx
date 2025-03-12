@@ -26,7 +26,7 @@ const Game = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const [finishGame, setFinishGame] = useState<boolean>(false);
   const [winner, setWinner] = useState<string>("");
-  let [timer, setTimer] = useState<number>(30);
+  let [timer, setTimer] = useState<number>(29);
   const [roomId, setRoomId] = useState<string>("");
   const [players, setPlayers] = useState<{ [key: string]: any }>({});
   const [language, setLanguage] = useState<Language | null>(null);
@@ -141,7 +141,6 @@ const Game = () => {
     for (let i = 0; i <= timer; i++) {
       setTimeout(() => {
         console.log(timer);
-        console.log(roomId);
         setTimer(timer--);
       }, i * 1000);
     }
