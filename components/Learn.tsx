@@ -70,7 +70,7 @@ const Learn: React.FunctionComponent = () => {
   return (
     <>
       <ImageBackground
-        style={{ flex: 1, height: "100%", width: "100%" }}
+        style={{ flex: 1, height: "100 %", width: "100%" }}
         source={backgroundUI.backgroundTabel}
       >
         {/* {isPending && <div>Loading...</div>}
@@ -91,7 +91,7 @@ const Learn: React.FunctionComponent = () => {
             <View style={styles.wordContainer}>
               {wordsToLearn.map((word, index) => {
                 return (
-                  <View style={{ flexDirection: "column" }}>
+                  <View key={index} style={{ flexDirection: "column" }}>
                     {faceDownCards[index] ? (
                       <View style={styles.cardWrapper}>
                         <TouchableOpacity
@@ -220,8 +220,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardOutlineStyle: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: "100%",
     resizeMode: "contain",
     zIndex: 1,
   },
@@ -270,8 +270,8 @@ const styles = StyleSheet.create({
   cardBlank: { height: 100, width: 100, resizeMode: "contain", zIndex: 1 },
 
   wordImage: {
-    width: 120,
-    height: 120,
+    width: "120%",
+    height: "120%",
     resizeMode: "contain",
     zIndex: 5,
   },
