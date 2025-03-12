@@ -14,6 +14,10 @@ import axios from "axios";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import axious from "axios";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/NavigationTypes";
+import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
+import { useAuth } from "./contexts/username";
 
 interface SignUpForm {
   name: string;
@@ -41,6 +45,8 @@ const SignUpValidationSchema = yup.object().shape({
 
 export const Signup: React.FC = () => {
   const [newUser, setNewUser] = useState({});
+  const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
     setNewUser(newUser);
@@ -54,6 +60,8 @@ export const Signup: React.FC = () => {
   };
 
   const postNewUser = (newUser: any) => {
+    const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+
     if (!newUser) {
       return Promise.reject({
         error: "missing new user data, please try again",
@@ -85,9 +93,7 @@ export const Signup: React.FC = () => {
           axios.post(url, german),
         ]);
       })
-      .then((data) => {
-        console.log(data, "done");
-      })
+      .then((data) => {})
       .catch((error) => {
         return Promise.reject(error);
       });
@@ -108,6 +114,7 @@ export const Signup: React.FC = () => {
         }}
         onSubmit={(values) => {
           addNewUser(values);
+          navigateTo.navigate("Learn");
         }}
       >
         {({
