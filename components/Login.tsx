@@ -4,16 +4,14 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
-  Alert,
   TouchableOpacity,
 } from "react-native";
 import { useAuth } from "./contexts/username";
 import axios from "axios";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/NavigationTypes";
-import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 interface Users {
   [key: string]: string;
@@ -120,20 +118,24 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
             secureTextEntry={true}
           />
           <TouchableOpacity
-            style={styles.navButton}
+            style={buttonStyling.buttonContainer}
             onPress={() => {
               validUsernameCheck(username, password);
             }}
           >
-            <Text>Log in</Text>
+            <View style={buttonStyling.buttonActive}>
+              <Text style={buttonStyling.buttonActiveText}>Log in</Text>
+            </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.navButton}
+            style={buttonStyling.buttonContainer}
             onPress={() => {
               navigateTo.navigate("Signup");
             }}
           >
-            <Text>Sign up</Text>
+            <View style={buttonStyling.buttonActive}>
+              <Text style={buttonStyling.buttonActiveText}>Sign up</Text>
+            </View>
           </TouchableOpacity>
 
           {isInvalidUsername ? (
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: "5%",
+    padding: "7%",
     borderWidth: 3,
     borderColor: "grey",
     borderRadius: 20,
@@ -187,5 +189,77 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     height: 60,
     width: 60,
+  },
+});
+
+const buttonStyling = StyleSheet.create({
+  buttonContainer: {
+    margin: "1%",
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+  },
+  buttonActive: {
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#FFFFFF",
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "#878787",
+    width: "150%",
+  },
+  buttonActiveText: {
+    backgroundColor: "#BFBFBF",
+    maxHeight: 80,
+    color: "black",
+    padding: 2,
+    borderRadius: 6,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  buttonInactive: {
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#878787",
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "#BFBFBF",
+    width: "25%",
+  },
+  buttonInactiveText: {
+    backgroundColor: "#878787",
+    maxHeight: 80,
+    color: "white",
+    padding: 2,
+    borderRadius: 6,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  textLargeOverlay: {
+    position: "absolute",
+    top: "65%",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 36,
+    zIndex: 2,
+  },
+  textSmallOverlay: {
+    position: "absolute",
+    top: "65%",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+    zIndex: 2,
   },
 });

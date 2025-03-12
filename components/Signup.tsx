@@ -4,17 +4,13 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Alert,
-  Button,
   Image,
   TouchableOpacity,
-  Pressable,
   ImageBackground,
 } from "react-native";
 import axios from "axios";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
-import axious from "axios";
 
 const backgroundUI = {
   background: require("../assets/Background4.png"),
@@ -264,7 +260,28 @@ export const Signup: React.FC = () => {
                   </View>
                 </Form>
 
-                <Button onPress={handleSubmit} title="Submit" />
+                <View>
+                  {/* {( */}
+                  <TouchableOpacity
+                    style={buttonStyling.buttonContainer}
+                    onPress={() => {
+                      handleSubmit;
+                    }}
+                  >
+                    <View style={buttonStyling.buttonActive}>
+                      <Text style={buttonStyling.buttonActiveText}>Submit</Text>
+                    </View>
+                  </TouchableOpacity>
+                  {/* ) : (
+                    <View style={buttonStyling.buttonContainer}>
+                      <View style={buttonStyling.buttonInactive}>
+                        <Text style={buttonStyling.buttonInactiveText}>
+                          Submit
+                        </Text>
+                      </View>
+                    </View>
+                  )} */}
+                </View>
               </View>
             )}
           </Formik>
@@ -333,5 +350,77 @@ const styles = StyleSheet.create({
   image: {
     height: "100%",
     width: "100%",
+  },
+});
+
+const buttonStyling = StyleSheet.create({
+  buttonContainer: {
+    margin: "1%",
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "flex-end",
+  },
+  buttonActive: {
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#FFFFFF",
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "#878787",
+    width: "50%",
+  },
+  buttonActiveText: {
+    backgroundColor: "#BFBFBF",
+    maxHeight: 80,
+    color: "black",
+    padding: 2,
+    borderRadius: 6,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  buttonInactive: {
+    borderRadius: 20,
+    borderWidth: 4,
+    borderColor: "#878787",
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: "#BFBFBF",
+    width: "25%",
+  },
+  buttonInactiveText: {
+    backgroundColor: "#878787",
+    maxHeight: 80,
+    color: "white",
+    padding: 2,
+    borderRadius: 6,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  textLargeOverlay: {
+    position: "absolute",
+    top: "65%",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 36,
+    zIndex: 2,
+  },
+  textSmallOverlay: {
+    position: "absolute",
+    top: "65%",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+    zIndex: 2,
   },
 });
