@@ -24,7 +24,6 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-
 export default function Login({ navigation, route }: React.FunctionComponent) {
   const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
@@ -94,7 +93,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
             source={backgroundUI.cloud4}
           />
         </View>
-        {/* ABOVE WORKS */}
+
         <Image
           style={{
             position: "absolute",
@@ -104,17 +103,6 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
           }}
           source={backgroundUI.moutain}
         />
-        {/* <Image
-          style={{
-            position: "absolute",
-            bottom: "0%",
-            resizeMode: "stretch",
-            height: "110%",
-            // zIndex: 1,
-          }}
-          source={backgroundUI.moutain}
-        /> */}
-        {/* CHANGING THIS TO MATCH ROBBS STYLING SEEMS TO STOP THINGS WORKING? */}
         <View style={styles.container}>
           <Text style={styles.title}>Log in{user}</Text>
           <TextInput
