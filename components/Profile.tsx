@@ -5,11 +5,13 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { ProfileLanguage } from "../types/ProfileTypes";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Achievement from "./Achievement";
 import { GameResult } from "../types/GameResusltsType";
+import axios from "axios";
 
 //Want username, avatar url, and bio and also the data in the array below, for a specific user
 const testLanguageData: Array<ProfileLanguage> = [
@@ -32,23 +34,8 @@ const testLanguageData: Array<ProfileLanguage> = [
     numOfMasterWords: 0,
   },
 ];
-const testGameResults: Array<GameResult> = [
-  {
-    userId: "1",
-    gameNumber: 1,
-    result: "Loss",
-    wordsCorrect: "apple, banana",
-    wordsWrong: "plum, pencil, bread",
-  },
-  {
-    userId: "1",
-    gameNumber: 2,
-    result: "Win",
-    wordsCorrect: "apple, banana, bread",
-    wordsWrong: "plum, pencil",
-  },
-];
-//Child component to map and render language cards
+
+// Child component to map and render language cards
 function LanguageCard({
   language,
   numOfBeginnerWords,
@@ -68,18 +55,37 @@ function LanguageCard({
   );
 }
 function StatsCard({
-  gameNumber,
-  result,
-  wordsCorrect,
-  wordsWrong,
+  room_id,
+  match_date,
+  language,
+  winner,
+  loser,
+  english_wordlist,
+  non_english_wordlist,
+  winner_correct_answers,
+  loser_correct_answers,
 }: GameResult) {
   return (
     <View style={styles.statsCard}>
-      <Text style={styles.gameNo}>Game {gameNumber}</Text>
+      <Text style={styles.gameNo}>
+        Game at {`${match_date.slice(0, 10)} ${match_date.slice(11, 16)}`}
+      </Text>
       <View style={styles.textContainer}>
-        <Text style={styles.statsText}>Result: {result}</Text>
-        <Text style={styles.statsText}>Correct Words: {wordsCorrect}</Text>
-        <Text style={styles.statsText}>Incorrect Words: {wordsWrong}</Text>
+        <Text style={styles.statsText}>Language: {language}</Text>
+        <Text style={styles.statsText}>Wins: {winner}</Text>
+        <Text style={styles.statsText}>Losses: {loser}</Text>
+        <Text style={styles.statsText}>
+          English Words: {english_wordlist.join(", ")}
+        </Text>
+        <Text style={styles.statsText}>
+          Non-English Words: {non_english_wordlist.join(", ")}
+        </Text>
+        <Text style={styles.statsText}>
+          Correct Words: {winner_correct_answers.join(", ")}
+        </Text>
+        <Text style={styles.statsText}>
+          Opponent's Correct Words: {loser_correct_answers.join(", ")}
+        </Text>
       </View>
     </View>
   );
@@ -91,6 +97,26 @@ const testAchievementData: [string, boolean][] = [
 ];
 
 export default function Profile() {
+  const [gameResults, setGameResults] = useState<GameResult[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchGameResults = () => {
+      axios
+        .get("https://wordslingerserver.onrender.com/api/games/1")
+        .then((response) => {
+          console.log(response);
+
+          setGameResults(response.data.game);
+          setIsLoading(false);
+        });
+    };
+
+    fetchGameResults();
+  }, []);
+  const safeGameResults = Array.isArray(gameResults) ? gameResults : [];
+  console.log(safeGameResults);
+
   return (
     <ScrollView style={{ flex: 1, height: "100%", marginInline: "auto" }}>
       <View style={styles.container}>
@@ -143,19 +169,35 @@ export default function Profile() {
       </View>
       <View style={[styles.stats, { backgroundColor: "#89CFF0" }]}>
         <Text style={styles.statsHeader}>Game History</Text>
-        {testGameResults.map(
-          ({ userId, gameNumber, result, wordsCorrect, wordsWrong }) => {
-            return (
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          safeGameResults.map(
+            ({
+              room_id,
+              match_date,
+              language,
+              winner,
+              loser,
+              english_wordlist,
+              non_english_wordlist,
+              winner_correct_answers,
+              loser_correct_answers,
+            }) => (
               <StatsCard
-                userId={userId}
-                gameNumber={gameNumber}
-                result={result}
-                wordsCorrect={wordsCorrect}
-                wordsWrong={wordsWrong}
-                key={gameNumber}
+                room_id={room_id.slice(10)}
+                match_date={match_date}
+                language={language}
+                winner={winner}
+                loser={loser}
+                english_wordlist={english_wordlist}
+                non_english_wordlist={non_english_wordlist}
+                winner_correct_answers={winner_correct_answers}
+                loser_correct_answers={loser_correct_answers}
+                key={room_id}
               ></StatsCard>
-            );
-          }
+            )
+          )
         )}
       </View>
     </ScrollView>
@@ -249,3 +291,40 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
+
+//   {
+//     userId: "1",
+//     gameNumber: 1,
+//     result: "Loss",
+//     wordsCorrect: "apple, banana",
+//     wordsWrong: "plum, pencil, bread",
+//   },
+//   {
+//     userId: "1",
+//     gameNumber: 2,
+//     result: "Win",
+//     wordsCorrect: "apple, banana, bread",
+//     wordsWrong: "plum, pencil",
+//   },
+//   {
+//     userId: "1",
+//     gameNumber: 3,
+//     result: "Win",
+//     wordsCorrect: "raspberry, family, potato, pencil",
+//     wordsWrong: "plum",
+//   },
+// ];
+{
+  /* <View>
+<Image
+  source={require("../assets/tumbleweedtransparent.gif")}
+  style={{
+    width: "1000%",
+    height: "1000%",
+    alignSelf: "center",
+    resizeMode: "contain",
+  }}
+/>
+<Text style={styles.loadingText}>Loading...</Text>
+</View> */
+}
