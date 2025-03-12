@@ -115,19 +115,21 @@ export default function Login({ navigation, route }: any) {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-          <Button
-            title="Login"
+          <TouchableOpacity
+            style={styles.navButton}
             onPress={() => {
               validUsernameCheck(username, password);
             }}
-          />
+          >
+            <Text>Log in</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
             onPress={() => {
               navigateTo.navigate("Signup");
             }}
           >
-            <Text>Signup</Text>
+            <Text>Sign up</Text>
           </TouchableOpacity>
 
           {isInvalidUsername ? (
