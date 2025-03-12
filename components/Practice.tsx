@@ -1,37 +1,35 @@
-import { transform } from "@babel/core";
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  Alert,
   ImageBackground,
-  Image,
   Animated,
+  Button,
 } from "react-native";
 import * as Progress from "react-native-progress";
+import { Language } from "../types/Leaderboard";
+import SelectLanguageMultiplayer from "./LanguageSelectorMultiplayer";
 
-// List of words for the typing game
-const words = [
-  "apple",
-  "banana",
-  "grape",
-  "orange",
-  "mango",
-  "peach",
-  "pear",
-  "plum",
-];
+interface WordPair {
+  english: string;
+  nonEnglish: string;
+}
 
 const Practice = () => {
-  const [currentWord, setCurrentWord] = useState<string>(""); // word to type
+  const [currentWord, setCurrentWord] = useState<WordPair | null>(null); // current word to type
   const [inputValue, setInputValue] = useState<string>(""); // user input
   const [score, setScore] = useState<number>(0); // score tracking
   const [timer, setTimer] = useState<number>(30); // countdown timer
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  // const [showCelebration, setShowCelebration] = useState<boolean>(false); // for emoji display
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const [language, setLanguage] = useState<Language | null>(null);
+  const [languageNotSelected, setLanguageNotSelected] = useState<boolean>(true);
+  const [wordPairs, setWordPairs] = useState<WordPair[]>([]); // Word list (English/Non-English pairs) from API
+
   const UiImages = {
     background: require("../assets/wild-west-town.png"),
   };
@@ -42,15 +40,50 @@ const Practice = () => {
 
   const rotation = useRef(new Animated.Value(0)).current;
 
+  // Fetch words from the server when the language is selected
+  const fetchWords = async (language: string) => {
+    language = language.toLowerCase();
+    try {
+      const response = await axios.get(
+        `https://wordslingerserver.onrender.com/api/word-list/${language}`
+      );
+      const englishTranslations = response.data.words.map(
+        (word: Word) => word.english
+      );
+      const nonEnglishTranslations = response.data.words.map((word: Word) => {
+        return language === "german"
+          ? word.german
+          : language === "french"
+          ? word.french
+          : word.spanish;
+      });
+
+      // Create word pairs
+      const pairs = englishTranslations.map(
+        (englishWord: string, index: number) => ({
+          english: englishWord,
+          nonEnglish: nonEnglishTranslations[index],
+        })
+      );
+
+      setWordPairs(pairs);
+      setCurrentWord(pairs[Math.floor(Math.random() * pairs.length)]); // Set the first random word pair
+    } catch (error) {
+      console.error("Error fetching word list:", error);
+    }
+  };
+
+  // UseEffect to detect language change and fetch word list
   useEffect(() => {
-    // Initialize the game with a random word
-    setRandomWord();
-  }, []);
+    if (language && !languageNotSelected) {
+      fetchWords(language); // Fetch words when language is selected
+    }
+  }, [language]);
 
   useEffect(() => {
     // Countdown timer logic
     if (timer > 0 && !isGameOver) {
-      const interval = setInterval(() => setTimer(timer - 1), 1000);
+      const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
       return () => clearInterval(interval);
     } else if (timer === 0) {
       // End game if timer runs out
@@ -58,18 +91,20 @@ const Practice = () => {
     }
   }, [timer, isGameOver]);
 
-  const setRandomWord = () => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    setCurrentWord(words[randomIndex]);
-  };
-
   const handleInputChange = (text: string) => {
     setInputValue(text);
-    if (text.toLowerCase() === currentWord.toLowerCase()) {
-      // Correct word typed
-      setScore(score + 1);
+
+    if (
+      currentWord &&
+      text.toLowerCase() === currentWord.english.toLowerCase()
+    ) {
+      // Correct non-English word typed
+      setScore((prev) => prev + 1);
       setInputValue("");
-      setRandomWord(); // Set new word
+
+      // Set a new random word pair
+      const newWord = wordPairs[Math.floor(Math.random() * wordPairs.length)];
+      setCurrentWord(newWord);
 
       Animated.sequence([
         Animated.timing(rotation, {
@@ -90,8 +125,18 @@ const Practice = () => {
     setScore(0);
     setTimer(30);
     setIsGameOver(false);
-    setRandomWord();
     setInputValue("");
+
+    // Reset currentWord to a new word from the list
+    if (wordPairs.length > 0) {
+      setCurrentWord(wordPairs[Math.floor(Math.random() * wordPairs.length)]);
+    }
+  };
+
+  const handleStartGame = () => {
+    if (!languageNotSelected) {
+      setIsReady(true); // Set the player as ready only if language is selected
+    }
   };
 
   const rotateLeft = rotation.interpolate({
@@ -112,48 +157,79 @@ const Practice = () => {
       source={UiImages.background}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Typing Game</Text>
-        {isGameOver ? (
-          <View style={styles.gameOverContainer}>
-            <Text style={styles.gameOverText}>Game Over!</Text>
-            <Text style={styles.finalScore}>Your Score: {score}</Text>
-            <TouchableOpacity style={styles.button} onPress={handleRestartGame}>
-              <Text style={styles.buttonText}>Restart Game</Text>
-            </TouchableOpacity>
+        <View>
+          <Text style={styles.title}>Typing Game</Text>
+        </View>
+
+        {/* Show language selection and start game button if not ready */}
+        {!isReady ? (
+          <View>
+            <SelectLanguageMultiplayer
+              language={language}
+              setLanguage={setLanguage}
+              setLanguageNotSelected={setLanguageNotSelected}
+            />
+            {languageNotSelected && <Text>Select a language!</Text>}
+            <Button
+              title="Start Game"
+              onPress={handleStartGame}
+              disabled={languageNotSelected}
+            />
           </View>
         ) : (
-          <View>
-            <Text style={styles.subtitle}>
-              Game Instruction: Type the correct words below
-            </Text>
-            <Text style={styles.word}>{currentWord}</Text>
-            <TextInput
-              style={styles.input}
-              value={inputValue}
-              onChangeText={handleInputChange}
-              placeholder="Type the word here"
-              placeholderTextColor="#888"
+          <>
+            {/* Show game UI if ready */}
+            {isGameOver ? (
+              <View style={styles.gameOverContainer}>
+                <Text style={styles.gameOverText}>Game Over!</Text>
+                <Text style={styles.finalScore}>Your Score: {score}</Text>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={handleRestartGame}
+                >
+                  <Text style={styles.buttonText}>Restart Game</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.gameContainer}>
+                <Text style={styles.subtitle}>
+                  Type the English translation of the following word:
+                </Text>
+                {currentWord && (
+                  <Text style={styles.word}>{currentWord.nonEnglish}</Text>
+                )}
+                <TextInput
+                  style={styles.input}
+                  value={inputValue}
+                  onChangeText={handleInputChange}
+                  placeholder="Type the translation here"
+                  placeholderTextColor="#888"
+                />
+                <Text style={styles.timer}>
+                  Time: {timer} seconds remaining
+                </Text>
+                <Progress.Bar
+                  progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
+                  width={300}
+                  color="#4CAF50"
+                  height={12}
+                  borderRadius={6}
+                  animated={true}
+                  style={styles.progressBar}
+                />
+              </View>
+            )}
+
+            <Animated.Image
+              style={[styles.leftGun, rotateLeftStyle]}
+              source={playerIcons.gunLeft}
             />
-            <Text style={styles.timer}>Time: {timer} seconds remaining</Text>
-            <Progress.Bar
-              progress={timer / 30} // Normalize progress from 0 to 1 based on initial time
-              width={300}
-              color="#4CAF50"
-              height={12}
-              borderRadius={6}
-              animated={true}
-              style={styles.progressBar}
+            <Animated.Image
+              style={[styles.rightGun, rotateRightStyle]}
+              source={playerIcons.gunRight}
             />
-          </View>
+          </>
         )}
-        <Animated.Image
-          style={[styles.leftGun, rotateLeftStyle]}
-          source={playerIcons.gunLeft}
-        />
-        <Animated.Image
-          style={[styles.rightGun, rotateRightStyle]}
-          source={playerIcons.gunRight}
-        />
       </View>
     </ImageBackground>
   );
@@ -167,7 +243,6 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   },
-
   container: {
     flex: 1,
     justifyContent: "center",
@@ -208,12 +283,6 @@ const styles = StyleSheet.create({
     color: "#ff0000",
     marginBottom: 20,
   },
-  score: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-    marginTop: 20,
-  },
   gameOverContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -233,40 +302,30 @@ const styles = StyleSheet.create({
     backgroundColor: "#4CAF50",
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
+    borderRadius: 8,
   },
   buttonText: {
     color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 20,
   },
   progressBar: {
     marginBottom: 20,
   },
-  celebrationEmoji: {
-    fontSize: 40,
-    marginTop: 15,
-  },
-
   leftGun: {
+    width: 100,
+    height: 100,
     position: "absolute",
-    resizeMode: "contain",
-    maxWidth: "30%",
-    maxHeight: "30%",
-    left: 0,
-    bottom: 0,
+    left: 50,
+    bottom: 50,
   },
   rightGun: {
+    width: 100,
+    height: 100,
     position: "absolute",
-    resizeMode: "contain",
-    maxWidth: "30%",
-    maxHeight: "30%",
-    right: 0,
-    bottom: 0,
+    right: 50,
+    bottom: 50,
+  },
+  gameContainer: {
+    backgroundColor: "rgba(128, 128, 128, 0.5)",
   },
 });
