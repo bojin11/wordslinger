@@ -61,9 +61,8 @@ export const Signup: React.FC = () => {
       });
     }
     return axios
-      .post("https://wordslingerserver.onrender.com/api/user", newUser)
+      .post("https://wordslingerserver.onrender.com/api/users", newUser)
       .then(({ data }) => {
-        console.log(data);
         return data;
       })
       .catch((error) => {
