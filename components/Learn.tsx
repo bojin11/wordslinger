@@ -37,7 +37,9 @@ interface LearnWords {
 
 const handleReview = () => {};
 
+
 export default function Learn({}: React.FunctionComponent) {
+
   // const async {
   //   data: words,
   //   error,
@@ -45,6 +47,8 @@ export default function Learn({}: React.FunctionComponent) {
   // } = useFetchData(
   //   "https://wordslingerserver.onrender.com/api/word-list/french"
   // );
+
+  const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
   const [faceDownCards, setFaceDownCards] = useState([
     false,
@@ -121,8 +125,9 @@ export default function Learn({}: React.FunctionComponent) {
                             : word.german}
                         </Text>
                         <Image
-                          style={styles.wordImageSmall}
-                          source={testImages}
+
+                          source={word.image_url}
+
                         />
                       </TouchableOpacity>
                     </View>
@@ -291,13 +296,19 @@ const styles = StyleSheet.create({
   },
   cardContainerLarge: {},
   largeCard: {
+
+    margin: "2%",
+    padding: "3%",
     position: "relative",
     width: "60%",
     height: "60%",
     zIndex: 2,
   },
   largeDisplayCard: {
+
     width: "60%",
+
+
     height: "95%",
 
     right: "0%",

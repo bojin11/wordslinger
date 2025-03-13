@@ -60,7 +60,7 @@ export const Signup: React.FC = () => {
   };
 
   const postNewUser = (newUser: any) => {
-    const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+    // const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
     if (!newUser) {
       return Promise.reject({

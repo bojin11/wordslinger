@@ -178,6 +178,7 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
+
         <ImageBackground
           style={{ height: "100%", width: "100%", top: "5%" }}
           source={playerIcons.signPost}
@@ -277,6 +278,7 @@ const Game = () => {
           </View>
         )}
       </SafeAreaView>
+
       <View style={{ height: "40%", width: "100%", bottom: "5%" }}>
         <Animated.Image
           style={[globalStyles.leftGun, rotateLeftStyle]}
@@ -287,6 +289,7 @@ const Game = () => {
           source={playerIcons.gunRight}
         />
       </View>
+
     </ImageBackground>
   );
 };

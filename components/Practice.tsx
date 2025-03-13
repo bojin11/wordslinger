@@ -229,6 +229,7 @@ const Practice = () => {
                 />
               </View>
             )}
+
             <View style={{ height: "40%", width: "100%" }}>
               <Animated.Image
                 style={[globalStyles.leftGun, rotateLeftStyle]}
