@@ -25,7 +25,6 @@ const ReviewGame = ({ route }: any) => {
   const currWord = currWordList[0][language];
   const currLanguageMastery = currWordList[0][language + "_mastery"];
   const currWordImg = currWordList[0].image_url;
-
   const reviewAxiosInstance = axios.create({
     baseURL: "https://wordslingerserver.onrender.com/api/reviews/",
   });
@@ -169,6 +168,10 @@ const ReviewGame = ({ route }: any) => {
               ></TextInput>
               <Button onPress={submitAnswer} title="Submit"></Button>
             </View>
+            <Image
+              source={currWordImg}
+              style={[styles.image, { marginInline: "auto" }]}
+            ></Image>
           </>
         )}
         <ScrollView>
