@@ -178,11 +178,10 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
-
-        <ImageBackground
+        {/* <ImageBackground
           style={{ height: "100%", width: "100%", top: "5%" }}
           source={playerIcons.signPost}
-        ></ImageBackground>
+        ></ImageBackground> */}
         {winner && finishGame ? (
           <View>
             <Text style={styles.title}>Matchmaking</Text>
@@ -289,7 +288,6 @@ const Game = () => {
           source={playerIcons.gunRight}
         />
       </View>
-
     </ImageBackground>
   );
 };
