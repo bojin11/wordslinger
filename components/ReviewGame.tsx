@@ -7,6 +7,7 @@ import {
   Button,
   ScrollView,
   ImageBackground,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -23,6 +24,8 @@ const ReviewGame = ({ route }: any) => {
   const currWordInEnglish = currWordList[0]["english"];
   const currWord = currWordList[0][language];
   const currLanguageMastery = currWordList[0][language + "_mastery"];
+  const currWordImg = currWordList[0].image_url;
+
   const reviewAxiosInstance = axios.create({
     baseURL: "https://wordslingerserver.onrender.com/api/reviews/",
   });
@@ -146,29 +149,35 @@ const ReviewGame = ({ route }: any) => {
             }}
           ></Button>
         ) : (
-          <View style={styles.card}>
-            <Text style={styles.langText}>{currWord}</Text>
-            <TextInput
-              placeholder="Enter the word above in English!"
-              style={{
-                width: "100%",
-                textAlign: "center",
-                marginBlock: 10,
-                backgroundColor: "white",
-                paddingBlock: 10,
-              }}
-              onChange={(e: any) => {
-                setCurrTextInput(() => {
-                  return e.target.value;
-                });
-              }}
-              onKeyPress={(e: any) => {
-                e.key === "Enter" ? submitAnswer() : null;
-              }}
-              value={currTextInput}
-            ></TextInput>
-            <Button onPress={submitAnswer} title="Submit"></Button>
-          </View>
+          <>
+            <View style={styles.card}>
+              <Text style={styles.langText}>{currWord}</Text>
+              <TextInput
+                placeholder="Enter the word above in English!"
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  marginBlock: 10,
+                  backgroundColor: "white",
+                  paddingBlock: 10,
+                }}
+                onChange={(e: any) => {
+                  setCurrTextInput(() => {
+                    return e.target.value;
+                  });
+                }}
+                onKeyPress={(e: any) => {
+                  e.key === "Enter" ? submitAnswer() : null;
+                }}
+                value={currTextInput}
+              ></TextInput>
+              <Button onPress={submitAnswer} title="Submit"></Button>
+            </View>
+            <Image
+              source={currWordImg}
+              style={[styles.image, { resizeMode: "center" }]}
+            ></Image>
+          </>
         )}
 
         {logAnswers.map(
@@ -238,6 +247,16 @@ const styles = StyleSheet.create({
     width: Dimensions.get("screen").width,
     textAlign: "center",
     marginBlock: 5,
+  },
+  image: {
+    backgroundColor: "#ec965d",
+    borderColor: "black",
+    borderWidth: 2,
+    width: 100,
+    height: 100,
+    borderRadius: 50 / 2,
+    overflow: "hidden",
+    padding: 10,
   },
 });
 
