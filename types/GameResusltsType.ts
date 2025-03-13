@@ -1,7 +1,11 @@
 export type GameResult = {
-  userId: "1";
-  gameNumber: number;
-  result: "Win" | "Loss";
-  wordsCorrect: string;
-  wordsWrong: string;
+  room_id: string;
+  match_date: string;
+  language: string;
+  winner: number;
+  loser: number;
+  english_wordlist: string[];
+  non_english_wordlist: string[];
+  winner_correct_answers: string[];
+  loser_correct_answers: string[];
 };
