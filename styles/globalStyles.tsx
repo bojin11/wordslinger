@@ -11,7 +11,9 @@ export const globalStyles = StyleSheet.create({
   rightGun: {
     position: "relative",
     width: "70%",
-    bottom: "150%",
+
+    bottom: "100%",
+
     left: "40%",
     resizeMode: "contain",
   },

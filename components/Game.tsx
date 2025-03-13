@@ -178,10 +178,7 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
-        {/* <ImageBackground
-          style={{ height: "100%", width: "100%", top: "5%" }}
-          source={playerIcons.signPost}
-        ></ImageBackground> */}
+
         {winner && finishGame ? (
           <View>
             <Text style={styles.title}>Matchmaking</Text>
@@ -253,8 +250,9 @@ const Game = () => {
                       left: "0%",
                     }}
                   >
-                    <Text style={globalStyles.signPostTitle}>Matchmaking</Text>
-                    <View style={{ top: "30%" }}>
+                    <View style={{ top: "160%" }}>
+                      <Text style={styles.title}>Matchmaking</Text>
+
                       <Button
                         title="Start Game"
                         onPress={() => {
@@ -278,7 +276,7 @@ const Game = () => {
         )}
       </SafeAreaView>
 
-      <View style={{ height: "40%", width: "100%", bottom: "5%" }}>
+      <View style={{ height: "40%", width: "100%", bottom: "0%" }}>
         <Animated.Image
           style={[globalStyles.leftGun, rotateLeftStyle]}
           source={playerIcons.gunLeft}
