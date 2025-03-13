@@ -2,16 +2,19 @@ import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   leftGun: {
-    position: "absolute",
-    maxWidth: "80%",
-    top: "50%",
-    right: "40%",
+
+    position: "relative",
+    width: "70%",
+    top: "12%",
+    right: "10%",
     resizeMode: "contain",
   },
   rightGun: {
-    position: "absolute",
-    maxWidth: "80%",
-    top: "50%",
+    position: "relative",
+    width: "70%",
+    bottom: "200%",
+
+ 
     left: "40%",
     resizeMode: "contain",
   },
@@ -277,4 +280,4 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
     zIndex: 2,
   },
-});
+

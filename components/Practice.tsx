@@ -230,14 +230,16 @@ const Practice = () => {
               </View>
             )}
 
-            <Animated.Image
-              style={[globalStyles.leftGun, rotateLeftStyle]}
-              source={playerIcons.gunLeft}
-            />
-            <Animated.Image
-              style={[globalStyles.rightGun, rotateRightStyle]}
-              source={playerIcons.gunRight}
-            />
+            <View style={{ height: "40%", width: "100%" }}>
+              <Animated.Image
+                style={[globalStyles.leftGun, rotateLeftStyle]}
+                source={playerIcons.gunLeft}
+              />
+              <Animated.Image
+                style={[globalStyles.rightGun, rotateRightStyle]}
+                source={playerIcons.gunRight}
+              />
+            </View>
           </>
         )}
       </SafeAreaView>
