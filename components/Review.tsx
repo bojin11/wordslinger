@@ -6,51 +6,52 @@ import {
   ScrollView,
   Button,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ReviewData,
-  ReviewCardType,
-  LanguageAndWords,
-} from "../types/ReviewTypes";
+import { ReviewCardType } from "../types/ReviewTypes";
+import axios from "axios";
+import { useAuth } from "./contexts/username";
 
-const testReviewData: ReviewData = {
-  wordsToReview: {
-    French: [
-      ["chien", "dog"],
-      ["mère", "mother"],
-      ["livre", "book"],
-    ],
-    German: [],
-    Spanish: [["perro", "dog"]],
-  },
-};
-
-const wordsToReviewFormatted: LanguageAndWords = Object.entries(
-  testReviewData.wordsToReview
-);
-
-function ReviewCard({ language, wordList }: ReviewCardType) {
+function ReviewCard({ language, wordList, userID }: ReviewCardType) {
   const languageBackground = styles[`${language}`];
+  const languageMastery = language + "_mastery";
+  const language_review_interval_sec = language + "_review_interval_sec";
+  const reviewableWordsList = wordList.filter((word: any) => {
+    const mastery = word[languageMastery];
+    const reviewInterval = word[language_review_interval_sec];
+    switch (mastery) {
+      case "beginner":
+        return reviewInterval > 10 ? true : false;
+      case "intermediate":
+        return reviewInterval > 60 ? true : false;
+      case "master":
+        return reviewInterval > 300 ? true : false;
+      case null:
+        return false;
+      default:
+        return true;
+    }
+  });
 
   const navigation = useNavigation<StackNavigationProp<{ ReviewGame?: any }>>();
   function navigateToLanguage() {
     navigation.navigate("ReviewGame", {
       language,
-      wordList,
+      reviewableWordsList,
+      userID,
     });
   }
   const titleForButton =
-    wordList.length !== 1
-      ? `${wordList.length} words`
-      : `${wordList.length} word`;
+    reviewableWordsList.length !== 1
+      ? `${reviewableWordsList.length} words`
+      : `${reviewableWordsList.length} word`;
   return (
     <View style={[styles.card, languageBackground]}>
       <Text style={styles.langText}>{language}</Text>
       <Button
         title={titleForButton}
-        disabled={wordList.length === 0}
+        disabled={reviewableWordsList.length === 0}
         onPress={navigateToLanguage}
       ></Button>
     </View>
@@ -58,21 +59,60 @@ function ReviewCard({ language, wordList }: ReviewCardType) {
 }
 
 const Review = () => {
-  return (
-    <ScrollView>
-      <View>
-        {wordsToReviewFormatted.map((data) => {
-          return (
-            <ReviewCard
-              language={data[0]}
-              wordList={data[1]}
-              key={data[0]}
-            ></ReviewCard>
-          );
-        })}
+  const [isLoading, setIsLoading] = useState(true);
+  const [reviewData, setReviewData] = useState<any>();
+  const [userID, setUserID] = useState();
+  const { user } = useAuth();
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get("https://wordslingerserver.onrender.com/api/users/" + user)
+      .then((response) => {
+        setUserID(() => response.data.user[0].user_id);
+        return response.data.user[0].user_id;
+      })
+      .then((user_ID) => {
+        axios
+          .get("https://wordslingerserver.onrender.com/api/reviews/" + user_ID)
+          .then((response) => {
+            setReviewData(() => {
+              const { germanReviewData, spanishReviewData, frenchReviewData } =
+                response.data.reviewData;
+              return [
+                ["german", germanReviewData],
+                ["spanish", spanishReviewData],
+                ["french", frenchReviewData],
+              ];
+            });
+            setIsLoading(false);
+          });
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { justifyContent: "center" }]}>
+        <Text>LOADING...</Text>
       </View>
-    </ScrollView>
-  );
+    );
+  } else {
+    return (
+      <ScrollView>
+        <View>
+          {reviewData.map((data: any) => {
+            return (
+              <ReviewCard
+                language={data[0]}
+                wordList={data[1]}
+                userID={userID}
+                key={data[0]}
+              ></ReviewCard>
+            );
+          })}
+        </View>
+      </ScrollView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -93,13 +133,13 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 2,
   },
-  French: {
+  french: {
     backgroundColor: "#000091",
   },
-  Spanish: {
+  spanish: {
     backgroundColor: "#FFCC00",
   },
-  German: {
+  german: {
     backgroundColor: "#AA151B",
   },
   textHeader: {

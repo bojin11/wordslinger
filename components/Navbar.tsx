@@ -9,7 +9,7 @@ const hayStack = require("../assets/icons/hay-large.png");
 const barrel = require("../assets/icons/barrel.png");
 const whiskey = require("../assets/icons/Whiskey.png");
 const chariot = require("../assets/icons/chariot.png");
-
+const house = require("../assets/icons/house.png");
 const Navbar: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
@@ -79,6 +79,17 @@ const Navbar: React.FC = () => {
           <Image
             style={[styles.image, { resizeMode: "center" }]}
             source={barrel}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Review")}
+        >
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={house}
           />
         </TouchableOpacity>
       </View>

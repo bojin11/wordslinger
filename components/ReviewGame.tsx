@@ -10,22 +10,61 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import axios from "axios";
 
 const ReviewGame = ({ route }: any) => {
   const navigation = useNavigation<StackNavigationProp<{ Review?: any }>>();
-  const { language, wordList } = route.params;
-  const [currWordList, setCurrWordList] = useState(wordList);
+  const { language, reviewableWordsList, userID } = route.params;
+  const [currWordList, setCurrWordList] = useState(reviewableWordsList);
   const [currTextInput, setCurrTextInput] = useState("");
   type Log = any[];
   const [logAnswers, setLogAnswers] = useState<Log>([]);
   const [isFinished, setIsFinished] = useState(false);
-  const currWordInEnglish = currWordList[0][1];
-  const currWord = currWordList[0][0];
+  const currWordInEnglish = currWordList[0]["english"];
+  const currWord = currWordList[0][language];
+  const currLanguageMastery = currWordList[0][language + "_mastery"];
+  const reviewAxiosInstance = axios.create({
+    baseURL: "https://wordslingerserver.onrender.com/api/reviews/",
+  });
   function submitAnswer() {
     if (
       currTextInput.toLocaleLowerCase() ===
       currWordInEnglish.toLocaleLowerCase()
     ) {
+      switch (currLanguageMastery) {
+        case "beginner":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "intermediate",
+            },
+          });
+          break;
+        case "intermediate":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "master",
+            },
+          });
+          break;
+        case "master":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "master",
+            },
+          });
+      }
       setLogAnswers((currValue) => {
         return [...currValue, [currWordInEnglish, "RIGHT"]];
       });
@@ -39,6 +78,40 @@ const ReviewGame = ({ route }: any) => {
 
       setCurrTextInput("");
     } else {
+      switch (currLanguageMastery) {
+        case "beginner":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "beginner",
+            },
+          });
+          break;
+        case "intermediate":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "beginner",
+            },
+          });
+          break;
+        case "master":
+          reviewAxiosInstance({
+            method: "patch",
+            url: `${userID}`,
+            data: {
+              english: currWordInEnglish,
+              target_language: language,
+              new_mastery: "intermediate",
+            },
+          });
+      }
       setLogAnswers((currValue) => {
         return [...currValue, [currWordInEnglish, "WRONG"]];
       });
@@ -53,6 +126,7 @@ const ReviewGame = ({ route }: any) => {
       setCurrTextInput("");
     }
   }
+
   return (
     <ScrollView
       style={styles.container}
@@ -77,12 +151,14 @@ const ReviewGame = ({ route }: any) => {
               backgroundColor: "white",
               paddingBlock: 10,
             }}
-            onChange={(e) => {
+            onChange={(e: any) => {
               setCurrTextInput(() => {
+                console.log(e, "<<<<");
+
                 return e.target.value;
               });
             }}
-            onKeyPress={(e) => {
+            onKeyPress={(e: any) => {
               e.key === "Enter" ? submitAnswer() : null;
             }}
             value={currTextInput}
@@ -91,8 +167,8 @@ const ReviewGame = ({ route }: any) => {
         </View>
       )}
       <Text>Shooting animation below to correspond with answer: </Text>
-      {logAnswers.map(([answer, rightOrWrong]) => {
-        const answerStyle = styles[`${rightOrWrong}`];
+      {logAnswers.map(([answer, rightOrWrong]: [string, "RIGHT" | "WRONG"]) => {
+        const answerStyle: any = styles[`${rightOrWrong}`];
 
         return (
           <Text key={answer} style={answerStyle}>
