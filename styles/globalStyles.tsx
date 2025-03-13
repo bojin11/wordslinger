@@ -1,9 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
-
   leftGun: {
-
     position: "relative",
     width: "70%",
     top: "12%",
@@ -13,9 +11,7 @@ export const globalStyles = StyleSheet.create({
   rightGun: {
     position: "relative",
     width: "70%",
-    bottom: "200%",
-
- 
+    bottom: "150%",
     left: "40%",
     resizeMode: "contain",
   },
@@ -229,7 +225,6 @@ export const globalStyles = StyleSheet.create({
     width: "25%",
   },
   buttonActiveText: {
-
     backgroundColor: "#bfbfbf",
     maxHeight: 80,
     color: "black",
