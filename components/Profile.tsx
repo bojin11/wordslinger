@@ -33,6 +33,20 @@ const testLanguageData: Array<ProfileLanguage> = [
   },
 ];
 
+const userProfile = {
+  name: "Put your name here",
+  username: "Put your username here",
+  bio: "Tell us about yourself, partner.",
+  avatar_url: "Pick an avatar from below",
+};
+
+const image1 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1OS5wbmc=/794x1000/hnUX4e.png";
+const image2 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1Ny5wbmc=/794x1000/VX87t1.png";
+const image3 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ2Mi5wbmc=/794x1000/TvwatB.png";
+
 //Child component to map and render language cards
 function LanguageCard({
   language,
@@ -61,29 +75,29 @@ const testAchievementData: [string, boolean][] = [
 
 export default function Profile() {
   const { user } = useAuth();
-  const getUserId = () => {
-    return axios
-      .get(
-        `      https://wordslingerserver.onrender.com/api/users/${user}
-`
-      )
-      .then(({ data }) => {
-        return data.user[0];
-      });
-  };
+  //   const getUserId = () => {
+  //     return axios
+  //       .get(
+  //         `      https://wordslingerserver.onrender.com/api/users/${user}
+  // `
+  //       )
+  //       .then(({ data }) => {
+  //         return data.user[0];
+  //       });
+  //   };
 
-  const getUser = () => {
-    const user_id = getUserId();
-    console.log(user_id);
-    return axios
-      .get(`      https://wordslingerserver.onrender.com/api/users/${user_id}`)
-      .then((result) => {
-        return result;
-      });
-  };
+  // const getUser = () => {
+  //   const user_id = getUserId();
+  //   console.log(user_id);
+  //   return axios
+  //     .get(`      https://wordslingerserver.onrender.com/api/users/${user_id}`)
+  //     .then((result) => {
+  //       return result;
+  //     });
+  // };
 
-  const userInfo = getUser();
-  console.log(userInfo);
+  // const userInfo = getUser();
+  // console.log(userInfo);
 
   return (
     <ScrollView style={{ flex: 1, height: "100%", marginInline: "auto" }}>
@@ -96,10 +110,10 @@ export default function Profile() {
             }}
             alt="Profile picture"
           />
-          <Text>"user </Text>
+          <Text>{userProfile.username}</Text>
         </View>
         <View style={styles.bioCard}>
-          <Text>blogger, parent, scientist</Text>
+          <Text>{userProfile.bio}</Text>
         </View>
       </View>
 
