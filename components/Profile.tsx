@@ -10,8 +10,11 @@ import {
 import { ProfileLanguage } from "../types/ProfileTypes";
 import React, { useEffect, useState } from "react";
 import Achievement from "./Achievement";
-import { GameResult } from "../types/GameResusltsType";
+
 import axios from "axios";
+import { useAuth } from "./contexts/username";
+
+import { GameResult } from "../types/GameResusltsType";
 
 //Want username, avatar url, and bio and also the data in the array below, for a specific user
 const testLanguageData: Array<ProfileLanguage> = [
@@ -35,7 +38,22 @@ const testLanguageData: Array<ProfileLanguage> = [
   },
 ];
 
-// Child component to map and render language cards
+
+const userProfile = {
+  name: "Put your name here",
+  username: "Put your username here",
+  bio: "Tell us about yourself, partner.",
+  avatar_url: "Pick an avatar from below",
+};
+
+const image1 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1OS5wbmc=/794x1000/hnUX4e.png";
+const image2 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ1Ny5wbmc=/794x1000/VX87t1.png";
+const image3 =
+  "https://img.itch.zone/aW1hZ2UvMjc2MTQwNS8xNjQ3NDQ2Mi5wbmc=/794x1000/TvwatB.png";
+
+
 function LanguageCard({
   language,
   numOfBeginnerWords,
@@ -97,6 +115,32 @@ const testAchievementData: [string, boolean][] = [
 ];
 
 export default function Profile() {
+
+  const { user } = useAuth();
+  //   const getUserId = () => {
+  //     return axios
+  //       .get(
+  //         `      https://wordslingerserver.onrender.com/api/users/${user}
+  // `
+  //       )
+  //       .then(({ data }) => {
+  //         return data.user[0];
+  //       });
+  //   };
+
+  // const getUser = () => {
+  //   const user_id = getUserId();
+  //   console.log(user_id);
+  //   return axios
+  //     .get(`      https://wordslingerserver.onrender.com/api/users/${user_id}`)
+  //     .then((result) => {
+  //       return result;
+  //     });
+  // };
+
+  // const userInfo = getUser();
+  // console.log(userInfo);
+
   const [gameResults, setGameResults] = useState<GameResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -117,6 +161,7 @@ export default function Profile() {
   const safeGameResults = Array.isArray(gameResults) ? gameResults : [];
   console.log(safeGameResults);
 
+
   return (
     <ScrollView style={{ flex: 1, height: "100%", marginInline: "auto" }}>
       <View style={styles.container}>
@@ -124,14 +169,14 @@ export default function Profile() {
           <Image
             style={styles.tinyProfilePic}
             source={{
-              uri: "https://avatars.githubusercontent.com/u/24693797",
+              uri: "url",
             }}
             alt="Profile picture"
           />
-          <Text>Axel_Nicolas-Emmerich54</Text>
+          <Text>{userProfile.username}</Text>
         </View>
         <View style={styles.bioCard}>
-          <Text>blogger, parent, scientist</Text>
+          <Text>{userProfile.bio}</Text>
         </View>
       </View>
 
