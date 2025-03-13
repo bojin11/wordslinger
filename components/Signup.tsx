@@ -85,7 +85,7 @@ export const Signup: React.FC = () => {
         };
         const german = {
           user_id: user[0].user_id,
-          language: "Spanish",
+          language: "German",
         };
         return Promise.all([
           axios.post(url, french),
