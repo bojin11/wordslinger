@@ -25,8 +25,6 @@ const ReviewGame = ({ route }: any) => {
   const currWord = currWordList[0][language];
   const currLanguageMastery = currWordList[0][language + "_mastery"];
   const currWordImg = currWordList[0].image_url;
-  console.log(currWordImg);
-
   const reviewAxiosInstance = axios.create({
     baseURL: "https://wordslingerserver.onrender.com/api/reviews/",
   });
