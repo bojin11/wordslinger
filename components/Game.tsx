@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { globalStyles } from "../styles/globalStyles";
 import {
   SafeAreaView,
   StyleSheet,
@@ -37,6 +38,7 @@ const Game = () => {
   const playerIcons = {
     gunLeft: require("../assets/fps-gun-leftCU.png"),
     gunRight: require("../assets/fps-gun-rightCU.png"),
+    signPost: require("../assets/Pannel1.png"),
   };
 
   const rotation = useRef(new Animated.Value(0)).current;
@@ -176,7 +178,7 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Typing Game</Text>
+        <Text style={styles.title}>Matchmaking</Text>
         {winner && finishGame ? (
           <View style={styles.resultDisplay}>
             <Text>
@@ -259,12 +261,13 @@ const Game = () => {
           </View>
         )}
       </SafeAreaView>
+
       <Animated.Image
-        style={[styles.leftGun, rotateLeftStyle]}
+        style={[globalStyles.leftGun, rotateLeftStyle]}
         source={playerIcons.gunLeft}
       />
       <Animated.Image
-        style={[styles.rightGun, rotateRightStyle]}
+        style={[globalStyles.rightGun, rotateRightStyle]}
         source={playerIcons.gunRight}
       />
     </ImageBackground>
@@ -345,22 +348,7 @@ const styles = StyleSheet.create({
   playerSummaryContainer: {
     marginBottom: 10,
   },
-  leftGun: {
-    position: "absolute",
-    resizeMode: "contain",
-    maxWidth: "30%",
-    maxHeight: "30%",
-    left: 0,
-    bottom: 0,
-  },
-  rightGun: {
-    position: "absolute",
-    resizeMode: "contain",
-    maxWidth: "30%",
-    maxHeight: "30%",
-    right: 0,
-    bottom: 0,
-  },
+
   resultDisplay: {
     backgroundColor: "rgba(128, 128, 128, 0.5)",
   },
