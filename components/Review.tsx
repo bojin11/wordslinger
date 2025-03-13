@@ -98,7 +98,7 @@ const Review = () => {
   } else {
     return (
       <ScrollView>
-        <View>
+        <View style={{ marginInline: "auto" }}>
           {reviewData.map((data: any) => {
             return (
               <ReviewCard
@@ -118,10 +118,11 @@ const Review = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    width: "100%",
     backgroundColor: "grey",
-    marginBlockEnd: 10,
     flex: 1,
+    width: Dimensions.get("window").width, //for full screen
+    height: Dimensions.get("window").height, //for full screen,
+    marginInline: "auto",
   },
   card: {
     width: Dimensions.get("screen").width,

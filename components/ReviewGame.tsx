@@ -6,19 +6,19 @@ import {
   TextInput,
   Button,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import axios from "axios";
-
+const townBG = require("../assets/wild-west-town.png");
 const ReviewGame = ({ route }: any) => {
   const navigation = useNavigation<StackNavigationProp<{ Review?: any }>>();
   const { language, reviewableWordsList, userID } = route.params;
   const [currWordList, setCurrWordList] = useState(reviewableWordsList);
   const [currTextInput, setCurrTextInput] = useState("");
-  type Log = any[];
-  const [logAnswers, setLogAnswers] = useState<Log>([]);
+  const [logAnswers, setLogAnswers] = useState<any[]>([]);
   const [isFinished, setIsFinished] = useState(false);
   const currWordInEnglish = currWordList[0]["english"];
   const currWord = currWordList[0][language];
@@ -128,64 +128,75 @@ const ReviewGame = ({ route }: any) => {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ alignItems: "center" }}
-    >
-      {isFinished ? (
-        <Button
-          title="Return To Review"
-          onPress={() => {
-            navigation.navigate("Review");
-          }}
-        ></Button>
-      ) : (
-        <View style={styles.card}>
-          <Text style={styles.langText}>{currWord}</Text>
-          <TextInput
-            placeholder="Enter the word above in English!"
-            style={{
-              width: "100%",
-              textAlign: "center",
-              marginBlock: 10,
-              backgroundColor: "white",
-              paddingBlock: 10,
+    <View style={{ flex: 1, justifyContent: "center" }}>
+      <ScrollView
+        style={styles.scrollview}
+        contentContainerStyle={{
+          alignItems: "center",
+          marginBlockStart: "5%",
+          justifyContent: "center",
+          gap: "2%",
+        }}
+      >
+        {isFinished ? (
+          <Button
+            title="Return To Review"
+            onPress={() => {
+              navigation.navigate("Review");
             }}
-            onChange={(e: any) => {
-              setCurrTextInput(() => {
-                console.log(e, "<<<<");
+          ></Button>
+        ) : (
+          <View style={styles.card}>
+            <Text style={styles.langText}>{currWord}</Text>
+            <TextInput
+              placeholder="Enter the word above in English!"
+              style={{
+                width: "100%",
+                textAlign: "center",
+                marginBlock: 10,
+                backgroundColor: "white",
+                paddingBlock: 10,
+              }}
+              onChange={(e: any) => {
+                setCurrTextInput(() => {
+                  return e.target.value;
+                });
+              }}
+              onKeyPress={(e: any) => {
+                e.key === "Enter" ? submitAnswer() : null;
+              }}
+              value={currTextInput}
+            ></TextInput>
+            <Button onPress={submitAnswer} title="Submit"></Button>
+          </View>
+        )}
 
-                return e.target.value;
-              });
-            }}
-            onKeyPress={(e: any) => {
-              e.key === "Enter" ? submitAnswer() : null;
-            }}
-            value={currTextInput}
-          ></TextInput>
-          <Button onPress={submitAnswer} title="Submit"></Button>
-        </View>
-      )}
-      <Text>Shooting animation below to correspond with answer: </Text>
-      {logAnswers.map(([answer, rightOrWrong]: [string, "RIGHT" | "WRONG"]) => {
-        const answerStyle: any = styles[`${rightOrWrong}`];
+        {logAnswers.map(
+          ([answer, rightOrWrong]: [string, "RIGHT" | "WRONG"]) => {
+            const answerStyle: any = styles[`${rightOrWrong}`];
 
-        return (
-          <Text key={answer} style={answerStyle}>
-            You got the answer {answer} {rightOrWrong}!
-          </Text>
-        );
-      })}
-    </ScrollView>
+            return (
+              <Text key={answer} style={answerStyle}>
+                You got the answer {answer} {rightOrWrong}!
+              </Text>
+            );
+          }
+        )}
+      </ScrollView>
+      <ImageBackground
+        style={[styles.fixed, styles.container, { zIndex: -1 }]}
+        source={townBG}
+      ></ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    marginBlockEnd: 10,
+    width: Dimensions.get("window").width, //for full screen
+    height: Dimensions.get("window").height, //for full screen,
     flex: 1,
-    backgroundColor: "#d4df9e",
+    marginInline: "auto",
   },
   card: {
     width: Dimensions.get("screen").width,
@@ -196,9 +207,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "black",
     borderWidth: 2,
-    backgroundColor: "pink",
+    backgroundColor: "#ac4c1c",
   },
-
+  fixed: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  scrollview: {
+    backgroundColor: "transparent",
+  },
   langText: {
     color: "black",
     fontSize: 20,
@@ -209,15 +229,13 @@ const styles = StyleSheet.create({
   },
   RIGHT: {
     backgroundColor: "green",
-    width: "100%",
-    maxWidth: 1000,
+    width: Dimensions.get("screen").width,
     textAlign: "center",
     marginBlock: 5,
   },
   WRONG: {
     backgroundColor: "#aa151b",
-    width: "100%",
-    maxWidth: 1000,
+    width: Dimensions.get("screen").width,
     textAlign: "center",
     marginBlock: 5,
   },
