@@ -131,7 +131,7 @@ const ReviewGame = ({ route }: any) => {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <ScrollView>
       <ScrollView
         style={styles.scrollview}
         contentContainerStyle={{
@@ -196,7 +196,7 @@ const ReviewGame = ({ route }: any) => {
         style={[styles.fixed, styles.container, { zIndex: -1 }]}
         source={townBG}
       ></ImageBackground>
-    </View>
+    </ScrollView>
   );
 };
 
