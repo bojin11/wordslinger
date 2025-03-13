@@ -113,7 +113,7 @@ const Review = () => {
   } else {
     return (
       <ScrollView>
-        <View style={{ marginInline: "auto" }}>
+        <View style={{ marginInline: "auto", marginBlock: "20%" }}>
           {reviewData.map((data: any) => {
             return (
               <ReviewCard
@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBlock: 10,
     textAlign: "center",
-    borderRadius: 10,
   },
   fixed: {
     position: "absolute",

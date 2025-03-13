@@ -131,16 +131,12 @@ const ReviewGame = ({ route }: any) => {
   }
 
   return (
-    <ScrollView>
-      <ScrollView
-        style={styles.scrollview}
-        contentContainerStyle={{
-          alignItems: "center",
-          marginBlockStart: "5%",
-          justifyContent: "center",
-          gap: "2%",
-        }}
-      >
+    <ScrollView
+      contentContainerStyle={{
+        maxHeight: "100%",
+      }}
+    >
+      <View style={[{ marginBlock: "25%" }]}>
         {isFinished ? (
           <Button
             title="Return To Review"
@@ -161,11 +157,11 @@ const ReviewGame = ({ route }: any) => {
                   backgroundColor: "white",
                   paddingBlock: 10,
                 }}
-                onChange={(e: any) => {
+                onChangeText={(text) =>
                   setCurrTextInput(() => {
-                    return e.target.value;
-                  });
-                }}
+                    return text;
+                  })
+                }
                 onKeyPress={(e: any) => {
                   e.key === "Enter" ? submitAnswer() : null;
                 }}
@@ -173,25 +169,22 @@ const ReviewGame = ({ route }: any) => {
               ></TextInput>
               <Button onPress={submitAnswer} title="Submit"></Button>
             </View>
-            <Image
-              source={currWordImg}
-              style={[styles.image, { resizeMode: "center" }]}
-            ></Image>
           </>
         )}
+        <ScrollView>
+          {logAnswers
+            .slice(-5)
+            .map(([answer, rightOrWrong]: [string, "RIGHT" | "WRONG"]) => {
+              const answerStyle: any = styles[`${rightOrWrong}`];
 
-        {logAnswers.map(
-          ([answer, rightOrWrong]: [string, "RIGHT" | "WRONG"]) => {
-            const answerStyle: any = styles[`${rightOrWrong}`];
-
-            return (
-              <Text key={answer} style={answerStyle}>
-                You got the answer {answer} {rightOrWrong}!
-              </Text>
-            );
-          }
-        )}
-      </ScrollView>
+              return (
+                <Text key={answer} style={answerStyle}>
+                  You got the answer {answer} {rightOrWrong}!
+                </Text>
+              );
+            })}
+        </ScrollView>
+      </View>
       <ImageBackground
         style={[styles.fixed, styles.container, { zIndex: -1 }]}
         source={townBG}
@@ -234,7 +227,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBlock: 10,
     textAlign: "center",
-    borderRadius: 10,
   },
   RIGHT: {
     backgroundColor: "green",
