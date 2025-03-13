@@ -2,16 +2,16 @@ import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   leftGun: {
-    position: "absolute",
-    maxWidth: "80%",
-    top: "50%",
-    right: "40%",
+    position: "relative",
+    width: "70%",
+    top: "12%",
+    right: "10%",
     resizeMode: "contain",
   },
   rightGun: {
-    position: "absolute",
-    maxWidth: "80%",
-    top: "50%",
+    position: "relative",
+    width: "70%",
+    bottom: "200%",
     left: "40%",
     resizeMode: "contain",
   },
@@ -53,159 +53,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     bottom: "59%",
     left: "0%",
-  },
-
-  buttonContainer: {
-    margin: "2%",
-    right: 0,
-    bottom: 0,
-    display: "flex",
-    alignItems: "flex-end",
-  },
-  buttonActive: {
-    borderRadius: 20,
-    borderWidth: 4,
-    borderColor: "#ffffff",
-    paddingVertical: 14,
-    paddingHorizontal: 10,
-    backgroundColor: "#878787",
-    width: "25%",
-  },
-  buttonActiveText: {
-    backgroundColor: "#bfbfbf",
-    maxHeight: 80,
-    color: "black",
-    padding: 2,
-    borderRadius: 6,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  buttonInactive: {
-    borderRadius: 20,
-    borderWidth: 4,
-    borderColor: "#878787",
-    paddingVertical: 14,
-    paddingHorizontal: 10,
-    backgroundColor: "#bfbfbf",
-    width: "25%",
-  },
-  buttonInactiveText: {
-    backgroundColor: "#878787",
-    maxHeight: 80,
-    color: "white",
-    padding: 2,
-    borderRadius: 6,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  textLargeOverlay: {
-    position: "absolute",
-    top: "65%",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 36,
-    zIndex: 2,
-  },
-  textSmallOverlay: {
-    position: "absolute",
-    top: "65%",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 16,
-    zIndex: 2,
-  },
-
-  displayContainer: {
-    padding: "2.5%",
-    flex: 1,
-    top: 0,
-    margin: 2,
-    maxWidth: "100%",
-  },
-  inspectContainer: {
-    flex: 2,
-    padding: "2.5%",
-    top: 0,
-    margin: 2,
-    maxWidth: "100%",
-  },
-  outlineContainerSmall: {
-    flexDirection: "row",
-    columnGap: "10%",
-    marginBottom: "1%",
-    maxWidth: "18.5%",
-    bottom: "150%",
-  },
-  cardOutlineStyle: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    zIndex: 1,
-  },
-
-  cardContainerLarge: {
-    flexDirection: "column",
-    marginBottom: "1%",
-    maxWidth: "60%",
-    top: "-50%",
-  },
-
-  largeCard: {
-    position: "relative",
-    resizeMode: "contain",
-    maxWidth: "100%",
-  },
-  smallCards: {
-    position: "relative",
-    resizeMode: "contain",
-    maxWidth: "100%",
-    zIndex: 2,
-  },
-  smallCardBack: {
-    position: "relative",
-    resizeMode: "contain",
-    zIndex: 2,
-  },
-
-  cardsDisplay: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-
-  wordContainer: {
-    flexDirection: "row",
-    columnGap: "10%",
-    marginBottom: "1%",
-    maxWidth: "18.5%",
-    bottom: "150%",
-  },
-
-  wordImageSmall: {
-    maxWidth: "100%",
-    resizeMode: "contain",
-    zIndex: 5,
-  },
-
-  wordImage: {
-    width: "60%",
-    height: "60%",
-    alignSelf: "center",
-    resizeMode: "contain",
-    bottom: "100%",
-    zIndex: 5,
-  },
-  cardWrapper: {
-    position: "relative",
   },
 
   buttonContainer: {

@@ -178,32 +178,38 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Matchmaking</Text>
+        <ImageBackground
+          style={{ height: "100%", width: "100%", top: "5%" }}
+          source={playerIcons.signPost}
+        ></ImageBackground>
         {winner && finishGame ? (
-          <View style={styles.resultDisplay}>
-            <Text>
-              Game is Over and winner is{" "}
-              <Text style={styles.winnerName}>{winner}</Text>
-            </Text>
-            <View style={styles.scoresContainer}>
-              {Object.keys(players).map((playerId) => (
-                <View key={playerId} style={styles.playerSummaryContainer}>
-                  <Text>
-                    {players[playerId].user} got{" "}
-                    {players[playerId].correctAnswers.length} question
-                    {players[playerId].correctAnswers.length > 1
-                      ? "s"
-                      : ""}{" "}
-                    right.
-                  </Text>
-                  <Text>{players[playerId].user}'s Correct Answers:</Text>
-                  <FlatList
-                    data={players[playerId].correctAnswers}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => <Text>{item}</Text>}
-                  />
-                </View>
-              ))}
+          <View>
+            <Text style={styles.title}>Matchmaking</Text>
+            <View style={styles.resultDisplay}>
+              <Text>
+                Game is Over and winner is{" "}
+                <Text style={styles.winnerName}>{winner}</Text>
+              </Text>
+              <View style={styles.scoresContainer}>
+                {Object.keys(players).map((playerId) => (
+                  <View key={playerId} style={styles.playerSummaryContainer}>
+                    <Text>
+                      {players[playerId].user} got{" "}
+                      {players[playerId].correctAnswers.length} question
+                      {players[playerId].correctAnswers.length > 1
+                        ? "s"
+                        : ""}{" "}
+                      right.
+                    </Text>
+                    <Text>{players[playerId].user}'s Correct Answers:</Text>
+                    <FlatList
+                      data={players[playerId].correctAnswers}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({ item }) => <Text>{item}</Text>}
+                    />
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
         ) : (
@@ -239,37 +245,48 @@ const Game = () => {
                     Waiting for another player to start...
                   </Text>
                 ) : (
-                  <>
-                    <Button
-                      title="Start Game"
-                      onPress={() => {
-                        languageNotSelected ? null : handleStartGame();
-                      }}
-                    />
-                    <SelectLanguageMultiplayer
-                      language={language}
-                      setLanguage={setLanguage}
-                      setLanguageNotSelected={setLanguageNotSelected}
-                    />
-                    {languageNotSelected ? (
-                      <Text>Select a language!</Text>
-                    ) : null}
-                  </>
+                  <View
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      bottom: "75%",
+                      left: "0%",
+                    }}
+                  >
+                    <Text style={globalStyles.signPostTitle}>Matchmaking</Text>
+                    <View style={{ top: "30%" }}>
+                      <Button
+                        title="Start Game"
+                        onPress={() => {
+                          languageNotSelected ? null : handleStartGame();
+                        }}
+                      />
+                      <SelectLanguageMultiplayer
+                        language={language}
+                        setLanguage={setLanguage}
+                        setLanguageNotSelected={setLanguageNotSelected}
+                      />
+                      {languageNotSelected ? (
+                        <Text>Select a language!</Text>
+                      ) : null}
+                    </View>
+                  </View>
                 )}
               </>
             )}
           </View>
         )}
       </SafeAreaView>
-
-      <Animated.Image
-        style={[globalStyles.leftGun, rotateLeftStyle]}
-        source={playerIcons.gunLeft}
-      />
-      <Animated.Image
-        style={[globalStyles.rightGun, rotateRightStyle]}
-        source={playerIcons.gunRight}
-      />
+      <View style={{ height: "40%", width: "100%", bottom: "5%" }}>
+        <Animated.Image
+          style={[globalStyles.leftGun, rotateLeftStyle]}
+          source={playerIcons.gunLeft}
+        />
+        <Animated.Image
+          style={[globalStyles.rightGun, rotateRightStyle]}
+          source={playerIcons.gunRight}
+        />
+      </View>
     </ImageBackground>
   );
 };

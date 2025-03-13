@@ -24,7 +24,6 @@ interface VerifyResponse {
   verification: boolean;
 }
 
-
 export default function Login({ navigation, route }: React.FunctionComponent) {
   const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
@@ -137,7 +136,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
               validUsernameCheck(username, password);
             }}
           >
-            <Text>Log in</Text>
+            <Text style={{ top: "20%" }}>Log in</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navButton}
@@ -145,7 +144,7 @@ export default function Login({ navigation, route }: React.FunctionComponent) {
               navigateTo.navigate("Signup");
             }}
           >
-            <Text>Sign up</Text>
+            <Text style={{ top: "20%" }}>Sign up</Text>
           </TouchableOpacity>
 
           {isInvalidUsername ? (
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "grey",
     borderRadius: 20,
-    maxHeight: "30%",
+    maxHeight: "40%",
     maxWidth: "90%",
     backgroundColor: "white",
     position: "relative",
@@ -192,12 +191,14 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderRadius: 5,
     marginBottom: 10,
+    textAlign: "center",
   },
   navButton: {
     borderColor: "#2583ff",
     borderWidth: 1.2,
     borderRadius: 14,
-    height: 60,
-    width: 60,
+    height: 40,
+    width: 80,
+    alignItems: "center",
   },
 });
