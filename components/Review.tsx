@@ -5,6 +5,7 @@ import {
   Dimensions,
   ScrollView,
   Button,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +13,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ReviewCardType } from "../types/ReviewTypes";
 import axios from "axios";
 import { useAuth } from "./contexts/username";
+import { ImageBackground } from "react-native";
 
 function ReviewCard({ language, wordList, userID }: ReviewCardType) {
   const languageBackground = styles[`${language}`];
@@ -91,8 +93,21 @@ const Review = () => {
 
   if (isLoading) {
     return (
-      <View style={[styles.container, { justifyContent: "center" }]}>
-        <Text>LOADING...</Text>
+      <View>
+        <Image
+          source={require("../assets/tumbleweedtransparent.gif")}
+          style={{
+            width: "1000%",
+            height: "1000%",
+            alignSelf: "center",
+            resizeMode: "contain",
+          }}
+        />
+        <Text style={{ textAlign: "center", fontSize: 20 }}>Loading...</Text>
+        <ImageBackground
+          style={[styles.fixed, styles.container, { zIndex: -1 }]}
+          source={require("../assets/wild-west-town.png")}
+        ></ImageBackground>
       </View>
     );
   } else {
@@ -110,6 +125,10 @@ const Review = () => {
             );
           })}
         </View>
+        <ImageBackground
+          style={[styles.fixed, styles.container, { zIndex: -1 }]}
+          source={require("../assets/wild-west-town.png")}
+        ></ImageBackground>
       </ScrollView>
     );
   }
@@ -155,6 +174,13 @@ const styles = StyleSheet.create({
     marginBlock: 10,
     textAlign: "center",
     borderRadius: 10,
+  },
+  fixed: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });
 
