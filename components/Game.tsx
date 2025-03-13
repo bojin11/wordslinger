@@ -178,6 +178,7 @@ const Game = () => {
       source={UiImages.background}
     >
       <SafeAreaView style={styles.container}>
+
         {winner && finishGame ? (
           <View>
             <Text style={styles.title}>Matchmaking</Text>
