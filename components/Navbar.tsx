@@ -108,11 +108,12 @@ const styles = StyleSheet.create({
     width: 60,
   },
   iconContainer: {
-    marginInlineEnd: 5,
+    marginHorizontal: 1,
     alignContent: "space-between",
   },
   image: {
-    height: "50%",
-    width: "50%",
+    position: "relative",
+    height: "100%",
+    width: "100%",
   },
 });
