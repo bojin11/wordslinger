@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { globalStyles } from "../styles/globalStyles";
 import axios from "axios";
 import {
   StyleSheet,
@@ -6,6 +7,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
   ImageBackground,
   Animated,
   Button,
@@ -13,6 +15,7 @@ import {
 import * as Progress from "react-native-progress";
 import { Language } from "../types/Leaderboard";
 import SelectLanguageMultiplayer from "./LanguageSelectorMultiplayer";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface WordPair {
   english: string;
@@ -36,6 +39,7 @@ const Practice = () => {
   const playerIcons = {
     gunLeft: require("../assets/fps-gun-leftCU.png"),
     gunRight: require("../assets/fps-gun-rightCU.png"),
+    signPost: require("../assets/Pannel1.png"),
   };
 
   const rotation = useRef(new Animated.Value(0)).current;
@@ -156,25 +160,31 @@ const Practice = () => {
       style={{ flex: 1, height: "100%", width: "100%" }}
       source={UiImages.background}
     >
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Typing Game</Text>
-        </View>
-
+      <SafeAreaView style={styles.container}>
         {/* Show language selection and start game button if not ready */}
+
         {!isReady ? (
           <View>
-            <SelectLanguageMultiplayer
-              language={language}
-              setLanguage={setLanguage}
-              setLanguageNotSelected={setLanguageNotSelected}
-            />
-            {languageNotSelected && <Text>Select a language!</Text>}
-            <Button
-              title="Start Game"
-              onPress={handleStartGame}
-              disabled={languageNotSelected}
-            />
+            <ImageBackground
+              style={globalStyles.upperSignTextBox}
+              source={playerIcons.signPost}
+            ></ImageBackground>
+            <View style={globalStyles.signPostTextBox}>
+              <Text style={globalStyles.signPostTitle}>Target Pratice</Text>
+              <View style={{ top: "70%" }}>
+                <SelectLanguageMultiplayer
+                  language={language}
+                  setLanguage={setLanguage}
+                  setLanguageNotSelected={setLanguageNotSelected}
+                />
+
+                <Button
+                  title="Start Game"
+                  onPress={handleStartGame}
+                  disabled={languageNotSelected}
+                />
+              </View>
+            </View>
           </View>
         ) : (
           <>
@@ -220,17 +230,19 @@ const Practice = () => {
               </View>
             )}
 
-            <Animated.Image
-              style={[styles.leftGun, rotateLeftStyle]}
-              source={playerIcons.gunLeft}
-            />
-            <Animated.Image
-              style={[styles.rightGun, rotateRightStyle]}
-              source={playerIcons.gunRight}
-            />
+            <View style={{ height: "40%", width: "100%" }}>
+              <Animated.Image
+                style={[globalStyles.leftGun, rotateLeftStyle]}
+                source={playerIcons.gunLeft}
+              />
+              <Animated.Image
+                style={[globalStyles.rightGun, rotateRightStyle]}
+                source={playerIcons.gunRight}
+              />
+            </View>
           </>
         )}
-      </View>
+      </SafeAreaView>
     </ImageBackground>
   );
 };
@@ -249,11 +261,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
   },
-  title: {
-    fontSize: 36,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 30,
+
+  text: {
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 18,
@@ -311,20 +321,7 @@ const styles = StyleSheet.create({
   progressBar: {
     marginBottom: 20,
   },
-  leftGun: {
-    width: 100,
-    height: 100,
-    position: "absolute",
-    left: 50,
-    bottom: 50,
-  },
-  rightGun: {
-    width: 100,
-    height: 100,
-    position: "absolute",
-    right: 50,
-    bottom: 50,
-  },
+
   gameContainer: {
     backgroundColor: "rgba(128, 128, 128, 0.5)",
   },

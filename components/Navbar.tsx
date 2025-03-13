@@ -9,7 +9,7 @@ const hayStack = require("../assets/icons/hay-large.png");
 const barrel = require("../assets/icons/barrel.png");
 const whiskey = require("../assets/icons/Whiskey.png");
 const chariot = require("../assets/icons/chariot.png");
-
+const house = require("../assets/icons/house.png");
 const Navbar: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
 
@@ -82,6 +82,17 @@ const Navbar: React.FC = () => {
           />
         </TouchableOpacity>
       </View>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity
+          style={styles.navButton}
+          onPress={() => navigation.navigate("Review")}
+        >
+          <Image
+            style={[styles.image, { resizeMode: "center" }]}
+            source={house}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -108,11 +119,12 @@ const styles = StyleSheet.create({
     width: 60,
   },
   iconContainer: {
-    marginInlineEnd: 5,
+    marginHorizontal: 1,
     alignContent: "space-between",
   },
   image: {
-    height: "50%",
-    width: "50%",
+    position: "relative",
+    height: "100%",
+    width: "100%",
   },
 });

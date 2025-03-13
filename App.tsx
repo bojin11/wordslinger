@@ -18,6 +18,8 @@ import { Settings } from "./components/Settings";
 import wordList from "./_testdata/words";
 import { Word } from "./types/globalTypes";
 import { Signup } from "./components/Signup";
+import Review from "./components/Review";
+import ReviewGame from "./components/ReviewGame";
 
 const Stack = createStackNavigator();
 
@@ -58,6 +60,8 @@ export default function App() {
                 initialParams={{ setIsLoggedIn: setIsLoggedIn }}
               />
               <Stack.Screen name="Leaderboard" component={Leaderboard} />
+              <Stack.Screen name="Review" component={Review} />
+              <Stack.Screen name="ReviewGame" component={ReviewGame} />
             </Stack.Navigator>
             <Navbar />
           </NavigationContainer>

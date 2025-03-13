@@ -12,6 +12,7 @@ import axios from "axios";
 import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 
+
 const backgroundUI = {
   background: require("../assets/Background4.png"),
   moutain: require("../assets/Background2.png"),
@@ -21,6 +22,7 @@ const backgroundUI = {
   cloud3: require("../assets/Cloud3.png"),
   cloud4: require("../assets/Cloud4.png"),
 };
+
 
 interface SignUpForm {
   name: string;
@@ -48,6 +50,8 @@ const SignUpValidationSchema = yup.object().shape({
 
 export const Signup: React.FC = () => {
   const [newUser, setNewUser] = useState({});
+  const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
     setNewUser(newUser);
@@ -61,6 +65,8 @@ export const Signup: React.FC = () => {
   };
 
   const postNewUser = (newUser: any) => {
+    // const navigateTo = useNavigation<StackNavigationProp<RootStackParamList>>(); // Get navigation using hook
+
     if (!newUser) {
       return Promise.reject({
         error: "missing new user data, please try again",
@@ -84,7 +90,7 @@ export const Signup: React.FC = () => {
         };
         const german = {
           user_id: user[0].user_id,
-          language: "Spanish",
+          language: "German",
         };
         return Promise.all([
           axios.post(url, french),
@@ -92,19 +98,36 @@ export const Signup: React.FC = () => {
           axios.post(url, german),
         ]);
       })
-      .then((data) => {
-        console.log(data, "done");
-      })
+      .then((data) => {})
       .catch((error) => {
         return Promise.reject(error);
       });
   };
 
   return (
+
     <>
       <ImageBackground
         style={{ flex: 1, height: "100%", width: "100%" }}
         source={backgroundUI.background}
+
+    <View>
+      <Text>Sign up</Text>
+      <Formik
+        validationSchema={SignUpValidationSchema}
+        initialValues={{
+          name: "",
+          username: "",
+          password: "",
+          avatar_url: "image",
+          bio: "",
+          language: "",
+        }}
+        onSubmit={(values) => {
+          addNewUser(values);
+
+        }}
+
       >
         <View
           style={{
